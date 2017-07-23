@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<name>architecture-representation</name>
+	<name>Architecture-Representation</name>
 	<artifactId>architecture-representation</artifactId>
 	<packaging>jar</packaging>
 
@@ -10,7 +10,7 @@
 		<groupId>br.ufpr.dinf.gres</groupId>
 		<artifactId>opla-tool</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
-		<relativePath>../</relativePath>
+		<relativePath>../../</relativePath>
 	</parent>
 
 	<dependencies>
