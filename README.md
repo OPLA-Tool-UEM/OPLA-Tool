@@ -40,7 +40,7 @@ mvn clean install
 ```
 - Open OPLA-Tool:
 ```sh
-java -jar opla-tool/target/opla-tool-0.0.1-jar-with-dependencies.jar
+java -jar modules/opla-tool/target/opla-tool-0.0.1-jar-with-dependencies.jar
 ```
 
 
