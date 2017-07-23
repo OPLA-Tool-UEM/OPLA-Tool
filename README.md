@@ -1,9 +1,6 @@
 # OPLA-Tool
 
 ## Description
-Desenvolvimento da OPLA-Memetic.
-
-You need download all projects before to build the OPLA-Memetic.
 
 This project was created from the project 
 ```sh
