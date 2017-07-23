@@ -10,7 +10,7 @@
 
 	<parent>
 		<groupId>br.ufpr.dinf.gres</groupId>
-		<artifactId>opla-tool</artifactId>
+		<artifactId>opla</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 		<relativePath>../../</relativePath>
 	</parent>
