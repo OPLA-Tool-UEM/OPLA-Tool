@@ -5,6 +5,12 @@ Desenvolvimento da OPLA-Memetic.
 
 You need download all projects before to build the OPLA-Memetic.
 
+This project was created from the project 
+```sh
+
+git clone https://github.com/JoaoChoma/marcelo-opla.git
+```
+
 ## Requirements
 Before to compile the code, you need to install the following softwares on your PC:
 - Java Development Kit (Version >= 6)
@@ -25,18 +31,12 @@ cd opla-tool
 - Download all projects:
 ```sh
 
-git clone https://github.com/JoaoChoma/marcelo-opla.git
+git clone https://github.com/OPLA-Tool-UEM/opla-tool.git
 ```
-- Install dependencies:
+
+- Compile
 ```sh
-sh architecture-representation/buildDeps.sh
-```
-- Compile all projects. The sequence is important:
-```sh
-cd architecture-representation && mvn clean && mvn install
-cd opla-patterns && mvn clean && mvn install
-cd opla-core && mvn clean && mvn install
-cd opla-tool && mvn clean && mvn install
+mvn clean install
 ```
 - Open OPLA-Tool:
 ```sh
