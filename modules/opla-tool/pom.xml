@@ -6,7 +6,7 @@
 
 	<artifactId>opla-tool</artifactId>
 	<name>Opla-Tool</name>
-	
+
 	<parent>
 		<groupId>br.ufpr.dinf.gres</groupId>
 		<artifactId>opla</artifactId>
@@ -50,6 +50,17 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>com.ufpr.br.opla.gui2.Oplagui</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
