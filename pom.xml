@@ -21,7 +21,7 @@
 		<module>modules/architecture-representation</module>
 		<module>modules/opla-patterns</module>
 		<module>modules/opla-core</module>
-		<module>modules/tool</module>
+		<module>modules/opla-tool</module>
 	</modules>
 
 	<build>
