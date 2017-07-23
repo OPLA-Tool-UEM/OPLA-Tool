@@ -8,7 +8,7 @@ You need download all projects before to build the OPLA-Memetic.
 This project was created from the project 
 ```sh
 
-git clone https://github.com/JoaoChoma/marcelo-opla.git
+https://github.com/JoaoChoma/marcelo-opla.git
 ```
 
 ## Requirements
