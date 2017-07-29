@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>br.ufpr.dinf.gres</groupId>
-	<artifactId>opla</artifactId>
-	<name>OPLA</name>
+	<artifactId>opla-tool</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
+	<name>..: OPLA-Tool :..</name>
 	<url>http://www.inf.ufpr.br/gres/opla-tool/</url>
 
 	<properties>
@@ -21,7 +21,7 @@
 		<module>modules/architecture-representation</module>
 		<module>modules/opla-patterns</module>
 		<module>modules/opla-core</module>
-		<module>modules/opla-tool</module>
+		<module>modules/opla-gui</module>
 	</modules>
 
 	<build>

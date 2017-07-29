@@ -5,8 +5,9 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>opla-patterns</artifactId>
-	<name>Opla-Patterns</name>
 	<packaging>jar</packaging>
+	
+	<name>..: Opla-Patterns :..</name>
 
 	<parent>
 		<groupId>br.ufpr.dinf.gres</groupId>

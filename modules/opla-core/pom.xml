@@ -5,8 +5,9 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>opla-core</artifactId>
-	<name>Opla-Core</name>
 	<packaging>jar</packaging>
+	
+	<name>..: Opla-Core :..</name>
 
 	<parent>
 		<groupId>br.ufpr.dinf.gres</groupId>
