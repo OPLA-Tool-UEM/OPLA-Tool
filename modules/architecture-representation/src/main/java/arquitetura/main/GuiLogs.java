@@ -1,4 +1,4 @@
-package main;
+package arquitetura.main;
 
 import br.ufpr.dinf.gres.loglog.LogLog;
 

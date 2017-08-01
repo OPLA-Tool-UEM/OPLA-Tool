@@ -4,12 +4,12 @@
 
 	<artifactId>architecture-representation</artifactId>
 	<packaging>jar</packaging>
-	
+
 	<name>..: Opla-Architecture-Representation :..</name>
 
 	<parent>
 		<groupId>br.ufpr.dinf.gres</groupId>
-		<artifactId>opla</artifactId>
+		<artifactId>opla-tool</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 		<relativePath>../../</relativePath>
 	</parent>
@@ -84,20 +84,16 @@
 			<artifactId>loglog</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.jyaml</groupId>
 			<artifactId>jyaml</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
 		</dependency>
 	</dependencies>
 	<build>

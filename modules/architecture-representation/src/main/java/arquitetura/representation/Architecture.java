@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 
 import jmetal.core.Variable;
-import main.GenerateArchitecture;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -19,6 +18,7 @@ import arquitetura.flyweights.VariabilityFlyweight;
 import arquitetura.flyweights.VariantFlyweight;
 import arquitetura.flyweights.VariationPointFlyweight;
 import arquitetura.helpers.UtilResources;
+import arquitetura.main.GenerateArchitecture;
 import arquitetura.representation.relationship.DependencyRelationship;
 import arquitetura.representation.relationship.RealizationRelationship;
 import arquitetura.representation.relationship.Relationship;

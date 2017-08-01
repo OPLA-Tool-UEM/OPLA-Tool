@@ -1,4 +1,4 @@
-package main;
+package arquitetura.main;
 
 import arquitetura.builders.ArchitectureBuilder;
 import arquitetura.exceptions.ModelIncompleteException;

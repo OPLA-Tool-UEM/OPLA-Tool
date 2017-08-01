@@ -1,5 +1,7 @@
 package arquitetura.io;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class DirTarget {
 
 	private String directoryToSaveModels;
@@ -9,7 +11,7 @@ public class DirTarget {
 	private String pathToTemplateModelsDirectory;
 	private String pathToProfileRelationships;
 	private String pathToProfilePatterns;
-	
+
 	/**
 	 * @return the directoryToSaveModels
 	 */
@@ -18,7 +20,8 @@ public class DirTarget {
 	}
 
 	/**
-	 * @param directoryToSaveModels the directoryToSaveModels to set
+	 * @param directoryToSaveModels
+	 *            the directoryToSaveModels to set
 	 */
 	public void setDirectoryToSaveModels(String directoryToSaveModels) {
 		this.directoryToSaveModels = directoryToSaveModels;
@@ -32,7 +35,8 @@ public class DirTarget {
 	}
 
 	/**
-	 * @param directoryToExportModels the directoryToExportModels to set
+	 * @param directoryToExportModels
+	 *            the directoryToExportModels to set
 	 */
 	public void setDirectoryToExportModels(String directoryToExportModels) {
 		this.directoryToExportModels = directoryToExportModels;
@@ -46,7 +50,8 @@ public class DirTarget {
 	}
 
 	/**
-	 * @param pathToProfile the pathToProfile to set
+	 * @param pathToProfile
+	 *            the pathToProfile to set
 	 */
 	public void setPathToProfile(String pathToProfile) {
 		this.pathToProfile = pathToProfile;
@@ -83,5 +88,14 @@ public class DirTarget {
 	public void setPathToProfilePatterns(String pathToProfilePatterns) {
 		this.pathToProfilePatterns = pathToProfilePatterns;
 	}
-	
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("directoryToSaveModels", directoryToSaveModels)
+				.append("directoryToExportModels", directoryToExportModels).append("pathToProfile", pathToProfile)
+				.append("pathToProfileConcern", pathToProfileConcern)
+				.append("pathToTemplateModelsDirectory", pathToTemplateModelsDirectory)
+				.append("pathToProfileRelationships", pathToProfileRelationships)
+				.append("pathToProfilePatterns", pathToProfilePatterns).toString();
+	}
 }
