@@ -4,15 +4,16 @@
  */
 package com.ufpr.br.opla.indicators;
 
-import com.ufpr.br.opla.configuration.UserHome;
-import com.ufpr.br.opla.utils.Utils;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.ufpr.br.opla.configuration.UserHome;
+import com.ufpr.br.opla.utils.Utils;
+
 import results.Execution;
 import results.FunResults;
 
@@ -29,8 +30,9 @@ public class HypervolumeCreateDataFiles {
    * correspondentes para o hypervolume
    * 
    * TODO Validação: Os experimentos passados como argumento devem ter o mesmo número de rodadas e objetivos. ??
+ * @throws Exception 
    */
-  public Map<String, List<Double>> generateHyperVolumeFiles(String... ids) throws IOException {
+  public Map<String, List<Double>> generateHyperVolumeFiles(String... ids) throws Exception {
 
     //Usado temporariamente. Após cálculos estes arquivos serão apagados.
     String pathToSaveFiles = UserHome.getOplaUserHome();

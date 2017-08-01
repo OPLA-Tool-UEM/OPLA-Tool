@@ -7,7 +7,7 @@ import database.Database;
 
 public class TesteEd {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 	Database.setPathToDB("/Users/elf/oplatool/db/oplatool.db");
 	CalculaEd ed = new CalculaEd();
 //paes bet 4744218659

@@ -1,9 +1,5 @@
 package jmetal.experiments;
 
-import java.io.IOException;
-
-import jmetal.util.JMException;
-
 public class PAES_OPLA_FeatMutInitializer implements AlgorithmBase {
 
     private PaesConfigs config;
@@ -18,7 +14,7 @@ public class PAES_OPLA_FeatMutInitializer implements AlgorithmBase {
 	
 	try {
 	    paes.execute();
-	} catch (ClassNotFoundException | IOException | JMException e) {
+	} catch (Exception e) {
 	    e.printStackTrace();
 	}
 

@@ -33,13 +33,13 @@ public class EdLine {
   private final XYDataset data;
   private final String title;
 
-  public EdLine(String idsAllSelectedExperiments[], String chartTitle) {
+  public EdLine(String idsAllSelectedExperiments[], String chartTitle) throws Exception {
     this.idsAllSelectedExperiments = idsAllSelectedExperiments;
     this.data = createDataset();
     this.title = chartTitle;
   }
 
-  private XYDataset createDataset() {
+  private XYDataset createDataset() throws Exception {
     final XYSeriesCollection dataset = new XYSeriesCollection();
 
     for (int i = 0; i < idsAllSelectedExperiments.length; i++) {

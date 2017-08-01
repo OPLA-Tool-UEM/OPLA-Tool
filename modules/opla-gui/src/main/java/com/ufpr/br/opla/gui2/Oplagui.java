@@ -12,14 +12,13 @@ public class Oplagui {
     java.awt.EventQueue.invokeLater(new Runnable() {
       @Override
       public void run() {
-        com.ufpr.br.opla.gui2.main gui;
+        com.ufpr.br.opla.gui2.StartUp gui;
         
         try {
           ReaderConfig.load();
           database.Database.setPathToDB(UserHome.getPathToDb());
 
-          gui = new main();
-          //gui.setResizable(false);
+          gui = new StartUp();
           gui.setExtendedState(JFrame.MAXIMIZED_BOTH);
           gui.setVisible(true);
 

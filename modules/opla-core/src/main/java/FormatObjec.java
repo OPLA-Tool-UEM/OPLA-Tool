@@ -11,7 +11,7 @@ import results.Execution;
 
 public class FormatObjec {
 
-    public static void main(String args[]) throws SQLException, ClassNotFoundException, MissingConfigurationException {
+    public static void main(String args[]) throws Exception {
 	Database.setPathToDB("/Users/elf/oplatool/db/oplatool.db");
 	
 	List<Double> c = new ArrayList<Double>();

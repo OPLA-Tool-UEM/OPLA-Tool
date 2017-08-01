@@ -53,7 +53,7 @@ public class Database {
     return Collections.emptyList();
   }
 
-  public static HashMap<String, String> getObjectivesBySolutionId(String solutionId, String experimentId) {
+  public static HashMap<String, String> getObjectivesBySolutionId(String solutionId, String experimentId) throws Exception {
     StringBuilder query = new StringBuilder();
     query.append("SELECT * FROM objectives WHERE solution_name LIKE '%");
     query.append(solutionId);
@@ -83,7 +83,7 @@ public class Database {
 
   }
 
-  public static Map<String, String> getAllObjectivesByExecution(String idExecution, String experimentId) {
+  public static Map<String, String> getAllObjectivesByExecution(String idExecution, String experimentId) throws Exception {
     Map<String, String> funs = new HashMap<>();
 
     try {
@@ -115,8 +115,9 @@ public class Database {
    *
    * @param experimentId
    * @return elegance,conventional, PLAExtensibility, featureDriven
+ * @throws Exception 
    */
-  public static String getOrdenedObjectives(String experimentId) {
+  public static String getOrdenedObjectives(String experimentId) throws Exception {
     Statement statement = null;
     try {
       statement = database.Database.getConnection().createStatement();
@@ -142,7 +143,7 @@ public class Database {
 
   }
 
-  public static String getAlgoritmUsedToExperimentId(String id) {
+  public static String getAlgoritmUsedToExperimentId(String id) throws Exception {
     Statement statement = null;
     try {
       statement = database.Database.getConnection().createStatement();
@@ -171,7 +172,7 @@ public class Database {
     return "";
   }
 
-  public static String getPlaUsedToExperimentId(String id) {
+  public static String getPlaUsedToExperimentId(String id) throws Exception {
     Statement statement = null;
     try {
       statement = database.Database.getConnection().createStatement();
@@ -346,7 +347,7 @@ public class Database {
     return listCons;
   }
 
-  public static int getNumberOfFunctionForExperimentId(String experimentId) {
+  public static int getNumberOfFunctionForExperimentId(String experimentId) throws Exception {
     Statement statement = null;
     try {
       statement = database.Database.getConnection().createStatement();
@@ -563,7 +564,7 @@ public class Database {
 
   }
 
-  public static List< List<Double>> getAllObjectivesForNonDominatedSolutions(String experimentId, int[] columns) {
+  public static List< List<Double>> getAllObjectivesForNonDominatedSolutions(String experimentId, int[] columns) throws Exception {
 
     Statement statement = null;
 

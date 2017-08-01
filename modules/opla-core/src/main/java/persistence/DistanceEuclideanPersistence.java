@@ -9,7 +9,7 @@ import exceptions.MissingConfigurationException;
 
 public class DistanceEuclideanPersistence {
 
-    public static void save(HashMap<String, Double> results, String experimentID) {
+    public static void save(HashMap<String, Double> results, String experimentID) throws Exception {
 	try {
 	    Statement statement = database.Database.getConnection().createStatement();
 

@@ -56,7 +56,7 @@ public class PAES_OPLA_FeatMut {
 	this.configs = config;
     }
 
-    public void execute() throws FileNotFoundException, IOException, JMException, ClassNotFoundException {
+    public void execute() throws Exception {
 	
 	intializeDependencies();
 
@@ -208,7 +208,7 @@ public class PAES_OPLA_FeatMut {
     
     }
 
-    private void intializeDependencies() {
+    private void intializeDependencies() throws Exception {
 	result = new Result();
 	Database.setPathToDB(this.configs.getPathToDb());
 

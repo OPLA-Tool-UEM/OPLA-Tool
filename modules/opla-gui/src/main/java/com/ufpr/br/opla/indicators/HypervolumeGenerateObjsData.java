@@ -4,12 +4,12 @@
  */
 package com.ufpr.br.opla.indicators;
 
-import com.ufpr.br.opla.configuration.VolatileConfs;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import com.ufpr.br.opla.configuration.VolatileConfs;
 
 /**
  *
@@ -20,7 +20,7 @@ public class HypervolumeGenerateObjsData {
   public static void generate(List<String> files) {
   }
 
-  public static List<HypervolumeData> generate(Map<String, List<Double>> content) throws IOException {
+  public static List<HypervolumeData> generate(Map<String, List<Double>> content) throws Exception {
     List<HypervolumeData> hypervolumeDatas = new ArrayList<>();
 
     for (Map.Entry<String, List<Double>> entry : content.entrySet()) {
@@ -51,8 +51,9 @@ public class HypervolumeGenerateObjsData {
    * @param values
    * @param experimentId
    * @return 
+ * @throws Exception 
    */
-  public static String findReferencePoint(List<Double> values, String experimentId) {
+  public static String findReferencePoint(List<Double> values, String experimentId) throws Exception {
     int numberOfObjectives = db.Database.getNumberOfFunctionForExperimentId(experimentId);
     String ref = "";
     

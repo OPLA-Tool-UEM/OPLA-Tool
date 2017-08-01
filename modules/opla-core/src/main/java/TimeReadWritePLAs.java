@@ -1,5 +1,5 @@
-import main.GenerateArchitecture;
 import arquitetura.builders.ArchitectureBuilder;
+import arquitetura.main.GenerateArchitecture;
 import arquitetura.representation.Architecture;
 
 

@@ -34,8 +34,9 @@ public class CalculaEd {
      * @param experimentId
      * @param numberObjectives
      * @return {@link HashMap<String, Double>}. Solution Name, Distance Euclidean 
+     * @throws Exception 
      */
-    public HashMap<String, Double> calcula(String experimentId, int numberObjectives) {
+    public HashMap<String, Double> calcula(String experimentId, int numberObjectives) throws Exception {
 	SolutionSet ss = queryNonDominatedSolutinsFromExperiment(experimentId);
 	HashMap<String, Double> results = new HashMap<>();
 	
@@ -72,8 +73,9 @@ public class CalculaEd {
      * @param experimentID
      *            - ID do experimento no banco de dados
      * @return
+     * @throws Exception 
      */
-    public SolutionSet queryNonDominatedSolutinsFromExperiment(String experimentID) {
+    public SolutionSet queryNonDominatedSolutinsFromExperiment(String experimentID) throws Exception {
 	try {
 	    Statement statement = database.Database.getConnection().createStatement();
 	    

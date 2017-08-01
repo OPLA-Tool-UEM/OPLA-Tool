@@ -4,16 +4,22 @@
  */
 package com.ufpr.br.opla.indicators;
 
-import database.Database;
-import exceptions.MissingConfigurationException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.apache.commons.collections4.map.HashedMap;
+
+import database.Database;
+import exceptions.MissingConfigurationException;
 
 /**
  *
@@ -23,9 +29,10 @@ public class Indicators {
 
   /**
    * Only for non dominated solutions
+ * @throws Exception 
    *
    */
-  public static SortedMap<String, Double> getEdsForExperiment(String experimentID) {
+  public static SortedMap<String, Double> getEdsForExperiment(String experimentID) throws Exception {
 
     try {
       try (Statement statement = database.Database.getConnection().createStatement()) {
@@ -54,7 +61,7 @@ public class Indicators {
     return null;
   }
 
-  public static String getEdForSelectedSolution(String fileName, String experimentID) {
+  public static String getEdForSelectedSolution(String fileName, String experimentID) throws Exception {
     try {
       String ed;
       try (Statement statement = database.Database.getConnection().createStatement()) {
@@ -77,7 +84,7 @@ public class Indicators {
 
   }
   
-  public static Entry<String, Double> getSolutionWithBestTradeOff(String experimentId) {
+  public static Entry<String, Double> getSolutionWithBestTradeOff(String experimentId) throws Exception {
 
     SortedMap<String, Double> eds = getEdsForExperiment(experimentId);
     Double ed = Double.MAX_VALUE;
@@ -98,8 +105,9 @@ public class Indicators {
    * 
    * @param ids
    * @return array of double in "asc" order
+ * @throws Exception 
    */
-  public static double[] getAllEdsForExperiments(String... ids) {
+  public static double[] getAllEdsForExperiments(String... ids) throws Exception {
     ArrayList<Double> eds = new ArrayList<>();
     
     for (String id : ids) {
@@ -126,8 +134,9 @@ public class Indicators {
    * @param experimentId - Experimento que deseja-se buscar por EDS.
    * 
    * @return 
+ * @throws Exception 
    */
-  public static Map<String, Map<Double, Integer>> quantityEdBySolutions(String[] selectedExperiments, String experimentId){
+  public static Map<String, Map<Double, Integer>> quantityEdBySolutions(String[] selectedExperiments, String experimentId) throws Exception{
     
     double[] allEds = Indicators.getAllEdsForExperiments(selectedExperiments);
     Map<Double, Integer> map = new  TreeMap<>();

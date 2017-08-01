@@ -111,7 +111,7 @@ public class MetricsPersistence {
 	elegances = null;
     }
 
-    public void saveObjectivesNames(List<String> selectedMetrics, String experimentId) {
+    public void saveObjectivesNames(List<String> selectedMetrics, String experimentId) throws Exception {
 
 	String names = getNames(selectedMetrics);
 

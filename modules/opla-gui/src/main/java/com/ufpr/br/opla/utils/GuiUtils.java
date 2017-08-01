@@ -6,6 +6,7 @@ package com.ufpr.br.opla.utils;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
@@ -22,7 +23,7 @@ public class GuiUtils {
     }
   }
 
-  public static Map<String, String> formatObjectives(String content, String experimentId) {
+  public static Map<String, String> formatObjectives(String content, String experimentId) throws Exception {
     String[] titles = db.Database.getOrdenedObjectives(experimentId).split(" ");
     String objs[] = content.split("\\|");
 

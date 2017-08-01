@@ -1,11 +1,18 @@
 package com.ufpr.br.opla.gui2;
 
+import java.io.File;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
 import com.ufpr.br.opla.configuration.ManagerApplicationConfig;
 import com.ufpr.br.opla.configuration.UserHome;
 import com.ufpr.br.opla.utils.OsUtils;
 import com.ufpr.br.opla.utils.Utils;
-import java.io.File;
-import javax.swing.*;
 
 public class GuiServices {
 
@@ -160,8 +167,9 @@ public class GuiServices {
    * 
    * @param comboObjectiveFunctions
    * @param experimentId 
+ * @throws Exception 
    */
-  public static void initializerComboObjectiveFunctions(JComboBox comboObjectiveFunctions, String experimentId) {
+  public static void initializerComboObjectiveFunctions(JComboBox comboObjectiveFunctions, String experimentId) throws Exception {
     String metricsSelectedForCurrentExperiment[] =
             db.Database.getOrdenedObjectives(experimentId).split(" ");
 

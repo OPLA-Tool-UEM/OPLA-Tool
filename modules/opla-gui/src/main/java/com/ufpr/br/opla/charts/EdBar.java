@@ -32,7 +32,7 @@ public class EdBar {
   private final DefaultCategoryDataset data;
   private final String title;
   
-  public EdBar(String idsAllSelectedExperiments[], String chartTitle){
+  public EdBar(String idsAllSelectedExperiments[], String chartTitle) throws Exception{
     this.idsAllSelectedExperiments = idsAllSelectedExperiments;
     DefaultCategoryDataset data = createDataset();
     this.data = data;
@@ -46,7 +46,7 @@ public class EdBar {
     plot.setRangeGridlinePaint(Color.BLACK);
   }
 
-  private DefaultCategoryDataset createDataset() {
+  private DefaultCategoryDataset createDataset() throws Exception {
     DefaultCategoryDataset objDataset = new DefaultCategoryDataset();
     final XYSeriesCollection dataset = new XYSeriesCollection();
 

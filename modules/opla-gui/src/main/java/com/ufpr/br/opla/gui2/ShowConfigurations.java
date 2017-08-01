@@ -373,7 +373,7 @@ public class ShowConfigurations extends javax.swing.JFrame {
     private javax.swing.JLabel populationSize;
     // End of variables declaration//GEN-END:variables
 
-  public void fillFields() {
+  public void fillFields() throws Exception {
     HashMap<String, String> confs = ExperimentConfs.getConfigs(experimentId);
     plaName.setText(db.Database.getPlaUsedToExperimentId(experimentId));
     algorithmName.setText(confs.get("algorithm"));

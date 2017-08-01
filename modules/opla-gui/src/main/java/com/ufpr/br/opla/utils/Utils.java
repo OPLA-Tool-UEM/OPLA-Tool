@@ -4,188 +4,187 @@
  */
 package com.ufpr.br.opla.utils;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Ordering;
-import com.ufpr.br.opla.configuration.UserHome;
-import com.ufpr.br.opla.gui2.main;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.WordUtils;
+import org.apache.log4j.Logger;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
+import com.ufpr.br.opla.configuration.UserHome;
+import com.ufpr.br.opla.gui2.StartUp;
 
 /**
  *
  * @author elf
  */
 public class Utils {
-  
-  private static final String PATH_CONFIGURATION_FILE = "config/application.yaml";
 
-  public static String extractSolutionIdFromSolutionFileName(String fileName) {
-    return fileName.substring(fileName.indexOf("-") + 1, fileName.length());
-  }
+	private static final Path PATH_CONFIGURATION_FILE = Paths.get("src/main/resources/config/application.yaml");
+	private static final Logger LOGGER = Logger.getLogger(Utils.class);
 
-  public static String capitalize(String word) {
-    return WordUtils.capitalize(word);
-  }
+	public static String extractSolutionIdFromSolutionFileName(String fileName) {
+		return fileName.substring(fileName.indexOf("-") + 1, fileName.length());
+	}
 
-  public static void copy(String source, String target) {
-    try {
-      InputStream in = Thread.currentThread().getContextClassLoader().
-              getResourceAsStream(source);
-      try (FileOutputStream out = new FileOutputStream(target)) {
-        byte[] buffer = new byte[1024];
-        int len = in.read(buffer);
-        while (len != -1) {
-          out.write(buffer, 0, len);
-          len = in.read(buffer);
-        }
-      }
-      Logger.getLogger(main.class.getName()).log(Level.INFO, "File copy from {0} to {1}", new Object[]{source, target});
-    } catch (Exception e) {
-      System.err.println(e);
-      Logger.getLogger(main.class.getName()).log(Level.SEVERE, e.toString());
-      System.exit(1);
-    }
-  }
+	public static String capitalize(String word) {
+		return WordUtils.capitalize(word);
+	}
 
-  public static void createPath(String path) {
-    File pathDir = new File(path);
-    if (!pathDir.exists()) {
-      Logger.getLogger(main.class.getName()).log(Level.INFO, "Diretorio não existe, criando....");
-      pathDir.mkdirs();
-      Logger.getLogger(main.class.getName()).log(Level.INFO, "Directory {0} created successfully", path);
-    }
-  }
+	public static void copy(String source, String target) {
+		try {
+			InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(source);
+			try (FileOutputStream out = new FileOutputStream(target)) {
+				byte[] buffer = new byte[1024];
+				int len = in.read(buffer);
+				while (len != -1) {
+					out.write(buffer, 0, len);
+					len = in.read(buffer);
+				}
+			}
+			LOGGER.info("File copy from {0} to {1}" + new Object[] { source, target });
+		} catch (Exception e) {
+			LOGGER.error(e);
+			System.exit(1);
+		}
+	}
 
-  /*
-   * Get the extension of a file.
-   */
-  public static String getExtension(File f) {
-    String ext = null;
-    String s = f.getName();
-    int i = s.lastIndexOf('.');
+	public static void createPath(String uriPath) {
+		arquitetura.io.FileUtils.createDirectory(Paths.get(uriPath));
+	}
 
-    if (i > 0 && i < s.length() - 1) {
-      ext = s.substring(i + 1).toLowerCase();
-    }
+	/*
+	 * Get the extension of a file.
+	 */
+	public static String getExtension(File f) {
+		String ext = null;
+		String s = f.getName();
+		int i = s.lastIndexOf('.');
 
-    return ext;
-  }
+		if (i > 0 && i < s.length() - 1) {
+			ext = s.substring(i + 1).toLowerCase();
+		}
 
-  public static boolean selectedSolutionIsNonDominated(String fileName) {
-    if (fileName.startsWith("VAR_All")) {
-      return true;
-    }
+		return ext;
+	}
 
-    return false;
-  }
+	public static boolean selectedSolutionIsNonDominated(String fileName) {
+		if (fileName.startsWith("VAR_All")) {
+			return true;
+		}
 
-  public static List<Entry<String, Double>> shortMap(SortedMap<String, Double> resultsEds) {
-    List<Map.Entry<String, Double>> edsValues = Lists.newArrayList(resultsEds.entrySet());
+		return false;
+	}
 
-    Ordering<Map.Entry<String, Double>> byMapValues = new Ordering<Map.Entry<String, Double>>() {
+	public static List<Entry<String, Double>> shortMap(SortedMap<String, Double> resultsEds) {
+		List<Map.Entry<String, Double>> edsValues = Lists.newArrayList(resultsEds.entrySet());
 
-      @Override
-      public int compare(Map.Entry<String, Double> left, Map.Entry<String, Double> right) {
-        return left.getValue().compareTo(right.getValue());
-      }
-    };
+		Ordering<Map.Entry<String, Double>> byMapValues = new Ordering<Map.Entry<String, Double>>() {
 
-    Collections.sort(edsValues, byMapValues);
+			@Override
+			public int compare(Map.Entry<String, Double> left, Map.Entry<String, Double> right) {
+				return left.getValue().compareTo(right.getValue());
+			}
+		};
 
-    return edsValues;
-  }
+		Collections.sort(edsValues, byMapValues);
 
-  public static boolean isDigit(String text) {
-    try {
-      Integer.parseInt(text);
-    } catch (Exception e) {
-      return false;
-    }
-    return true;
-  }
+		return edsValues;
+	}
 
-  public static boolean notNullAndNotEmpty(String str) {
-    return str != null && !str.isEmpty();
-  }
+	public static boolean isDigit(String text) {
+		try {
+			Integer.parseInt(text);
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
 
-  /**
-   *
-   * @param selectedExperiment
-   * @param directoryToExportModels
-   */
-  public static String getProfilesUsedForSelectedExperiment(String selectedExperiment, String directoryToExportModels) {
-    try {
-      String exts[] = {"uml"};
-      StringBuilder names = new StringBuilder();
+	public static boolean notNullAndNotEmpty(String str) {
+		return str != null && !str.isEmpty();
+	}
 
-      StringBuilder path = new StringBuilder();
-      path.append(directoryToExportModels);
-      path.append(selectedExperiment);
-      path.append("/resources/");
-      System.out.println(path.toString());
-      List<File> files = (List<File>) FileUtils.listFiles(
-              new File(path.toString()),
-              exts, false);
+	/**
+	 *
+	 * @param selectedExperiment
+	 * @param directoryToExportModels
+	 */
+	public static String getProfilesUsedForSelectedExperiment(String selectedExperiment,
+			String directoryToExportModels) {
+		try {
+			String exts[] = { "uml" };
+			StringBuilder names = new StringBuilder();
 
-      for (File file : files) {
-        names.append(file.getName().toLowerCase());
-        names.append(", ");
-      }
+			StringBuilder path = new StringBuilder();
+			path.append(directoryToExportModels);
+			path.append(selectedExperiment);
+			path.append("/resources/");
+			System.out.println(path.toString());
+			List<File> files = (List<File>) FileUtils.listFiles(new File(path.toString()), exts, false);
 
-      return names.deleteCharAt(names.lastIndexOf(",")).toString().trim();
-    } catch (Exception e) {
-      //I dont care.
-    }
-    return "-";
-  }
+			for (File file : files) {
+				names.append(file.getName().toLowerCase());
+				names.append(", ");
+			}
 
-  public static void createPathsOplaTool() {
-    try {
-      UserHome.createDefaultOplaPathIfDontExists();
+			return names.deleteCharAt(names.lastIndexOf(",")).toString().trim();
+		} catch (Exception e) {
+			// I dont care.
+		}
+		return "-";
+	}
 
-      String target = UserHome.getOplaUserHome() + "application.yaml";
+	public static void createPathsOplaTool() {
+		try {
+			UserHome.createDefaultOplaPathIfDontExists();
 
-      //Somente copia arquivo de configuracao se
-      //ainda nao existir na pasta da oplatool do usuario
-      if (!(new File(target).exists())) {
-        Utils.copy(PATH_CONFIGURATION_FILE, target);
-      }
+			Path pathApplicationYaml = Paths.get(UserHome.getOplaUserHome() + "application.yaml");
 
-      UserHome.createProfilesPath();
-      UserHome.createTemplatePath();
-      UserHome.createOutputPath();
-      UserHome.createTempPath(); //Manipulation dir. apenas para uso intenro
-      
-    } catch (Exception ex) {
-      java.util.logging.Logger.getLogger(main.class.getName()).log(Level.SEVERE, ex.getMessage());
-      System.exit(1);
-    }
-  }
-  
-  public static String generateFileName(String id) {
-    String algorithmName = db.Database.getAlgoritmUsedToExperimentId(id);
-    String plaName = db.Database.getPlaUsedToExperimentId(id);
+			// Somente copia arquivo de configuracao se
+			// ainda nao existir na pasta da oplatool do usuario
+			if (!Files.exists(pathApplicationYaml)) {
+				arquitetura.io.FileUtils.copy(PATH_CONFIGURATION_FILE, pathApplicationYaml);
+			}
 
-    StringBuilder fileName = new StringBuilder();
-    fileName.append(id);
-    fileName.append("_");
-    fileName.append(plaName);
-    fileName.append("_");
-    fileName.append(algorithmName);
-    fileName.append(".txt");
+			UserHome.createProfilesPath();
+			UserHome.createTemplatePath();
+			UserHome.createOutputPath();
+			UserHome.createTempPath(); // Manipulation dir. apenas para uso
+										// intenro
 
-    return fileName.toString();
-  }
+		} catch (Exception ex) {
+			java.util.logging.Logger.getLogger(StartUp.class.getName()).log(Level.SEVERE, ex.getMessage());
+			System.exit(1);
+		}
+	}
 
- 
+	public static String generateFileName(String id) throws Exception {
+		String algorithmName = db.Database.getAlgoritmUsedToExperimentId(id);
+		String plaName = db.Database.getPlaUsedToExperimentId(id);
+
+		StringBuilder fileName = new StringBuilder();
+		fileName.append(id);
+		fileName.append("_");
+		fileName.append(plaName);
+		fileName.append("_");
+		fileName.append(algorithmName);
+		fileName.append(".txt");
+
+		return fileName.toString();
+	}
+
 }

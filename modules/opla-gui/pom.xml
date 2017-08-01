@@ -6,12 +6,12 @@
 
 	<artifactId>opla-gui</artifactId>
 	<packaging>jar</packaging>
-	
+
 	<name>..: Opla-GUI :..</name>
 
 	<parent>
 		<groupId>br.ufpr.dinf.gres</groupId>
-		<artifactId>opla</artifactId>
+		<artifactId>opla-tool</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 		<relativePath>../../</relativePath>
 	</parent>
@@ -37,6 +37,10 @@
 		<dependency>
 			<groupId>org.swinglabs</groupId>
 			<artifactId>swing-layout</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.xerial</groupId>
+			<artifactId>sqlite-jdbc</artifactId>
 		</dependency>
 	</dependencies>
 	<build>

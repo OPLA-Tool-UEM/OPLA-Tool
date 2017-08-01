@@ -31,8 +31,9 @@ public class ChartGenerate {
    * @param functions - functions[0] = x Axis, functions[1] y Axis
    * @param mapExperimentIdToFile - map contendo o id do experimento e o path
    * para o arquivo contendo os valores das funcoes objetivos
+ * @throws Exception 
    */
-public static void generate(String[] functions, HashMap<String, String> experimentToAlgorithmUsed, int[] columns, String outputDir, String expId) throws IOException {
+public static void generate(String[] functions, HashMap<String, String> experimentToAlgorithmUsed, int[] columns, String outputDir, String expId) throws Exception {
 
       String name = "Solutions in the Search Space (" + db.Database.getPlaUsedToExperimentId(expId)+ ")";
       ChartGeneratorScatter g = new ChartGeneratorScatter(name, functions[1], functions[0]);

@@ -62,7 +62,7 @@ public class NSGAII_OPLA_FeatMut {
 		this.configs = configs;
 	}
 
-	public void execute() throws FileNotFoundException, IOException, JMException, ClassNotFoundException {
+	public void execute() throws Exception {
 
 		intializeDependencies();
 
@@ -235,7 +235,7 @@ public class NSGAII_OPLA_FeatMut {
 		configs.getLogger().putLog("Heap Size: " + heapSize + "Mb\n");
 	}
 
-	private void intializeDependencies() {
+	private void intializeDependencies() throws Exception {
 		result = new Result();
 		Database.setPathToDB(this.configs.getPathToDb());
 
