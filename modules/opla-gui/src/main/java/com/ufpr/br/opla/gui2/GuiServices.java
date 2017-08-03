@@ -169,7 +169,7 @@ public class GuiServices {
    * @param experimentId 
  * @throws Exception 
    */
-  public static void initializerComboObjectiveFunctions(JComboBox comboObjectiveFunctions, String experimentId) throws Exception {
+  public static void initializerComboObjectiveFunctions(JComboBox comboObjectiveFunctions, String experimentId)  {
     String metricsSelectedForCurrentExperiment[] =
             db.Database.getOrdenedObjectives(experimentId).split(" ");
 

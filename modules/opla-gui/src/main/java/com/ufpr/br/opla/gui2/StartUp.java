@@ -81,7 +81,7 @@ import results.Execution;
 public class StartUp extends javax.swing.JFrame {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(StartUp.class);
 	private LogLog VIEW_LOG = Logger.getLogger();
 
@@ -454,7 +454,7 @@ public class StartUp extends javax.swing.JFrame {
 		progressBar = new javax.swing.JProgressBar();
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-		setTitle("OPLA-Tool 0.0.1");
+		setTitle("OPLA-Tool 1.0.0");
 
 		// jTabbedPane1.setFont(new java.awt.Font("Lucida Grande", 1, 18)); //
 		// NOI18N
@@ -624,7 +624,7 @@ public class StartUp extends javax.swing.JFrame {
 		jLabel7.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
 		jLabel7.setText("about templates");
 		jLabel7.setToolTipText(
-				"<html><h3>About Templtes</h3><br/>\n\nTexto explicando brevemente o que são os templates e para que servem.");
+				"<html><h3>About Templates</h3><br/>\n\nTexto explicando brevemente o que são os templates e para que servem.");
 
 		jLabel8.setText(" Directory:");
 
@@ -1609,11 +1609,7 @@ public class StartUp extends javax.swing.JFrame {
 		});
 		comboSolutions.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				try {
-					comboSolutionsActionPerformed(evt);
-				} catch (Exception e) {
-					LOGGER.info(e);
-				}
+				comboSolutionsActionPerformed(evt);
 			}
 		});
 		comboSolutions.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -1701,11 +1697,7 @@ public class StartUp extends javax.swing.JFrame {
 		bestSolutions.setEnabled(false);
 		bestSolutions.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				try {
-					bestSolutionsActionPerformed(evt);
-				} catch (Exception e) {
-					LOGGER.info(e);
-				}
+				bestSolutionsActionPerformed(evt);
 			}
 		});
 
@@ -1730,11 +1722,7 @@ public class StartUp extends javax.swing.JFrame {
 		btnShowConfigurations.setText("Show Configurations");
 		btnShowConfigurations.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				try {
-					btnShowConfigurationsActionPerformed(evt);
-				} catch (Exception e) {
-					LOGGER.info(e);
-				}
+				btnShowConfigurationsActionPerformed(evt);
 			}
 		});
 
@@ -1830,22 +1818,14 @@ public class StartUp extends javax.swing.JFrame {
 		jButton2.setText("Select Objective Functions");
 		jButton2.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				try {
-					jButton2ActionPerformed(evt);
-				} catch (Exception e) {
-					LOGGER.info(e);
-				}
+				jButton2ActionPerformed(evt);
 			}
 		});
 
 		btnGenerateChart.setText("Generate Chart");
 		btnGenerateChart.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				try {
-					btnGenerateChartActionPerformed(evt);
-				} catch (Exception e) {
-					LOGGER.info(e);
-				}
+				btnGenerateChartActionPerformed(evt);
 			}
 		});
 
@@ -1871,11 +1851,7 @@ public class StartUp extends javax.swing.JFrame {
 		btnHypervolume.setEnabled(!OsUtils.isWindows());
 		btnHypervolume.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				try {
-					btnHypervolumeActionPerformed(evt);
-				} catch (Exception e) {
-					LOGGER.info(e);
-				}
+				btnHypervolumeActionPerformed(evt);
 			}
 		});
 
@@ -1901,11 +1877,7 @@ public class StartUp extends javax.swing.JFrame {
 		btnGenerateEdChart.setText("Number of Solutions per Euclidean Distance");
 		btnGenerateEdChart.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				try {
-					btnGenerateEdChartActionPerformed(evt);
-				} catch (Exception e) {
-					LOGGER.info(e);
-				}
+				btnGenerateEdChartActionPerformed(evt);
 			}
 		});
 
@@ -2439,8 +2411,9 @@ public class StartUp extends javax.swing.JFrame {
 		// TODO add your handling code here:
 	}// GEN-LAST:event_comboSolutionsFocusLost
 
-	private void comboSolutionsActionPerformed(java.awt.event.ActionEvent evt) throws Exception {// GEN-FIRST:event_comboSolutionsActionPerformed
+	private void comboSolutionsActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_comboSolutionsActionPerformed
 		panelShowMetrics.setVisible(false);
+
 		GuiServices.initializerComboObjectiveFunctions(comboMetrics, this.selectedExperiment);
 
 		Map<String, String> objectives = db.Database.getAllObjectivesByExecution(
@@ -2580,7 +2553,7 @@ public class StartUp extends javax.swing.JFrame {
 		// TODO add your handling code here:
 	}// GEN-LAST:event_experimentsMouseEntered
 
-	private void bestSolutionsActionPerformed(java.awt.event.ActionEvent evt) throws Exception {// GEN-FIRST:event_bestSolutionsActionPerformed
+	private void bestSolutionsActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_bestSolutionsActionPerformed
 		SmallerFintnessValuesWindow sfvw = new SmallerFintnessValuesWindow();
 
 		sfvw.setVisible(true);
@@ -2666,7 +2639,7 @@ public class StartUp extends javax.swing.JFrame {
 		VolatileConfs.setScopePatterns(null);
 	}// GEN-LAST:event_radioRandomStrategyActionPerformed
 
-	private void btnShowConfigurationsActionPerformed(java.awt.event.ActionEvent evt) throws Exception {// GEN-FIRST:event_btnShowConfigurationsActionPerformed
+	private void btnShowConfigurationsActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnShowConfigurationsActionPerformed
 		ShowConfigurations showConfs = new ShowConfigurations();
 
 		showConfs.setVisible(true);
@@ -2686,7 +2659,7 @@ public class StartUp extends javax.swing.JFrame {
 		// TODO add your handling code here:
 	}// GEN-LAST:event_tableExp2KeyPressed
 
-	private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) throws Exception {// GEN-FIRST:event_jButton2ActionPerformed
+	private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton2ActionPerformed
 		panelFunctionExecutionsSelecteds.setLayout(new MigLayout());
 
 		for (Component comp : panelFunctionExecutionsSelecteds.getComponents()) {
@@ -2740,10 +2713,10 @@ public class StartUp extends javax.swing.JFrame {
 
 	}// GEN-LAST:event_jButton2ActionPerformed
 
-	private void btnGenerateChartActionPerformed(java.awt.event.ActionEvent evt) throws Exception {// GEN-FIRST:event_btnGenerateChartActionPerformed
+	private void btnGenerateChartActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnGenerateChartActionPerformed
 		String referenceExp = null;
-		List<JCheckBox> allChecks = new ArrayList();
-		List<JCheckBox> checkeds = new ArrayList();
+		List<JCheckBox> allChecks = new ArrayList<>();
+		List<JCheckBox> checkeds = new ArrayList<>();
 		HashMap<String, String> experimentToAlgorithmUsed = new HashMap<>();
 
 		for (Object comp : panelFunctionExecutionsSelecteds.getComponents()) {
@@ -2780,12 +2753,7 @@ public class StartUp extends javax.swing.JFrame {
 			}
 
 			String outputDir = this.config.getConfig().getDirectoryToExportModels();
-			try {
-				ChartGenerate.generate(functions, experimentToAlgorithmUsed, columns, outputDir, referenceExp);
-			} catch (IOException ex) {
-				java.util.logging.Logger.getLogger(StartUp.class.getName()).log(java.util.logging.Level.SEVERE, null,
-						ex);
-			}
+			ChartGenerate.generate(functions, experimentToAlgorithmUsed, columns, outputDir, referenceExp);
 		}
 
 	}// GEN-LAST:event_btnGenerateChartActionPerformed
@@ -2797,7 +2765,7 @@ public class StartUp extends javax.swing.JFrame {
 		}
 	}// GEN-LAST:event_executionDescriptionKeyTyped
 
-	private void btnGenerateEdChartActionPerformed(java.awt.event.ActionEvent evt) throws Exception {// GEN-FIRST:event_btnGenerateEdChartActionPerformed
+	private void btnGenerateEdChartActionPerformed(java.awt.event.ActionEvent evt)  {// GEN-FIRST:event_btnGenerateEdChartActionPerformed
 
 		int[] selectedRows = tableExp2.getSelectedRows();
 		String ids[] = new String[selectedRows.length];
@@ -2824,7 +2792,7 @@ public class StartUp extends javax.swing.JFrame {
 		}
 	}// GEN-LAST:event_btnGenerateEdChartActionPerformed
 
-	private void btnHypervolumeActionPerformed(java.awt.event.ActionEvent evt) throws Exception {// GEN-FIRST:event_btnHypervolumeActionPerformed
+	private void btnHypervolumeActionPerformed(java.awt.event.ActionEvent evt)  {// GEN-FIRST:event_btnHypervolumeActionPerformed
 		try {
 			int[] selectedRows = tableExp2.getSelectedRows();
 			String ids[] = new String[selectedRows.length];
@@ -3079,7 +3047,8 @@ public class StartUp extends javax.swing.JFrame {
 	/**
 	 * Somente faz uma copia do banco de dados vazio para a pasta da oplatool no
 	 * diretorio do usaurio se o mesmo nao existir.
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 *
 	 */
 	private void configureDb() throws Exception {
@@ -3212,7 +3181,7 @@ public class StartUp extends javax.swing.JFrame {
 		}
 	}
 
-	private String titleWindow() throws Exception {
+	private String titleWindow() {
 		return "Execution " + this.selectedExperiment + " ("
 				+ db.Database.getAlgoritmUsedToExperimentId(this.selectedExperiment) + ") - "
 				+ db.Database.getPlaUsedToExperimentId(this.selectedExperiment);

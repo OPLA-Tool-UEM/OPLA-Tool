@@ -36,7 +36,7 @@ public class Indicators {
 
     try {
       try (Statement statement = database.Database.getConnection().createStatement()) {
-        SortedMap<String, Double> results = new TreeMap();
+        SortedMap<String, Double> results = new TreeMap<>();
 
         StringBuilder query = new StringBuilder();
         query.append("SELECT ed, solution_name FROM distance_euclidean WHERE experiment_id = ");
@@ -51,9 +51,6 @@ public class Indicators {
 
         return results;
       }
-
-
-
     } catch (MissingConfigurationException | ClassNotFoundException | SQLException ex) {
       Logger.getLogger(Indicators.class.getName()).log(Level.SEVERE, null, ex);
     }

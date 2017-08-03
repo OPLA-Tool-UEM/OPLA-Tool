@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JFrame;
+
+import org.apache.log4j.Logger;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.data.xy.XYDataItem;
@@ -25,6 +27,8 @@ import org.jfree.data.xy.XYDataItem;
  * @author elf
  */
 public class ChartGenerate {
+	
+	private static Logger LOGGER = Logger.getLogger(ChartGenerate.class);
 
   /**
    *
@@ -33,7 +37,7 @@ public class ChartGenerate {
    * para o arquivo contendo os valores das funcoes objetivos
  * @throws Exception 
    */
-public static void generate(String[] functions, HashMap<String, String> experimentToAlgorithmUsed, int[] columns, String outputDir, String expId) throws Exception {
+public static void generate(String[] functions, HashMap<String, String> experimentToAlgorithmUsed, int[] columns, String outputDir, String expId) {
 
       String name = "Solutions in the Search Space (" + db.Database.getPlaUsedToExperimentId(expId)+ ")";
       ChartGeneratorScatter g = new ChartGeneratorScatter(name, functions[1], functions[0]);
@@ -59,7 +63,11 @@ public static void generate(String[] functions, HashMap<String, String> experime
       if(GuiFile.getInstance().getSaveChartsAsPng().equals("y")){
                 
         new File(UserHome.getOplaUserHome() + "charts/").mkdirs();
-        ChartUtilities.saveChartAsPNG( new File(UserHome.getOplaUserHome() + "charts/"+ name.replaceAll(" ", "_") + ".png"), chartPanel.getChart(), 800, 600);
+        try {
+			ChartUtilities.saveChartAsPNG( new File(UserHome.getOplaUserHome() + "charts/"+ name.replaceAll(" ", "_") + ".png"), chartPanel.getChart(), 800, 600);
+		} catch (IOException e) {
+			LOGGER.info(e);
+		}
       }
       
       frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

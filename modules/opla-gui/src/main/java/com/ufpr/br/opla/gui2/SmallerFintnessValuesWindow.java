@@ -54,8 +54,8 @@ public class SmallerFintnessValuesWindow extends javax.swing.JFrame {
 
 	}
 
-	private void includeTableObjectives(String selectedSolutionId) throws Exception {
-		HashMap<String, String> result = db.Database.getObjectivesBySolutionId(selectedSolutionId, selectedExperiment);
+	private void includeTableObjectives(String selectedSolutionId)  {
+		HashMap<String, String> result = (HashMap<String, String>) db.Database.getObjectivesBySolutionId(selectedSolutionId, selectedExperiment);
 		BestSolutionBySelectedFitness.buildTableObjectives(tableObjectives, result);
 		panelTableObjectives.setVisible(true);
 	}
@@ -564,30 +564,35 @@ public class SmallerFintnessValuesWindow extends javax.swing.JFrame {
 		this.selectedExperiment = selectedExperiment;
 	}
 
-	public void enablePanelsObjectiveFunctions() throws Exception {
-		String metricsSelectedForCurrentExperiment[] = db.Database.getOrdenedObjectives(this.selectedExperiment)
-				.split(" ");
+	public void enablePanelsObjectiveFunctions() {
 
-		for (int i = 0; i < metricsSelectedForCurrentExperiment.length; i++) {
-			String f = metricsSelectedForCurrentExperiment[i];
-			if (f.equalsIgnoreCase("elegance")) {
-				initializeContentForEleganceTable();
-				panelEleganceBest.setVisible(true);
-			}
-			if (f.equalsIgnoreCase("conventional")) {
-				initializeContentForConventionalTable();
-				panelConventionalBest.setVisible(true);
-			}
-			if (f.equalsIgnoreCase("PLAExtensibility")) {
-				initializeContentForPLAExtTable();
-				panelPlaExtBest.setVisible(true);
-			}
-			if (f.equalsIgnoreCase("featureDriven")) {
-				initializeContentForFeatureDrivenTable();
-				panelFeatureDriven.setVisible(true);
-			}
+		String metricsSelectedForCurrentExperiment[];
+		try {
+			metricsSelectedForCurrentExperiment = db.Database.getOrdenedObjectives(this.selectedExperiment).split(" ");
+			for (int i = 0; i < metricsSelectedForCurrentExperiment.length; i++) {
+				String f = metricsSelectedForCurrentExperiment[i];
+				if (f.equalsIgnoreCase("elegance")) {
+					initializeContentForEleganceTable();
+					panelEleganceBest.setVisible(true);
+				}
+				if (f.equalsIgnoreCase("conventional")) {
+					initializeContentForConventionalTable();
+					panelConventionalBest.setVisible(true);
+				}
+				if (f.equalsIgnoreCase("PLAExtensibility")) {
+					initializeContentForPLAExtTable();
+					panelPlaExtBest.setVisible(true);
+				}
+				if (f.equalsIgnoreCase("featureDriven")) {
+					initializeContentForFeatureDrivenTable();
+					panelFeatureDriven.setVisible(true);
+				}
 
+			}
+		} catch (Exception e) {
+			LOGGER.info(e);
 		}
+
 	}
 
 	private void initializeContentForEleganceTable() {
@@ -610,64 +615,78 @@ public class SmallerFintnessValuesWindow extends javax.swing.JFrame {
 				BestSolutionBySelectedFitness.calculateBestPlaExt(selectedExperiment));
 	}
 
-	public void loadEds() throws Exception {
+	public void loadEds() {
 
-		SortedMap<String, Double> resultsEds = Indicators.getEdsForExperiment(selectedExperiment);
-
-		Object[][] data = new Object[resultsEds.size()][resultsEds.size()];
-		int index = 0;
-		for (Map.Entry<String, Double> entry : resultsEds.entrySet()) {
-			data[index] = new String[] { entry.getKey(), String.valueOf(entry.getValue()) };
-			index++;
-		}
-
-		String columnNames[] = { "Solution Name", "ED" };
-
-		TableModel model = new DefaultTableModel(data, columnNames) {
-			@Override
-			public Class<?> getColumnClass(int column) {
-				return getValueAt(0, column).getClass();
+		SortedMap<String, Double> resultsEds;
+		try {
+			resultsEds = Indicators.getEdsForExperiment(selectedExperiment);
+			Object[][] data = new Object[resultsEds.size()][resultsEds.size()];
+			int index = 0;
+			for (Map.Entry<String, Double> entry : resultsEds.entrySet()) {
+				data[index] = new String[] { entry.getKey(), String.valueOf(entry.getValue()) };
+				index++;
 			}
-		};
 
-		edTable.setModel(model);
-		TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
-		edTable.setRowSorter(sorter);
+			String columnNames[] = { "Solution Name", "ED" };
 
-		Map.Entry<String, Double> bestTradeOffSolutionName = Indicators.getSolutionWithBestTradeOff(selectedExperiment);
-		textFieldBestEDVName.setText(bestTradeOffSolutionName.getKey());
-		textFieldBestEDValue.setText(String.valueOf(bestTradeOffSolutionName.getValue()));
-	}
+			TableModel model = new DefaultTableModel(data, columnNames) {
+				@Override
+				public Class<?> getColumnClass(int column) {
+					return getValueAt(0, column).getClass();
+				}
+			};
 
-	private void selectBestEdSolution() throws Exception {
-		String solution = Indicators.getSolutionWithBestTradeOff(selectedExperiment).getKey();
+			edTable.setModel(model);
+			TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
+			edTable.setRowSorter(sorter);
 
-		int rows = tableEleganceBest.getRowCount();
-
-		List<JTable> tables = new ArrayList();
-		tables.add(tableEleganceBest);
-		tables.add(tableConventionalBest);
-		tables.add(tableFeatureDrivenBest);
-		tables.add(tablePLAExtBest);
-
-		for (int x = 0; x < rows; x++) {
-			String value = (String) tableEleganceBest.getValueAt(x, 0);
-			if (solution.contains(value)) {
-				selectSolutionForTables(tables, x);
-				includeTableObjectives(value);
-			}
+			Map.Entry<String, Double> bestTradeOffSolutionName = Indicators
+					.getSolutionWithBestTradeOff(selectedExperiment);
+			textFieldBestEDVName.setText(bestTradeOffSolutionName.getKey());
+			textFieldBestEDValue.setText(String.valueOf(bestTradeOffSolutionName.getValue()));
+		} catch (Exception e) {
+			LOGGER.info(e);
 		}
 
 	}
 
-	private void selectSolutionForTables(List<JTable> tables, int x) throws Exception {
-		List<String> objs = Arrays.asList(db.Database.getOrdenedObjectives(selectedExperiment).split(" "));
+	private void selectBestEdSolution() {
+		String solution;
+		try {
+			solution = Indicators.getSolutionWithBestTradeOff(selectedExperiment).getKey();
+			int rows = tableEleganceBest.getRowCount();
 
-		for (JTable table : tables) {
-			if (objs.contains(table.getName())) {
-				table.setRowSelectionInterval(x, x);
-				table.scrollRectToVisible(new Rectangle(table.getCellRect(x, 0, true)));
+			List<JTable> tables = new ArrayList<>();
+			tables.add(tableEleganceBest);
+			tables.add(tableConventionalBest);
+			tables.add(tableFeatureDrivenBest);
+			tables.add(tablePLAExtBest);
+
+			for (int x = 0; x < rows; x++) {
+				String value = (String) tableEleganceBest.getValueAt(x, 0);
+				if (solution.contains(value)) {
+					selectSolutionForTables(tables, x);
+					includeTableObjectives(value);
+				}
 			}
+		} catch (Exception e) {
+			LOGGER.info(e);
+		}
+
+	}
+
+	private void selectSolutionForTables(List<JTable> tables, int x) {
+		List<String> objs;
+		try {
+			objs = Arrays.asList(db.Database.getOrdenedObjectives(selectedExperiment).split(" "));
+			for (JTable table : tables) {
+				if (objs.contains(table.getName())) {
+					table.setRowSelectionInterval(x, x);
+					table.scrollRectToVisible(new Rectangle(table.getCellRect(x, 0, true)));
+				}
+			}
+		} catch (Exception e) {
+			LOGGER.info(e);
 		}
 	}
 }

@@ -23,7 +23,7 @@ public class GuiUtils {
     }
   }
 
-  public static Map<String, String> formatObjectives(String content, String experimentId) throws Exception {
+  public static Map<String, String> formatObjectives(String content, String experimentId) {
     String[] titles = db.Database.getOrdenedObjectives(experimentId).split(" ");
     String objs[] = content.split("\\|");
 
