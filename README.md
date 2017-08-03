@@ -38,10 +38,13 @@ mvn clean install
 java -jar modules/opla-gui/target/opla-gui-1.0.0-SNAPSHOT-jar-with-dependencies
 ```
 
-# How to import into eclipse IDE
-````sh
+## How to import into eclipse IDE
+```sh
 mvn eclipse:clean
 ```
+
 Import into eclipse IDE using Maven Project Type
 
+```html
 File > Import > Exists Maven Project > Select the directory created for build OPLA-Tool
+```
