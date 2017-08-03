@@ -263,4 +263,18 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
+	<repositories>
+		<repository>
+			<id>bintray-godoy-opla-tool</id>
+			<name>bintray</name>
+			<url>http://dl.bintray.com/godoy/opla-tool</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+	</repositories>
 </project>
