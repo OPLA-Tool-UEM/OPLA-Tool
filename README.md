@@ -46,5 +46,9 @@ mvn eclipse:clean
 Import into eclipse IDE using Maven Project Type
 
 ```html
-File > Import > Exists Maven Project > Select the directory created for build OPLA-Tool
+File > Import > Maven > Exists Maven Project > Select the directory created for build OPLA-Tool
 ```
+## How to contribute to this project
+
+Make Fork this project and create a Pull Request with your changes
+
