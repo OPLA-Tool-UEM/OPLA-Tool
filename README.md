@@ -27,20 +27,21 @@ cd opla-tool
 ```
 - Download all projects:
 ```sh
-
 git clone https://github.com/OPLA-Tool-UEM/opla-tool.git
 ```
-
 - Compile
 ```sh
 mvn clean install
 ```
 - Open OPLA-Tool:
 ```sh
-java -jar modules/opla-tool/target/opla-tool-0.0.1-jar-with-dependencies.jar
+java -jar modules/opla-gui/target/opla-gui-1.0.0-SNAPSHOT-jar-with-dependencies
 ```
 
+# How to import into eclipse IDE
+````sh
+mvn eclipse:clean
+```
+Import into eclipse IDE using Maven Project Type
 
-
-
-
+File > Import > Exists Maven Project > Select the directory created for build OPLA-Tool
