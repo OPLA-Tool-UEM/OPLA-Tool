@@ -5,6 +5,19 @@
  */
 package br.ufpr.inf.opla.patterns.operator.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import arquitetura.exceptions.ConcernNotFoundException;
 import arquitetura.helpers.UtilResources;
 import arquitetura.representation.Architecture;
@@ -21,23 +34,12 @@ import arquitetura.representation.relationship.GeneralizationRelationship;
 import arquitetura.representation.relationship.RealizationRelationship;
 import arquitetura.representation.relationship.Relationship;
 import br.ufpr.inf.opla.patterns.operator.AbstractMutationOperator;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
 import jmetal.core.Solution;
 import jmetal.operators.mutation.PLAFeatureMutation;
 import jmetal.problems.OPLA;
 import jmetal.util.Configuration;
 import jmetal.util.JMException;
 import jmetal.util.PseudoRandom;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  *

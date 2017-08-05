@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import jmetal.core.Variable;
-
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+
+import com.rits.cloning.Cloner;
 
 import arquitetura.exceptions.ClassNotFound;
 import arquitetura.flyweights.VariabilityFlyweight;
@@ -22,8 +22,7 @@ import arquitetura.main.GenerateArchitecture;
 import arquitetura.representation.relationship.DependencyRelationship;
 import arquitetura.representation.relationship.RealizationRelationship;
 import arquitetura.representation.relationship.Relationship;
-
-import com.rits.cloning.Cloner;
+import jmetal.core.Variable;
 
 /**
  * 

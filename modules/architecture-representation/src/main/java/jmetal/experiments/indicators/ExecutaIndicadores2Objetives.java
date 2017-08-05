@@ -1,16 +1,11 @@
 package jmetal.experiments.indicators;
 
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import java.io.IOException;
 
-import javax.swing.JOptionPane;
-
-import jmetal.core.*;
+import jmetal.core.SolutionSet;
 import jmetal.problems.OPLA;
 import jmetal.qualityIndicator.QualityIndicator;
 import jmetal.qualityIndicator.util.MetricsUtil;
-import jmetal.util.JMException;
 
 public class ExecutaIndicadores2Objetives {
 	

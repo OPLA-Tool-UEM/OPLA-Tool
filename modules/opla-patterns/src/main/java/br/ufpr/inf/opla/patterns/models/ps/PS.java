@@ -1,8 +1,9 @@
 package br.ufpr.inf.opla.patterns.models.ps;
 
+import java.util.List;
+
 import arquitetura.representation.Element;
 import br.ufpr.inf.opla.patterns.designpatterns.DesignPattern;
-import java.util.List;
 
 public interface PS {
 

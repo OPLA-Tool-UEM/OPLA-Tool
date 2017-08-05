@@ -1,5 +1,13 @@
 package br.ufpr.inf.opla.patterns.designpatterns;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.apache.commons.collections4.CollectionUtils;
+
 import arquitetura.exceptions.ConcernNotFoundException;
 import arquitetura.representation.Concern;
 import arquitetura.representation.Element;
@@ -14,12 +22,6 @@ import br.ufpr.inf.opla.patterns.util.AlgorithmFamilyUtil;
 import br.ufpr.inf.opla.patterns.util.ElementUtil;
 import br.ufpr.inf.opla.patterns.util.RelationshipUtil;
 import br.ufpr.inf.opla.patterns.util.StrategyUtil;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.apache.commons.collections4.CollectionUtils;
 
 public class Strategy extends DesignPattern {
 

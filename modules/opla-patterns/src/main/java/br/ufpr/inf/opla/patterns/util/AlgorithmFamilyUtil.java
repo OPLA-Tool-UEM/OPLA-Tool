@@ -1,12 +1,13 @@
 package br.ufpr.inf.opla.patterns.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import arquitetura.representation.Element;
 import arquitetura.representation.Method;
 import br.ufpr.inf.opla.patterns.list.MethodArrayList;
 import br.ufpr.inf.opla.patterns.models.AlgorithmFamily;
 import br.ufpr.inf.opla.patterns.models.Scope;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AlgorithmFamilyUtil {
 

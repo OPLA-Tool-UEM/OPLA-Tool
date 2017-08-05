@@ -1,10 +1,13 @@
 package com.ufpr.br.opla.gui2;
 
-import com.ufpr.br.opla.configuration.UserHome;
-import arquitetura.io.ReaderConfig;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.JFrame;
+
+import com.ufpr.br.opla.configuration.UserHome;
+
+import arquitetura.io.ReaderConfig;
 
 
 public class Oplagui {

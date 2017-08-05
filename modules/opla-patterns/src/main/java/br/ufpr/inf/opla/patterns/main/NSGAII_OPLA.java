@@ -1,13 +1,14 @@
 package br.ufpr.inf.opla.patterns.main;
 
-import arquitetura.io.ReaderConfig;
-import br.ufpr.inf.opla.patterns.factory.MutationOperatorFactory;
-import br.ufpr.inf.opla.patterns.indicadores.Hypervolume;
-import br.ufpr.inf.opla.patterns.repositories.ArchitectureRepository;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
+
+import arquitetura.io.ReaderConfig;
+import br.ufpr.inf.opla.patterns.factory.MutationOperatorFactory;
+import br.ufpr.inf.opla.patterns.indicadores.Hypervolume;
+import br.ufpr.inf.opla.patterns.repositories.ArchitectureRepository;
 import jmetal.core.Algorithm;
 import jmetal.core.SolutionSet;
 import jmetal.metaheuristics.nsgaII.NSGAII;

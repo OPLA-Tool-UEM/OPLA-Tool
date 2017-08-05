@@ -5,9 +5,10 @@
  */
 package br.ufpr.inf.opla.patterns.strategies.designpatternselection.impl;
 
+import java.util.Random;
+
 import br.ufpr.inf.opla.patterns.designpatterns.DesignPattern;
 import br.ufpr.inf.opla.patterns.strategies.designpatternselection.DesignPatternSelectionStrategy;
-import java.util.Random;
 
 /**
  *

@@ -1,9 +1,10 @@
 package br.ufpr.inf.opla.patterns.operator.impl;
 
+import java.util.HashMap;
+
 import br.ufpr.inf.opla.patterns.operator.AbstractMutationOperator;
 import br.ufpr.inf.opla.patterns.strategies.designpatternselection.DesignPatternSelectionStrategy;
 import br.ufpr.inf.opla.patterns.strategies.scopeselection.ScopeSelectionStrategy;
-import java.util.HashMap;
 import jmetal.core.Solution;
 import jmetal.util.PseudoRandom;
 

@@ -1,5 +1,14 @@
 package br.ufpr.inf.opla.patterns.util;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import arquitetura.exceptions.ConcernNotFoundException;
 import arquitetura.helpers.UtilResources;
 import arquitetura.representation.Architecture;
@@ -15,14 +24,6 @@ import br.ufpr.inf.opla.patterns.comparators.SubElementsComparator;
 import br.ufpr.inf.opla.patterns.list.MethodArrayList;
 import br.ufpr.inf.opla.patterns.models.AlgorithmFamily;
 import br.ufpr.inf.opla.patterns.repositories.ArchitectureRepository;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class BridgeUtil {
 

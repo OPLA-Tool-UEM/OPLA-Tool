@@ -1,11 +1,13 @@
 package com.ufpr.br.opla.configuration;
 
-import com.ufpr.br.opla.utils.Utils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.ho.yaml.Yaml;
+
+import com.ufpr.br.opla.utils.Utils;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

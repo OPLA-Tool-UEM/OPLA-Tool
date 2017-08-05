@@ -3,10 +3,10 @@ package arquitetura.helpers;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.base.Joiner;
+
 import arquitetura.representation.Variability;
 import arquitetura.representation.Variant;
-
-import com.google.common.base.Joiner;
 
 public class Strings {
 	

@@ -1,6 +1,7 @@
 package jmetal.metrics;
 
 
+import arquitetura.representation.Architecture;
 import jmetal.metrics.PLAMetrics.extensibility.ExtensPLA;
 import jmetal.metrics.concernDrivenMetrics.concernCohesion.LCC;
 import jmetal.metrics.concernDrivenMetrics.concernCohesion.LCCClass;
@@ -32,7 +33,6 @@ import jmetal.metrics.conventionalMetrics.MeanDepComponents;
 import jmetal.metrics.conventionalMetrics.MeanNumOpsByInterface;
 import jmetal.metrics.conventionalMetrics.NACElegance;
 import jmetal.metrics.conventionalMetrics.RelationalCohesion;
-import arquitetura.representation.Architecture;
 
 
 public class MetricsEvaluation {

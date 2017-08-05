@@ -1,5 +1,11 @@
 package br.ufpr.inf.opla.patterns.util;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import arquitetura.representation.Architecture;
 import arquitetura.representation.Element;
 import arquitetura.representation.Interface;
@@ -11,11 +17,6 @@ import br.ufpr.inf.opla.patterns.comparators.SubElementsComparator;
 import br.ufpr.inf.opla.patterns.list.MethodArrayList;
 import br.ufpr.inf.opla.patterns.models.AlgorithmFamily;
 import br.ufpr.inf.opla.patterns.repositories.ArchitectureRepository;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class StrategyUtil {
 

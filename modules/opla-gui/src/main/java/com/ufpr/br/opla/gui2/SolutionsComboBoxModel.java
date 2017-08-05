@@ -4,12 +4,13 @@
  */
 package com.ufpr.br.opla.gui2;
 
-import com.ufpr.br.opla.algorithms.Solution;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
+
+import com.ufpr.br.opla.algorithms.Solution;
 
 /**
  *

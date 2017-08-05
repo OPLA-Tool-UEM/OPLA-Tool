@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
 import jmetal.core.SolutionSet;
 import jmetal.qualityIndicator.util.MetricsUtil;
 import jmetal.util.JMException;

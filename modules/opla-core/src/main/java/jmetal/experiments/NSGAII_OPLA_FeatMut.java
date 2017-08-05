@@ -1,8 +1,6 @@
 package jmetal.experiments;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -23,7 +21,6 @@ import jmetal.operators.mutation.MutationFactory;
 import jmetal.operators.selection.Selection;
 import jmetal.operators.selection.SelectionFactory;
 import jmetal.problems.OPLA;
-import jmetal.util.JMException;
 import metrics.AllMetrics;
 import persistence.AllMetricsPersistenceDependency;
 import persistence.DistanceEuclideanPersistence;

@@ -1,8 +1,9 @@
 package br.ufpr.inf.opla.patterns.comparators;
 
+import java.util.Comparator;
+
 import arquitetura.representation.Element;
 import br.ufpr.inf.opla.patterns.util.ElementUtil;
-import java.util.Comparator;
 
 public abstract class SubElementsComparator {
 

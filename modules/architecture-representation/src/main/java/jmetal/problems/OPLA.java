@@ -5,6 +5,17 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import arquitetura.builders.ArchitectureBuilder;
+import arquitetura.representation.Architecture;
+import arquitetura.representation.Class;
+import arquitetura.representation.Interface;
+import arquitetura.representation.Package;
+import arquitetura.representation.relationship.AbstractionRelationship;
+import arquitetura.representation.relationship.AssociationEnd;
+import arquitetura.representation.relationship.AssociationRelationship;
+import arquitetura.representation.relationship.DependencyRelationship;
+import arquitetura.representation.relationship.GeneralizationRelationship;
+import arquitetura.representation.relationship.Relationship;
 import jmetal.core.Problem;
 import jmetal.core.Solution;
 import jmetal.core.SolutionSet;
@@ -41,17 +52,6 @@ import jmetal.metrics.conventionalMetrics.MeanNumOpsByInterface;
 import jmetal.metrics.conventionalMetrics.NACElegance;
 import jmetal.metrics.conventionalMetrics.RelationalCohesion;
 import jmetal.util.JMException;
-import arquitetura.builders.ArchitectureBuilder;
-import arquitetura.representation.Architecture;
-import arquitetura.representation.Class;
-import arquitetura.representation.Interface;
-import arquitetura.representation.Package;
-import arquitetura.representation.relationship.AbstractionRelationship;
-import arquitetura.representation.relationship.AssociationEnd;
-import arquitetura.representation.relationship.AssociationRelationship;
-import arquitetura.representation.relationship.DependencyRelationship;
-import arquitetura.representation.relationship.GeneralizationRelationship;
-import arquitetura.representation.relationship.Relationship;
 
 //criado por Thelma em agosto/2012
 public class OPLA extends Problem {

@@ -1,5 +1,11 @@
 package br.ufpr.inf.opla.patterns.util;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import arquitetura.exceptions.ConcernNotFoundException;
 import arquitetura.helpers.UtilResources;
 import arquitetura.representation.Architecture;
@@ -8,11 +14,6 @@ import arquitetura.representation.Element;
 import arquitetura.representation.Interface;
 import arquitetura.representation.Method;
 import br.ufpr.inf.opla.patterns.repositories.ArchitectureRepository;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class InterfaceUtil {
 

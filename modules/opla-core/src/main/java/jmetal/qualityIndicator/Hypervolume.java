@@ -21,9 +21,6 @@
 
 package jmetal.qualityIndicator;
 
-import java.util.*;
-import java.io.*;
-
 /**
  * This class implements the hypervolume indicator. The code is the a Java version
  * of the original metric implementation by Eckart Zitzler.

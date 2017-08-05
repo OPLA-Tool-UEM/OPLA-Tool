@@ -1,9 +1,5 @@
 package jmetal.experiments;
 
-import java.io.IOException;
-
-import jmetal.util.JMException;
-
 public class NSGAII_OPLA_FeatMutInitializer implements AlgorithmBase {
 
 	private NSGAIIConfig config;

@@ -7,6 +7,7 @@ package br.ufpr.inf.opla.patterns.indicadores;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+
 import jmetal.qualityIndicator.util.MetricsUtil;
 
 /**

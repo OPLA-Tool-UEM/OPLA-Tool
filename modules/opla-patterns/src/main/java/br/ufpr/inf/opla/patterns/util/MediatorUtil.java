@@ -1,5 +1,9 @@
 package br.ufpr.inf.opla.patterns.util;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+
 import arquitetura.exceptions.AttributeNotFoundException;
 import arquitetura.exceptions.ConcernNotFoundException;
 import arquitetura.exceptions.MethodNotFoundException;
@@ -18,9 +22,6 @@ import arquitetura.representation.relationship.UsageRelationship;
 import arquitetura.touml.Types;
 import arquitetura.touml.VisibilityKind;
 import br.ufpr.inf.opla.patterns.repositories.ArchitectureRepository;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
 
 public class MediatorUtil {
 

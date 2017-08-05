@@ -4,10 +4,10 @@
  */
 package com.ufpr.br.opla.charts;
 
-import com.ufpr.br.opla.indicators.Indicators;
 import java.awt.Color;
 import java.text.NumberFormat;
 import java.util.Map;
+
 import javax.swing.JFrame;
 
 import org.apache.log4j.Logger;
@@ -24,6 +24,8 @@ import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+
+import com.ufpr.br.opla.indicators.Indicators;
 
 /**
  *

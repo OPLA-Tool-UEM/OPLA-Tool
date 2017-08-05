@@ -1,5 +1,7 @@
 package br.ufpr.inf.opla.patterns.strategies.scopeselection.impl;
 
+import java.util.Set;
+
 import arquitetura.representation.Architecture;
 import arquitetura.representation.Element;
 import arquitetura.representation.Patterns;
@@ -7,7 +9,6 @@ import br.ufpr.inf.opla.patterns.models.Scope;
 import br.ufpr.inf.opla.patterns.strategies.scopeselection.ScopeSelectionStrategy;
 import br.ufpr.inf.opla.patterns.strategies.scopeselection.defaultstrategy.RandomScopeSelection;
 import br.ufpr.inf.opla.patterns.util.ElementUtil;
-import java.util.Set;
 
 public class ElementsWithSameDesignPatternSelection implements ScopeSelectionStrategy {
 

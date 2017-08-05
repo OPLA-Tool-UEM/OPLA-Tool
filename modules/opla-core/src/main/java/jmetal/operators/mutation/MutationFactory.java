@@ -23,11 +23,11 @@ package jmetal.operators.mutation;
 
 import java.util.HashMap;
 
+import br.ufpr.inf.opla.patterns.operator.impl.DesignPatternMutationOperator;
+import br.ufpr.inf.opla.patterns.strategies.designpatternselection.impl.CustomDesignPatternSelection;
 import jmetal.experiments.ExperimentCommomConfigs;
 import jmetal.util.Configuration;
 import jmetal.util.JMException;
-import br.ufpr.inf.opla.patterns.operator.impl.DesignPatternMutationOperator;
-import br.ufpr.inf.opla.patterns.strategies.designpatternselection.impl.CustomDesignPatternSelection;
 
 public class MutationFactory {
 

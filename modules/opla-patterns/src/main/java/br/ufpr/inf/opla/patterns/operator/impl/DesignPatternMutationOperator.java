@@ -5,22 +5,23 @@
  */
 package br.ufpr.inf.opla.patterns.operator.impl;
 
+import java.util.HashMap;
+
+import org.apache.log4j.Priority;
+
 import arquitetura.representation.Architecture;
 import arquitetura.representation.Patterns;
 import br.ufpr.inf.opla.patterns.designpatterns.DesignPattern;
 import br.ufpr.inf.opla.patterns.models.Scope;
 import br.ufpr.inf.opla.patterns.operator.AbstractMutationOperator;
-import static br.ufpr.inf.opla.patterns.operator.AbstractMutationOperator.LOGGER;
 import br.ufpr.inf.opla.patterns.repositories.ArchitectureRepository;
 import br.ufpr.inf.opla.patterns.strategies.designpatternselection.DesignPatternSelectionStrategy;
 import br.ufpr.inf.opla.patterns.strategies.designpatternselection.defaultstrategy.RandomDesignPatternSelection;
 import br.ufpr.inf.opla.patterns.strategies.scopeselection.ScopeSelectionStrategy;
 import br.ufpr.inf.opla.patterns.strategies.scopeselection.defaultstrategy.RandomScopeSelection;
-import java.util.HashMap;
 import jmetal.core.Solution;
 import jmetal.problems.OPLA;
 import jmetal.util.PseudoRandom;
-import org.apache.log4j.Priority;
 
 /**
  *

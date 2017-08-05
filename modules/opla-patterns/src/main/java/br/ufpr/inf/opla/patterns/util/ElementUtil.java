@@ -1,5 +1,15 @@
 package br.ufpr.inf.opla.patterns.util;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.commons.collections4.CollectionUtils;
+
 import arquitetura.representation.Class;
 import arquitetura.representation.Concern;
 import arquitetura.representation.Element;
@@ -11,14 +21,6 @@ import arquitetura.representation.relationship.Relationship;
 import br.ufpr.inf.opla.patterns.comparators.SubElementsComparator;
 import br.ufpr.inf.opla.patterns.designpatterns.Adapter;
 import br.ufpr.inf.opla.patterns.list.MethodArrayList;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import org.apache.commons.collections4.CollectionUtils;
 
 public class ElementUtil {
 

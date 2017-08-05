@@ -5,11 +5,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 
+import database.Database;
+import exceptions.MissingConfigurationException;
 import jmetal.experiments.ExperimentCommomConfigs;
 import jmetal.experiments.NSGAIIConfig;
 import jmetal.experiments.PaesConfigs;
-import database.Database;
-import exceptions.MissingConfigurationException;
 
 /**
  * Classe responsável por guardar E persistir/recuperar informações referentes a

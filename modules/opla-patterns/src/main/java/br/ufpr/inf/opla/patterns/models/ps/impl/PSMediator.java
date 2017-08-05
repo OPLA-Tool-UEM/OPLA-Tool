@@ -5,13 +5,14 @@
  */
 package br.ufpr.inf.opla.patterns.models.ps.impl;
 
+import java.util.List;
+import java.util.Objects;
+
 import arquitetura.representation.Concern;
 import arquitetura.representation.Element;
 import br.ufpr.inf.opla.patterns.designpatterns.DesignPattern;
 import br.ufpr.inf.opla.patterns.designpatterns.Mediator;
 import br.ufpr.inf.opla.patterns.models.ps.PS;
-import java.util.List;
-import java.util.Objects;
 
 /**
  *

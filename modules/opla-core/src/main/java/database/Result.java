@@ -3,6 +3,8 @@ package database;
 import java.util.ArrayList;
 import java.util.List;
 
+import arquitetura.representation.Architecture;
+import arquitetura.representation.Concern;
 import jmetal.core.Solution;
 import jmetal.metrics.MetricsEvaluation;
 import metrics.Aclass;
@@ -20,8 +22,6 @@ import results.Execution;
 import results.Experiment;
 import results.FunResults;
 import results.InfoResult;
-import arquitetura.representation.Architecture;
-import arquitetura.representation.Concern;
 
 public class Result {
 

@@ -19,11 +19,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.google.common.base.Joiner;
+
 import arquitetura.exceptions.NodeIdNotFound;
 import arquitetura.representation.Element;
 import arquitetura.representation.Variant;
-
-import com.google.common.base.Joiner;
 
 /**
  * 

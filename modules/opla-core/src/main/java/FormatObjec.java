@@ -1,12 +1,9 @@
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import database.Database;
-import exceptions.MissingConfigurationException;
 import results.Execution;
 
 public class FormatObjec {

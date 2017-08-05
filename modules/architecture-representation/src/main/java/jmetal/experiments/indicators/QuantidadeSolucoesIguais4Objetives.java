@@ -1,8 +1,8 @@
 package jmetal.experiments.indicators;
 
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
+
 import jmetal.qualityIndicator.util.MetricsUtil;
 import jmetal.util.JMException;
 

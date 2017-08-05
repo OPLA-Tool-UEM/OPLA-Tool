@@ -17,6 +17,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.google.common.io.Files;
+
 import arquitetura.exceptions.CustonTypeNotFound;
 import arquitetura.exceptions.InvalidMultiplictyForAssociationException;
 import arquitetura.exceptions.ModelIncompleteException;
@@ -27,8 +29,6 @@ import arquitetura.helpers.XmiHelper;
 import arquitetura.io.CopyFile;
 import arquitetura.io.ReaderConfig;
 import arquitetura.io.SaveAndMove;
-
-import com.google.common.io.Files;
 
 /**
  * 

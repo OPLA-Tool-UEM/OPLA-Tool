@@ -1,10 +1,11 @@
 package br.ufpr.inf.opla.patterns.repositories;
 
-import arquitetura.builders.ArchitectureBuilder;
-import arquitetura.representation.Architecture;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import arquitetura.builders.ArchitectureBuilder;
+import arquitetura.representation.Architecture;
 
 public class ArchitectureRepository {
 

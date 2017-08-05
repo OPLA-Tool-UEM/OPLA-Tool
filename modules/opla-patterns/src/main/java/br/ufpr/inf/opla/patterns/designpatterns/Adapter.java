@@ -1,5 +1,10 @@
 package br.ufpr.inf.opla.patterns.designpatterns;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.apache.commons.collections4.CollectionUtils;
+
 import arquitetura.exceptions.ConcernNotFoundException;
 import arquitetura.representation.Concern;
 import arquitetura.representation.Element;
@@ -11,9 +16,6 @@ import br.ufpr.inf.opla.patterns.repositories.ArchitectureRepository;
 import br.ufpr.inf.opla.patterns.util.AdapterUtil;
 import br.ufpr.inf.opla.patterns.util.ElementUtil;
 import br.ufpr.inf.opla.patterns.util.RelationshipUtil;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.apache.commons.collections4.CollectionUtils;
 
 public class Adapter extends DesignPattern {
 

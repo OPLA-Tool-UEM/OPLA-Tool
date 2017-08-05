@@ -10,12 +10,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 
-import jmetal.core.Solution;
-import jmetal.encodings.solutionType.ArchitectureSolutionType;
-import jmetal.problems.OPLA;
-import jmetal.util.Configuration;
-import jmetal.util.JMException;
-import jmetal.util.PseudoRandom;
 import arquitetura.exceptions.ClassNotFound;
 import arquitetura.exceptions.ConcernNotFoundException;
 import arquitetura.exceptions.NotFoundException;
@@ -33,6 +27,12 @@ import arquitetura.representation.Variability;
 import arquitetura.representation.VariationPoint;
 import arquitetura.representation.relationship.GeneralizationRelationship;
 import arquitetura.representation.relationship.Relationship;
+import jmetal.core.Solution;
+import jmetal.encodings.solutionType.ArchitectureSolutionType;
+import jmetal.problems.OPLA;
+import jmetal.util.Configuration;
+import jmetal.util.JMException;
+import jmetal.util.PseudoRandom;
 
 public class PLACrossover2 extends Crossover {
 

@@ -5,11 +5,12 @@
  */
 package br.ufpr.inf.opla.patterns.factory;
 
+import java.util.HashMap;
+
 import br.ufpr.inf.opla.patterns.operator.impl.DesignPatternMutationOperator;
 import br.ufpr.inf.opla.patterns.operator.impl.DesignPatternsAndPLAMutationOperator;
 import br.ufpr.inf.opla.patterns.operator.impl.PLAMutation;
 import br.ufpr.inf.opla.patterns.operator.impl.PLAMutationThenDesignPatternsMutationOperator;
-import java.util.HashMap;
 import jmetal.operators.mutation.Mutation;
 
 /**

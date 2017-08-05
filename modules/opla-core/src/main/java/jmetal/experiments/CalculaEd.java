@@ -9,11 +9,11 @@ import java.util.HashMap;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import exceptions.MissingConfigurationException;
 import jmetal.core.Solution;
 import jmetal.core.SolutionSet;
 import jmetal.qualityIndicator.util.MetricsUtil;
 import jmetal.util.NonDominatedSolutionList;
-import exceptions.MissingConfigurationException;
 
 public class CalculaEd {
 

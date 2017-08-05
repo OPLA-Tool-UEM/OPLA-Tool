@@ -1,9 +1,10 @@
 package br.ufpr.inf.opla.patterns.models;
 
-import arquitetura.representation.Element;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import arquitetura.representation.Element;
 
 public class AlgorithmFamily implements Comparable<AlgorithmFamily> {
 

@@ -1,5 +1,14 @@
 package br.ufpr.inf.opla.patterns.designpatterns;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.apache.commons.collections4.CollectionUtils;
+
 import arquitetura.representation.Class;
 import arquitetura.representation.Concern;
 import arquitetura.representation.Element;
@@ -9,13 +18,6 @@ import br.ufpr.inf.opla.patterns.models.ps.impl.PSMediator;
 import br.ufpr.inf.opla.patterns.util.ElementUtil;
 import br.ufpr.inf.opla.patterns.util.MediatorUtil;
 import br.ufpr.inf.opla.patterns.util.RelationshipUtil;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.apache.commons.collections4.CollectionUtils;
 
 public class Mediator extends DesignPattern {
 

@@ -17,6 +17,8 @@ import org.eclipse.uml2.uml.Realization;
 import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.Usage;
 
+import com.rits.cloning.Cloner;
+
 import arquitetura.exceptions.ModelIncompleteException;
 import arquitetura.exceptions.ModelNotFoundException;
 import arquitetura.exceptions.SMartyProfileNotAppliedToModelExcepetion;
@@ -38,8 +40,6 @@ import arquitetura.representation.Interface;
 import arquitetura.representation.Variability;
 import arquitetura.representation.relationship.AssociationClassRelationship;
 import arquitetura.representation.relationship.Relationship;
-
-import com.rits.cloning.Cloner;
 
 /**
  * Builder responsável por criar a arquitetura.

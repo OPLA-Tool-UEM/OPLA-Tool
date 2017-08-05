@@ -24,6 +24,10 @@ package jmetal.operators.localSearch;
 import java.util.Comparator;
 import java.util.HashMap;
 
+import arquitetura.exceptions.ClassNotFound;
+import arquitetura.exceptions.ConcernNotFoundException;
+import arquitetura.exceptions.NotFoundException;
+import arquitetura.exceptions.PackageNotFound;
 import jmetal.core.Operator;
 import jmetal.core.Problem;
 import jmetal.core.Solution;
@@ -32,10 +36,6 @@ import jmetal.operators.mutation.Mutation;
 import jmetal.util.JMException;
 import jmetal.util.comparators.DominanceComparator;
 import jmetal.util.comparators.OverallConstraintViolationComparator;
-import arquitetura.exceptions.ClassNotFound;
-import arquitetura.exceptions.ConcernNotFoundException;
-import arquitetura.exceptions.NotFoundException;
-import arquitetura.exceptions.PackageNotFound;
 
 /**
  * This class implements an local search operator based in the use of a 

@@ -11,12 +11,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 
-import jmetal.core.Solution;
-import jmetal.problems.OPLA;
-import jmetal.util.Configuration;
-import jmetal.util.JMException;
-import jmetal.util.PseudoRandom;
-
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -37,6 +31,11 @@ import arquitetura.representation.relationship.AssociationRelationship;
 import arquitetura.representation.relationship.GeneralizationRelationship;
 import arquitetura.representation.relationship.RealizationRelationship;
 import arquitetura.representation.relationship.Relationship;
+import jmetal.core.Solution;
+import jmetal.problems.OPLA;
+import jmetal.util.Configuration;
+import jmetal.util.JMException;
+import jmetal.util.PseudoRandom;
 
 public class PLAFeatureMutation extends Mutation {
 

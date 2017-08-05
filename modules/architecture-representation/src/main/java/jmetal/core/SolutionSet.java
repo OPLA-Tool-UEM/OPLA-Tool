@@ -33,10 +33,10 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import jmetal.metrics.MetricsEvaluation;
-import jmetal.util.Configuration;
 import arquitetura.representation.Architecture;
 import arquitetura.representation.Concern;
+import jmetal.metrics.MetricsEvaluation;
+import jmetal.util.Configuration;
 
 /**
  * Class representing a SolutionSet (a set of solutions)

@@ -5,12 +5,13 @@
  */
 package br.ufpr.inf.opla.patterns.strategies.scopeselection.impl;
 
+import java.util.Iterator;
+
 import arquitetura.representation.Architecture;
 import arquitetura.representation.Element;
 import arquitetura.representation.Patterns;
 import br.ufpr.inf.opla.patterns.models.Scope;
 import br.ufpr.inf.opla.patterns.strategies.scopeselection.ScopeSelectionStrategy;
-import java.util.Iterator;
 
 /**
  *

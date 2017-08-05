@@ -1,14 +1,15 @@
 package br.ufpr.inf.opla.patterns.models.ps.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 import arquitetura.representation.Concern;
 import arquitetura.representation.Element;
 import br.ufpr.inf.opla.patterns.designpatterns.Bridge;
 import br.ufpr.inf.opla.patterns.designpatterns.DesignPattern;
 import br.ufpr.inf.opla.patterns.models.AlgorithmFamily;
 import br.ufpr.inf.opla.patterns.models.ps.PS;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public class PSBridge implements PS {
 
