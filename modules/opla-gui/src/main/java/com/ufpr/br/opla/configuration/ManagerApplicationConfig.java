@@ -1,11 +1,15 @@
 package com.ufpr.br.opla.configuration;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.apache.log4j.Logger;
-import org.ho.yaml.Yaml;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
 
 import com.ufpr.br.opla.utils.Utils;
 
@@ -26,8 +30,9 @@ public class ManagerApplicationConfig {
 
 	public ManagerApplicationConfig() throws FileNotFoundException {
 		try {
+			Yaml yaml = new Yaml();
 			Path path = Paths.get(UserHome.getConfigurationFilePath());
-			this.configurationFile = Yaml.loadType(path.toFile(), DirTarget.class);
+			this.configurationFile = yaml.loadAs(new FileInputStream(path.toFile()), DirTarget.class);
 		} catch (FileNotFoundException ex) {
 			LOGGER.info(ex);
 			throw ex;
@@ -103,8 +108,13 @@ public class ManagerApplicationConfig {
 
 	private void updateConfigurationFile() {
 		try {
-			Yaml.dump(configurationFile, Paths.get(UserHome.getConfigurationFilePath()).toFile(), true);
-		} catch (FileNotFoundException ex) {
+			final DumperOptions options = new DumperOptions();
+			options.setDefaultFlowStyle(DumperOptions.FlowStyle.FLOW);
+			options.setPrettyFlow(true);
+			
+			Yaml yaml = new Yaml(options);
+			yaml.dump(configurationFile, new FileWriter(Paths.get(UserHome.getConfigurationFilePath()).toFile()));
+		} catch (IOException ex) {
 			LOGGER.info("Ops, Error when try update configuration file:", ex);
 		}
 	}

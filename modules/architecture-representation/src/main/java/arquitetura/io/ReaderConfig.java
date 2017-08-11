@@ -1,13 +1,13 @@
 package arquitetura.io;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.ho.yaml.Yaml;
+import org.yaml.snakeyaml.Yaml;
 
 /**
  * Classe responsável por acesso ao arquivo de configuração
@@ -198,12 +198,13 @@ public class ReaderConfig {
 	 */
 	public static void load() {
 		try {
+			Yaml yaml = new Yaml();
 			if (StringUtils.isNotBlank(newPathToConfigurationFile)) {
-				dir = Yaml.loadType(Paths.get(newPathToConfigurationFile).toFile(), DirTarget.class);
+				dir =  yaml.loadAs(new FileInputStream(Paths.get(newPathToConfigurationFile).toFile()), DirTarget.class);
 				LOGGER.info("New Path" + dir);
 			} else {
 				InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("config/application.yaml");
-				dir = Yaml.loadType(inputStream, DirTarget.class);
+				dir = yaml.loadAs(inputStream, DirTarget.class);
 				LOGGER.info("Default Path " + dir);
 			}
 		} catch (FileNotFoundException e) {
