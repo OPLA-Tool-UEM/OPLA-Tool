@@ -1,10 +1,10 @@
 package com.ufpr.br.opla.configuration;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
+import org.apache.log4j.Logger;
 import org.ho.yaml.Yaml;
 
 import com.ufpr.br.opla.utils.Utils;
@@ -19,17 +19,20 @@ import com.ufpr.br.opla.utils.Utils;
  * @author elf
  */
 public class ManagerApplicationConfig {
+	
+	private static final Logger LOGGER = Logger.getLogger(ManagerApplicationConfig.class);
 
   private DirTarget configurationFile;
 
-  public ManagerApplicationConfig() {
-    try {
-      this.configurationFile = Yaml.loadType(new File(UserHome.getConfigurationFilePath()), DirTarget.class);
-    } catch (FileNotFoundException ex) {
-      Logger.getLogger(ManagerApplicationConfig.class.getName()).log(Level.SEVERE, null, ex);
-      System.exit(1);
-    }
-  }
+	public ManagerApplicationConfig() throws FileNotFoundException {
+		try {
+			Path path = Paths.get(UserHome.getConfigurationFilePath());
+			this.configurationFile = Yaml.loadType(path.toFile(), DirTarget.class);
+		} catch (FileNotFoundException ex) {
+			LOGGER.info(ex);
+			throw ex;
+		}
+	}
 
   public DirTarget getConfig() {
     return this.configurationFile;
@@ -98,11 +101,11 @@ public class ManagerApplicationConfig {
     return profiles.toString();
   }
 
-  private void updateConfigurationFile() {
-    try {
-      Yaml.dump(configurationFile, new File(UserHome.getConfigurationFilePath()), true);
-    } catch (FileNotFoundException ex) {
-      Logger.getLogger(ManagerApplicationConfig.class.getName()).log(Level.SEVERE, "Ops, Error when try update configuration file: {0}", ex);
-    }
-  }
+	private void updateConfigurationFile() {
+		try {
+			Yaml.dump(configurationFile, Paths.get(UserHome.getConfigurationFilePath()).toFile(), true);
+		} catch (FileNotFoundException ex) {
+			LOGGER.info("Ops, Error when try update configuration file:", ex);
+		}
+	}
 }

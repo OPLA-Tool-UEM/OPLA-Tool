@@ -42,6 +42,11 @@
 			<groupId>org.xerial</groupId>
 			<artifactId>sqlite-jdbc</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -63,7 +68,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>com.ufpr.br.opla.gui2.Oplagui</mainClass>
+							<mainClass>com.ufpr.br.opla.gui.OplaGui</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

@@ -46,6 +46,7 @@ public class Database {
 
 	public static void setPathToDB(String path) {
 		pathDatabase = path;
+		LOGGER.info("Path to Data Base: " + pathDatabase);
 	}
 
 }

@@ -9,7 +9,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  * 
@@ -18,14 +18,22 @@ import org.apache.log4j.LogManager;
  */
 public class FileUtils {
 
-	static org.apache.log4j.Logger LOGGER = LogManager.getLogger(FileUtils.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(FileUtils.class);
 
+	/**
+	 * Execute the create of directory
+	 * 
+	 * @param path
+	 */
 	public static void createDirectory(Path path) {
 		try {
+			LOGGER.info("Verificando existencia do diretorio: " + path);
 			if (!Files.exists(path)) {
 				LOGGER.info("Criando diretório..." + path);
 				Files.createDirectory(path);
 				LOGGER.info("Diretório criado " + path);
+			} else {
+				LOGGER.info("Diretório já existente");
 			}
 		} catch (IOException e) {
 			LOGGER.info("Não foi possível criar o diretório home", e);
@@ -36,6 +44,17 @@ public class FileUtils {
 		try {
 			LOGGER.info("Copiando de: " + source + " para " + target);
 			Files.copy(source, target);
+			LOGGER.info("Copia concluída com sucesso");
+		} catch (IOException e) {
+			LOGGER.info("Não foi possível criar o diretório home", e);
+		}
+	}
+
+	public static void copy(String fileName, Path target) {
+		try {
+			InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
+			LOGGER.info("Copiando de: " + fileName + " para " + target);
+			Files.copy(inputStream, target);
 			LOGGER.info("Copia concluída com sucesso");
 		} catch (IOException e) {
 			LOGGER.info("Não foi possível criar o diretório home", e);

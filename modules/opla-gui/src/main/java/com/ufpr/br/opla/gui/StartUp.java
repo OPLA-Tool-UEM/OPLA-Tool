@@ -1,15 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package com.ufpr.br.opla.gui2;
+package com.ufpr.br.opla.gui;
 
 import java.awt.Component;
 import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -46,7 +42,7 @@ import com.ufpr.br.opla.algorithms.Solution;
 import com.ufpr.br.opla.charts.ChartGenerate;
 import com.ufpr.br.opla.charts.EdBar;
 import com.ufpr.br.opla.charts.EdLine;
-import com.ufpr.br.opla.configuration.ApplicationFile;
+import com.ufpr.br.opla.configuration.ApplicationConfigFile;
 import com.ufpr.br.opla.configuration.GuiFile;
 import com.ufpr.br.opla.configuration.ManagerApplicationConfig;
 import com.ufpr.br.opla.configuration.UserHome;
@@ -59,7 +55,6 @@ import com.ufpr.br.opla.utils.Time;
 import com.ufpr.br.opla.utils.Utils;
 import com.ufpr.br.opla.utils.Validators;
 
-import arquitetura.helpers.LogConfiguration;
 import arquitetura.io.FileUtils;
 import br.ufpr.dinf.gres.loglog.Level;
 import br.ufpr.dinf.gres.loglog.LogLog;
@@ -86,6 +81,7 @@ public class StartUp extends javax.swing.JFrame {
 	private LogLog VIEW_LOG = Logger.getLogger();
 
 	private ManagerApplicationConfig config = null;
+
 	private String pathSmartyBck;
 	private String pathConcernBck;
 	private String pathRelationshipsBck;
@@ -109,11 +105,9 @@ public class StartUp extends javax.swing.JFrame {
 		Logger.addListener(new LogListener(textLogsArea));
 		Logger.getLogger().putLog("Inicializando OPLA-Tool");
 
-		LogConfiguration.setLogLevel(org.apache.log4j.Level.OFF);
-
 		Utils.createPathsOplaTool();
 
-		config = ApplicationFile.getInstance();
+		config = ApplicationConfigFile.getInstance();
 		GuiServices guiservices = new GuiServices(config);
 		guiservices.copyFileGuiSettings();
 		GuiUtils.fontSize(GuiFile.getInstance().getFontSize());
@@ -2765,7 +2759,7 @@ public class StartUp extends javax.swing.JFrame {
 		}
 	}// GEN-LAST:event_executionDescriptionKeyTyped
 
-	private void btnGenerateEdChartActionPerformed(java.awt.event.ActionEvent evt)  {// GEN-FIRST:event_btnGenerateEdChartActionPerformed
+	private void btnGenerateEdChartActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnGenerateEdChartActionPerformed
 
 		int[] selectedRows = tableExp2.getSelectedRows();
 		String ids[] = new String[selectedRows.length];
@@ -2792,7 +2786,7 @@ public class StartUp extends javax.swing.JFrame {
 		}
 	}// GEN-LAST:event_btnGenerateEdChartActionPerformed
 
-	private void btnHypervolumeActionPerformed(java.awt.event.ActionEvent evt)  {// GEN-FIRST:event_btnHypervolumeActionPerformed
+	private void btnHypervolumeActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnHypervolumeActionPerformed
 		try {
 			int[] selectedRows = tableExp2.getSelectedRows();
 			String ids[] = new String[selectedRows.length];
@@ -3046,7 +3040,7 @@ public class StartUp extends javax.swing.JFrame {
 
 	/**
 	 * Somente faz uma copia do banco de dados vazio para a pasta da oplatool no
-	 * diretorio do usaurio se o mesmo nao existir.
+	 * diretorio do usuario se o mesmo nao existir.
 	 * 
 	 * @throws Exception
 	 *
@@ -3071,11 +3065,14 @@ public class StartUp extends javax.swing.JFrame {
 	}
 
 	private void createDataBaseIfNotExists() {
-		final Path pathDb = Paths.get(UserHome.getPathToDb());
+		Path pathDb = Paths.get(UserHome.getPathToDb());
+		LOGGER.info("Verificando diretorio da base de dados");
+		
 		if (!Files.exists(pathDb)) {
 			FileUtils.createDirectory(Paths.get(UserHome.getOplaUserHome() + "db"));
-			final Path PATH_EMPTY_DB_FILE = Paths.get("src/main/resources/emptyDB/oplatool.db");
-			FileUtils.copy(PATH_EMPTY_DB_FILE, pathDb);
+			FileUtils.copy("emptyDB/oplatool.db", pathDb);
+		}else{
+			LOGGER.info("Banco de dados já configurado");
 		}
 	}
 

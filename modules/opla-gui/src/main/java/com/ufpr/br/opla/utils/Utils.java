@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SortedMap;
-import java.util.logging.Level;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.WordUtils;
@@ -24,7 +23,6 @@ import org.apache.log4j.Logger;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import com.ufpr.br.opla.configuration.UserHome;
-import com.ufpr.br.opla.gui2.StartUp;
 
 /**
  *
@@ -32,7 +30,6 @@ import com.ufpr.br.opla.gui2.StartUp;
  */
 public class Utils {
 
-	private static final Path PATH_CONFIGURATION_FILE = Paths.get("src/main/resources/config/application.yaml");
 	private static final Logger LOGGER = Logger.getLogger(Utils.class);
 
 	public static String extractSolutionIdFromSolutionFileName(String fileName) {
@@ -43,7 +40,7 @@ public class Utils {
 		return WordUtils.capitalize(word);
 	}
 
-	public static void copy(String source, String target) {
+	public static void copy(String source, String target) throws Exception {
 		try {
 			InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(source);
 			try (FileOutputStream out = new FileOutputStream(target)) {
@@ -57,7 +54,7 @@ public class Utils {
 			LOGGER.info("File copy from {0} to {1}" + new Object[] { source, target });
 		} catch (Exception e) {
 			LOGGER.error(e);
-			System.exit(1);
+			throw e;
 		}
 	}
 
@@ -132,7 +129,9 @@ public class Utils {
 			path.append(directoryToExportModels);
 			path.append(selectedExperiment);
 			path.append("/resources/");
-			System.out.println(path.toString());
+			
+			LOGGER.info(path.toString());
+			
 			List<File> files = (List<File>) FileUtils.listFiles(new File(path.toString()), exts, false);
 
 			for (File file : files) {
@@ -143,6 +142,7 @@ public class Utils {
 			return names.deleteCharAt(names.lastIndexOf(",")).toString().trim();
 		} catch (Exception e) {
 			// I dont care.
+			LOGGER.info(e);
 		}
 		return "-";
 	}
@@ -153,21 +153,18 @@ public class Utils {
 
 			Path pathApplicationYaml = Paths.get(UserHome.getOplaUserHome() + "application.yaml");
 
-			// Somente copia arquivo de configuracao se
-			// ainda nao existir na pasta da oplatool do usuario
 			if (!Files.exists(pathApplicationYaml)) {
-				arquitetura.io.FileUtils.copy(PATH_CONFIGURATION_FILE, pathApplicationYaml);
+				arquitetura.io.FileUtils.copy("config/application.yaml", pathApplicationYaml);
 			}
 
 			UserHome.createProfilesPath();
 			UserHome.createTemplatePath();
 			UserHome.createOutputPath();
-			UserHome.createTempPath(); // Manipulation dir. apenas para uso
-										// intenro
+			UserHome.createTempPath(); // Manipulation dir. apenas para uso  intenro
 
 		} catch (Exception ex) {
-			java.util.logging.Logger.getLogger(StartUp.class.getName()).log(Level.SEVERE, ex.getMessage());
-			System.exit(1);
+			LOGGER.info(ex);
+			throw ex;
 		}
 	}
 

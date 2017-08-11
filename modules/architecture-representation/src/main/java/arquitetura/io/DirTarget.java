@@ -1,15 +1,22 @@
 package arquitetura.io;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class DirTarget {
 
 	private String directoryToSaveModels;
+	
 	private String directoryToExportModels;
+	
 	private String pathToProfile;
+	
 	private String pathToProfileConcern;
+	
 	private String pathToTemplateModelsDirectory;
+	
 	private String pathToProfileRelationships;
+	
 	private String pathToProfilePatterns;
 
 	/**
@@ -91,11 +98,14 @@ public class DirTarget {
 
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this).append("directoryToSaveModels", directoryToSaveModels)
+		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+				.append("directoryToSaveModels", directoryToSaveModels)
 				.append("directoryToExportModels", directoryToExportModels).append("pathToProfile", pathToProfile)
 				.append("pathToProfileConcern", pathToProfileConcern)
 				.append("pathToTemplateModelsDirectory", pathToTemplateModelsDirectory)
 				.append("pathToProfileRelationships", pathToProfileRelationships)
 				.append("pathToProfilePatterns", pathToProfilePatterns).toString();
 	}
+
+	
 }

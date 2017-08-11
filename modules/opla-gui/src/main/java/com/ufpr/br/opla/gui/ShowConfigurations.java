@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.ufpr.br.opla.gui2;
+package com.ufpr.br.opla.gui;
 
 import java.util.HashMap;
 

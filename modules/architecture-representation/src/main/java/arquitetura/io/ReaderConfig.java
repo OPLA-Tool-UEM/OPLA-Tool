@@ -1,10 +1,11 @@
 package arquitetura.io;
 
-import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.ho.yaml.Yaml;
 
@@ -18,15 +19,21 @@ import org.ho.yaml.Yaml;
 public class ReaderConfig {
 
 	private static final Logger LOGGER = Logger.getLogger(ReaderConfig.class);
-	private static final Path PATH_CONFIGURATION_FILE = Paths.get("src/main/resources/config/application.yaml");
+	
 	private static DirTarget dir;
 
 	private static String dirTarget;
+	
 	private static String dirExportTarget;
+	
 	private static String pathToProfileSMarty;
+	
 	private static String pathToProfileConcerns;
+	
 	private static String pathToTemplateModelsDirectory;
+	
 	private static String pathToProfileRelationships;
+	
 	private static String pathToProfilePatterns;
 
 	public static String newPathToConfigurationFile;
@@ -191,15 +198,16 @@ public class ReaderConfig {
 	 */
 	public static void load() {
 		try {
-			if (newPathToConfigurationFile != null) {
-				dir = Yaml.loadType(new File(newPathToConfigurationFile), DirTarget.class);
+			if (StringUtils.isNotBlank(newPathToConfigurationFile)) {
+				dir = Yaml.loadType(Paths.get(newPathToConfigurationFile).toFile(), DirTarget.class);
 				LOGGER.info("New Path" + dir);
 			} else {
-				dir = Yaml.loadType(PATH_CONFIGURATION_FILE.toFile(), DirTarget.class);
-				LOGGER.info("Default Path" + dir);
+				InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("config/application.yaml");
+				dir = Yaml.loadType(inputStream, DirTarget.class);
+				LOGGER.info("Default Path " + dir);
 			}
 		} catch (FileNotFoundException e) {
-			LOGGER.error("I can't read the configuration file at: " + PATH_CONFIGURATION_FILE);
+			LOGGER.error("I can't read the configuration file: application.yaml");
 		}
 	}
 
