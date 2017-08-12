@@ -8,7 +8,6 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
@@ -30,6 +29,8 @@ import db.BestSolutionBySelectedFitness;
  * @author elf
  */
 public class SmallerFintnessValuesWindow extends javax.swing.JFrame {
+
+	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = Logger.getLogger(SmallerFintnessValuesWindow.class);
 
@@ -54,8 +55,8 @@ public class SmallerFintnessValuesWindow extends javax.swing.JFrame {
 
 	}
 
-	private void includeTableObjectives(String selectedSolutionId)  {
-		HashMap<String, String> result = (HashMap<String, String>) db.Database.getObjectivesBySolutionId(selectedSolutionId, selectedExperiment);
+	private void includeTableObjectives(String selectedSolutionId) {
+		Map<String, String> result = db.Database.getObjectivesBySolutionId(selectedSolutionId, selectedExperiment);
 		BestSolutionBySelectedFitness.buildTableObjectives(tableObjectives, result);
 		panelTableObjectives.setVisible(true);
 	}
@@ -119,11 +120,7 @@ public class SmallerFintnessValuesWindow extends javax.swing.JFrame {
 		tableEleganceBest.setName("elegance");
 		tableEleganceBest.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
-				try {
-					tableEleganceBestMouseClicked(evt);
-				} catch (Exception e) {
-					LOGGER.info(e);
-				}
+				tableEleganceBestMouseClicked(evt);
 			}
 		});
 		jScrollPane1.setViewportView(tableEleganceBest);
@@ -160,11 +157,7 @@ public class SmallerFintnessValuesWindow extends javax.swing.JFrame {
 		tableConventionalBest.setName("conventional");
 		tableConventionalBest.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
-				try {
-					tableConventionalBestMouseClicked(evt);
-				} catch (Exception e) {
-					LOGGER.info(e);
-				}
+				tableConventionalBestMouseClicked(evt);
 			}
 		});
 		jScrollPane2.setViewportView(tableConventionalBest);
@@ -203,11 +196,7 @@ public class SmallerFintnessValuesWindow extends javax.swing.JFrame {
 		tablePLAExtBest.setName("PLAExtensibility");
 		tablePLAExtBest.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
-				try {
-					tablePLAExtBestMouseClicked(evt);
-				} catch (Exception e) {
-					LOGGER.info(e);
-				}
+				tablePLAExtBestMouseClicked(evt);
 			}
 		});
 		jScrollPane4.setViewportView(tablePLAExtBest);
@@ -248,11 +237,7 @@ public class SmallerFintnessValuesWindow extends javax.swing.JFrame {
 		tableFeatureDrivenBest.setName("featureDriven");
 		tableFeatureDrivenBest.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
-				try {
-					tableFeatureDrivenBestMouseClicked(evt);
-				} catch (Exception e) {
-					LOGGER.info(e);
-				}
+				tableFeatureDrivenBestMouseClicked(evt);
 			}
 		});
 		jScrollPane3.setViewportView(tableFeatureDrivenBest);
@@ -432,14 +417,14 @@ public class SmallerFintnessValuesWindow extends javax.swing.JFrame {
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
 
-	private void tableEleganceBestMouseClicked(java.awt.event.MouseEvent evt) throws Exception {// GEN-FIRST:event_tableEleganceBestMouseClicked
+	private void tableEleganceBestMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_tableEleganceBestMouseClicked
 		updateTableObjectives(evt);
 		tableConventionalBest.clearSelection();
 		tableFeatureDrivenBest.clearSelection();
 		tablePLAExtBest.clearSelection();
 	}
 
-	private void updateTableObjectives(MouseEvent evt) throws Exception {
+	private void updateTableObjectives(MouseEvent evt) {
 		if (evt.getClickCount() == 2) {
 			JTable target = (JTable) evt.getSource();
 			String selectedSolutionId = target.getModel().getValueAt(target.getSelectedRow(), 0).toString();
@@ -453,21 +438,21 @@ public class SmallerFintnessValuesWindow extends javax.swing.JFrame {
 		}
 	}// GEN-LAST:event_tableEleganceBestMouseClicked
 
-	private void tableConventionalBestMouseClicked(java.awt.event.MouseEvent evt) throws Exception {// GEN-FIRST:event_tableConventionalBestMouseClicked
+	private void tableConventionalBestMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_tableConventionalBestMouseClicked
 		updateTableObjectives(evt);
 		tableEleganceBest.clearSelection();
 		tableFeatureDrivenBest.clearSelection();
 		tablePLAExtBest.clearSelection();
 	}// GEN-LAST:event_tableConventionalBestMouseClicked
 
-	private void tablePLAExtBestMouseClicked(java.awt.event.MouseEvent evt) throws Exception {// GEN-FIRST:event_tablePLAExtBestMouseClicked
+	private void tablePLAExtBestMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_tablePLAExtBestMouseClicked
 		updateTableObjectives(evt);
 		tableEleganceBest.clearSelection();
 		tableFeatureDrivenBest.clearSelection();
 		tableConventionalBest.clearSelection();
 	}// GEN-LAST:event_tablePLAExtBestMouseClicked
 
-	private void tableFeatureDrivenBestMouseClicked(java.awt.event.MouseEvent evt) throws Exception {// GEN-FIRST:event_tableFeatureDrivenBestMouseClicked
+	private void tableFeatureDrivenBestMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_tableFeatureDrivenBestMouseClicked
 		updateTableObjectives(evt);
 		tableConventionalBest.clearSelection();
 		tableEleganceBest.clearSelection();
@@ -565,34 +550,29 @@ public class SmallerFintnessValuesWindow extends javax.swing.JFrame {
 	}
 
 	public void enablePanelsObjectiveFunctions() {
+		String metricsSelectedForCurrentExperiment[] = db.Database.getOrdenedObjectives(this.selectedExperiment)
+				.split(" ");
 
-		String metricsSelectedForCurrentExperiment[];
-		try {
-			metricsSelectedForCurrentExperiment = db.Database.getOrdenedObjectives(this.selectedExperiment).split(" ");
-			for (int i = 0; i < metricsSelectedForCurrentExperiment.length; i++) {
-				String f = metricsSelectedForCurrentExperiment[i];
-				if (f.equalsIgnoreCase("elegance")) {
-					initializeContentForEleganceTable();
-					panelEleganceBest.setVisible(true);
-				}
-				if (f.equalsIgnoreCase("conventional")) {
-					initializeContentForConventionalTable();
-					panelConventionalBest.setVisible(true);
-				}
-				if (f.equalsIgnoreCase("PLAExtensibility")) {
-					initializeContentForPLAExtTable();
-					panelPlaExtBest.setVisible(true);
-				}
-				if (f.equalsIgnoreCase("featureDriven")) {
-					initializeContentForFeatureDrivenTable();
-					panelFeatureDriven.setVisible(true);
-				}
-
+		for (int i = 0; i < metricsSelectedForCurrentExperiment.length; i++) {
+			String f = metricsSelectedForCurrentExperiment[i];
+			if (f.equalsIgnoreCase("elegance")) {
+				initializeContentForEleganceTable();
+				panelEleganceBest.setVisible(true);
 			}
-		} catch (Exception e) {
-			LOGGER.info(e);
-		}
+			if (f.equalsIgnoreCase("conventional")) {
+				initializeContentForConventionalTable();
+				panelConventionalBest.setVisible(true);
+			}
+			if (f.equalsIgnoreCase("PLAExtensibility")) {
+				initializeContentForPLAExtTable();
+				panelPlaExtBest.setVisible(true);
+			}
+			if (f.equalsIgnoreCase("featureDriven")) {
+				initializeContentForFeatureDrivenTable();
+				panelFeatureDriven.setVisible(true);
+			}
 
+		}
 	}
 
 	private void initializeContentForEleganceTable() {
@@ -617,9 +597,9 @@ public class SmallerFintnessValuesWindow extends javax.swing.JFrame {
 
 	public void loadEds() {
 
-		SortedMap<String, Double> resultsEds;
 		try {
-			resultsEds = Indicators.getEdsForExperiment(selectedExperiment);
+			SortedMap<String, Double> resultsEds = Indicators.getEdsForExperiment(selectedExperiment);
+
 			Object[][] data = new Object[resultsEds.size()][resultsEds.size()];
 			int index = 0;
 			for (Map.Entry<String, Double> entry : resultsEds.entrySet()) {
@@ -647,13 +627,12 @@ public class SmallerFintnessValuesWindow extends javax.swing.JFrame {
 		} catch (Exception e) {
 			LOGGER.info(e);
 		}
-
 	}
 
 	private void selectBestEdSolution() {
-		String solution;
 		try {
-			solution = Indicators.getSolutionWithBestTradeOff(selectedExperiment).getKey();
+			String solution = Indicators.getSolutionWithBestTradeOff(selectedExperiment).getKey();
+
 			int rows = tableEleganceBest.getRowCount();
 
 			List<JTable> tables = new ArrayList<>();
@@ -676,17 +655,13 @@ public class SmallerFintnessValuesWindow extends javax.swing.JFrame {
 	}
 
 	private void selectSolutionForTables(List<JTable> tables, int x) {
-		List<String> objs;
-		try {
-			objs = Arrays.asList(db.Database.getOrdenedObjectives(selectedExperiment).split(" "));
-			for (JTable table : tables) {
-				if (objs.contains(table.getName())) {
-					table.setRowSelectionInterval(x, x);
-					table.scrollRectToVisible(new Rectangle(table.getCellRect(x, 0, true)));
-				}
+		List<String> objs = Arrays.asList(db.Database.getOrdenedObjectives(selectedExperiment).split(" "));
+
+		for (JTable table : tables) {
+			if (objs.contains(table.getName())) {
+				table.setRowSelectionInterval(x, x);
+				table.scrollRectToVisible(new Rectangle(table.getCellRect(x, 0, true)));
 			}
-		} catch (Exception e) {
-			LOGGER.info(e);
 		}
 	}
 }

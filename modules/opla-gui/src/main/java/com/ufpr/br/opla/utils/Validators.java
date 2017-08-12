@@ -4,19 +4,13 @@
  */
 package com.ufpr.br.opla.utils;
 
+import com.ufpr.br.opla.configuration.VolatileConfs;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
-
-import com.ufpr.br.opla.configuration.VolatileConfs;
 
 /**
  *

@@ -23,10 +23,10 @@ import com.ufpr.br.opla.utils.Utils;
  * @author elf
  */
 public class ManagerApplicationConfig {
-	
-	private static final Logger LOGGER = Logger.getLogger(ManagerApplicationConfig.class);
 
-  private DirTarget configurationFile;
+	private static final Logger LOGGER = Logger.getLogger(ManagerApplicationConfig.class);
+	
+	private DirTarget configurationFile;
 
 	public ManagerApplicationConfig() throws FileNotFoundException {
 		try {
@@ -39,72 +39,73 @@ public class ManagerApplicationConfig {
 		}
 	}
 
-  public DirTarget getConfig() {
-    return this.configurationFile;
-  }
+	public DirTarget getConfig() {
+		return this.configurationFile;
+	}
 
-  public void updatePathToProfileSmarty(String newpath) {
-    this.configurationFile.setPathToProfile(newpath);
-    updateConfigurationFile();
-  }
+	public void updatePathToProfileSmarty(String newpath) {
+		this.configurationFile.setPathToProfile(newpath);
+		updateConfigurationFile();
+	}
 
-  public void updatePathToProfilePatterns(String newpath) {
-    this.configurationFile.setPathToProfilePatterns(newpath);
-    updateConfigurationFile();
-  }
+	public void updatePathToProfilePatterns(String newpath) {
+		this.configurationFile.setPathToProfilePatterns(newpath);
+		updateConfigurationFile();
+	}
 
-  public void updatePathToProfileRelationships(String newpath) {
-    this.configurationFile.setPathToProfileRelationships(newpath);
-    updateConfigurationFile();
-  }
+	public void updatePathToProfileRelationships(String newpath) {
+		this.configurationFile.setPathToProfileRelationships(newpath);
+		updateConfigurationFile();
+	}
 
-  public void updatePathToProfileConcerns(String newpath) {
-    this.configurationFile.setPathToProfileConcern(newpath);
-    updateConfigurationFile();
-  }
+	public void updatePathToProfileConcerns(String newpath) {
+		this.configurationFile.setPathToProfileConcern(newpath);
+		updateConfigurationFile();
+	}
 
-  public void updatePathToTemplateFiles(String newpath) {
-    this.configurationFile.setPathToTemplateModelsDirectory(newpath);
-    updateConfigurationFile();
-  }
+	public void updatePathToTemplateFiles(String newpath) {
+		this.configurationFile.setPathToTemplateModelsDirectory(newpath);
+		updateConfigurationFile();
+	}
 
-  public void updatePathToExportModels(String newpath) {
-    this.configurationFile.setDirectoryToExportModels(newpath);
-    updateConfigurationFile();
-  }
+	public void updatePathToExportModels(String newpath) {
+		this.configurationFile.setDirectoryToExportModels(newpath);
+		updateConfigurationFile();
+	}
 
-  public void updatePathToSaveModels(String path) {
-    this.configurationFile.setDirectoryToSaveModels(path);
-    updateConfigurationFile();
-  }
+	public void updatePathToSaveModels(String path) {
+		this.configurationFile.setDirectoryToSaveModels(path);
+		updateConfigurationFile();
 
-  /**
-   * Retorna os profile que estão em uso ou seja, não "" nem null.
-   *
-   */
-  public String getProfilesUsed() {
-    StringBuilder profiles = new StringBuilder();
+	}
 
-    if (Utils.notNullAndNotEmpty(this.configurationFile.getPathToProfile())) {
-      profiles.append(this.configurationFile.getPathToProfile());
-      profiles.append(",");
-    }
+	/**
+	 * Retorna os profile que estão em uso ou seja, não "" nem null.
+	 *
+	 */
+	public String getProfilesUsed() {
+		StringBuilder profiles = new StringBuilder();
 
-    if (Utils.notNullAndNotEmpty(this.configurationFile.getPathToProfileConcern())) {
-      profiles.append(this.configurationFile.getPathToProfileConcern());
-      profiles.append(",");
-    }
+		if (Utils.notNullAndNotEmpty(this.configurationFile.getPathToProfile())) {
+			profiles.append(this.configurationFile.getPathToProfile());
+			profiles.append(",");
+		}
 
-    if (Utils.notNullAndNotEmpty(this.configurationFile.getPathToProfilePatterns())) {
-      profiles.append(this.configurationFile.getPathToProfilePatterns());
-      profiles.append(",");
-    }
+		if (Utils.notNullAndNotEmpty(this.configurationFile.getPathToProfileConcern())) {
+			profiles.append(this.configurationFile.getPathToProfileConcern());
+			profiles.append(",");
+		}
 
-    if (Utils.notNullAndNotEmpty(this.configurationFile.getPathToProfileRelationships())) {
-      profiles.append(this.configurationFile.getPathToProfileRelationships());
-    }
-    return profiles.toString();
-  }
+		if (Utils.notNullAndNotEmpty(this.configurationFile.getPathToProfilePatterns())) {
+			profiles.append(this.configurationFile.getPathToProfilePatterns());
+			profiles.append(",");
+		}
+
+		if (Utils.notNullAndNotEmpty(this.configurationFile.getPathToProfileRelationships())) {
+			profiles.append(this.configurationFile.getPathToProfileRelationships());
+		}
+		return profiles.toString();
+	}
 
 	private void updateConfigurationFile() {
 		try {

@@ -31,7 +31,7 @@ import com.ufpr.br.opla.indicators.Indicators;
  */
 public class EdLine {
 
-	private Logger LOGGER = Logger.getLogger(EdLine.class);
+	private static final Logger LOGGER = Logger.getLogger(EdLine.class);
 
 	private final String[] idsAllSelectedExperiments;
 	private final XYDataset data;
@@ -45,10 +45,12 @@ public class EdLine {
 
 	private XYDataset createDataset() {
 		final XYSeriesCollection dataset = new XYSeriesCollection();
-		for (int i = 0; i < idsAllSelectedExperiments.length; i++) {
-			Map<String, Map<Double, Integer>> map;
-			try {
-				map = Indicators.quantityEdBySolutions(idsAllSelectedExperiments, idsAllSelectedExperiments[i]);
+
+		try {
+			for (int i = 0; i < idsAllSelectedExperiments.length; i++) {
+				Map<String, Map<Double, Integer>> map = Indicators.quantityEdBySolutions(idsAllSelectedExperiments,
+						idsAllSelectedExperiments[i]);
+
 				Map.Entry<String, Map<Double, Integer>> content = map.entrySet().iterator().next();
 				final XYSeries serie = new XYSeries(content.getKey());
 
@@ -60,9 +62,9 @@ public class EdLine {
 					serie.add(double1, integer);
 				}
 				dataset.addSeries(serie);
-			} catch (Exception e) {
-				LOGGER.info(e);
 			}
+		} catch (Exception e) {
+			LOGGER.info(e);
 		}
 
 		return dataset;

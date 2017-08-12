@@ -4,6 +4,11 @@
  */
 package com.ufpr.br.opla.charts;
 
+import java.awt.Rectangle;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import org.jfree.chart.JFreeChart;
+
 /**
  *
  * @author elf

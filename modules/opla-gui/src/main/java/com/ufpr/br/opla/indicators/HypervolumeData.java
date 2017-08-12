@@ -1,9 +1,8 @@
 package com.ufpr.br.opla.indicators;
 
+import com.ufpr.br.opla.utils.MathUtils;
 import java.util.Collections;
 import java.util.List;
-
-import com.ufpr.br.opla.utils.MathUtils;
 
 public class HypervolumeData {
   

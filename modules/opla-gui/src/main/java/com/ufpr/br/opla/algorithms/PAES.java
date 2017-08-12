@@ -4,34 +4,29 @@
  */
 package com.ufpr.br.opla.algorithms;
 
+import arquitetura.io.ReaderConfig;
+import com.ufpr.br.opla.utils.MutationOperatorsSelected;
+import com.ufpr.br.opla.configuration.UserHome;
+import com.ufpr.br.opla.configuration.VolatileConfs;
 import java.util.List;
-
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-
-import com.ufpr.br.opla.configuration.UserHome;
-import com.ufpr.br.opla.configuration.VolatileConfs;
-import com.ufpr.br.opla.utils.MutationOperatorsSelected;
-
-import arquitetura.io.ReaderConfig;
-import jmetal.experiments.FeatureMutationOperators;
-import jmetal.experiments.OPLAConfigs;
-import jmetal.experiments.PAES_OPLA_FeatMutInitializer;
-import jmetal.experiments.PaesConfigs;
+import jmetal.experiments.*;
 
 /**
  *
  * @author elf
  */
 public class PAES {
-    
+     
+	
     public void execute(JComboBox comboAlgorithms, JCheckBox checkMutation, JTextField fieldMutationProb,
             JTextArea fieldArchitectureInput, JTextField fieldNumberOfRuns, JTextField fieldPaesArchiveSize,
             JTextField fieldMaxEvaluations, JCheckBox checkCrossover, JTextField fieldCrossoverProbability, String executionDescription) {
-        
-        ReaderConfig.setPathToConfigurationFile(UserHome.getPathToConfigFile());
+      
+	ReaderConfig.setPathToConfigurationFile(UserHome.getPathToConfigFile());
         ReaderConfig.load();
         
         PaesConfigs configs = new PaesConfigs();

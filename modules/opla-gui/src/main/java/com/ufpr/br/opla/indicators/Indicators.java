@@ -51,6 +51,9 @@ public class Indicators {
 
         return results;
       }
+
+
+
     } catch (MissingConfigurationException | ClassNotFoundException | SQLException ex) {
       Logger.getLogger(Indicators.class.getName()).log(Level.SEVERE, null, ex);
     }

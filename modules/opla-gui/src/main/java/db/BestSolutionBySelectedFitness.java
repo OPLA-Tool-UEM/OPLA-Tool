@@ -1,6 +1,5 @@
 package db;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +61,7 @@ public class BestSolutionBySelectedFitness {
 
   }
 
-  public static void buildTableObjectives(JTable tableObjectives, HashMap<String, String> result) {
+  public static void buildTableObjectives(JTable tableObjectives, Map<String, String> result) {
     DefaultTableModel model = new DefaultTableModel();
 
     model.addColumn("Objective");

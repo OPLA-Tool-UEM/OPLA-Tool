@@ -32,9 +32,8 @@ import com.ufpr.br.opla.indicators.Indicators;
  * @author elf
  */
 public class EdBar {
-	
-	Logger LOGGER = Logger.getLogger(EdBar.class);
-	
+	private static final Logger LOGGER = Logger.getLogger(EdBar.class);
+
 	private final String[] idsAllSelectedExperiments;
 	private final DefaultCategoryDataset data;
 	private final String title;
@@ -57,10 +56,11 @@ public class EdBar {
 		DefaultCategoryDataset objDataset = new DefaultCategoryDataset();
 		final XYSeriesCollection dataset = new XYSeriesCollection();
 
-		for (int i = 0; i < idsAllSelectedExperiments.length; i++) {
-			Map<String, Map<Double, Integer>> map;
-			try {
-				map = Indicators.quantityEdBySolutions(idsAllSelectedExperiments, idsAllSelectedExperiments[i]);
+		try {
+			for (int i = 0; i < idsAllSelectedExperiments.length; i++) {
+				Map<String, Map<Double, Integer>> map = Indicators.quantityEdBySolutions(idsAllSelectedExperiments,
+						idsAllSelectedExperiments[i]);
+
 				Map.Entry<String, Map<Double, Integer>> content = map.entrySet().iterator().next();
 				final XYSeries serie = new XYSeries(content.getKey());
 
@@ -73,9 +73,9 @@ public class EdBar {
 				}
 
 				dataset.addSeries(serie);
-			} catch (Exception e) {
-				LOGGER.info(e);
 			}
+		} catch (Exception e) {
+			LOGGER.info(e);
 		}
 
 		return objDataset;

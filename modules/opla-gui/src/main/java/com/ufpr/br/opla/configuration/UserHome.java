@@ -1,3 +1,7 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.ufpr.br.opla.configuration;
 
 import java.nio.file.FileSystems;
@@ -18,7 +22,7 @@ public class UserHome {
 	private static final String FILE_SEPARATOR = FileSystems.getDefault().getSeparator();
 
 	/**
-	 * Ex: C:/User/oplatool/ or /home/user/oplatool/
+	 * Ex: C:/User/oplatool/ or /USER_HOME/user/oplatool/
 	 */
 	private static final String OPLA_HOME = USER_HOME + FILE_SEPARATOR + "oplatool" + FILE_SEPARATOR;
 
@@ -30,12 +34,7 @@ public class UserHome {
 	public static String getOplaUserHome() {
 		return OPLA_HOME;
 	}
-
-	/**
-	 * Application config file
-	 * 
-	 * @return
-	 */
+	
 	public static String getConfigurationFilePath() {
 		return OPLA_HOME + FILE_SEPARATOR + "application.yaml";
 	}
@@ -50,7 +49,7 @@ public class UserHome {
 	public static void createDefaultOplaPathIfDontExists() {
 		FileUtils.createDirectory(Paths.get(getOplaUserHome()));
 	}
-
+	
 	public static void createProfilesPath() {
 		Utils.createPath(OPLA_HOME + "profiles/");
 	}

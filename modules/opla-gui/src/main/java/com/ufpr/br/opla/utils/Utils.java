@@ -31,7 +31,7 @@ import com.ufpr.br.opla.configuration.UserHome;
 public class Utils {
 
 	private static final Logger LOGGER = Logger.getLogger(Utils.class);
-
+	
 	public static String extractSolutionIdFromSolutionFileName(String fileName) {
 		return fileName.substring(fileName.indexOf("-") + 1, fileName.length());
 	}
@@ -129,9 +129,7 @@ public class Utils {
 			path.append(directoryToExportModels);
 			path.append(selectedExperiment);
 			path.append("/resources/");
-			
-			LOGGER.info(path.toString());
-			
+			System.out.println(path.toString());
 			List<File> files = (List<File>) FileUtils.listFiles(new File(path.toString()), exts, false);
 
 			for (File file : files) {
@@ -147,7 +145,7 @@ public class Utils {
 		return "-";
 	}
 
-	public static void createPathsOplaTool() {
+	public static void createPathsOplaTool() throws Exception {
 		try {
 			UserHome.createDefaultOplaPathIfDontExists();
 
@@ -160,7 +158,8 @@ public class Utils {
 			UserHome.createProfilesPath();
 			UserHome.createTemplatePath();
 			UserHome.createOutputPath();
-			UserHome.createTempPath(); // Manipulation dir. apenas para uso  intenro
+			UserHome.createTempPath(); // Manipulation dir. apenas para uso
+										// intenro
 
 		} catch (Exception ex) {
 			LOGGER.info(ex);
@@ -168,7 +167,7 @@ public class Utils {
 		}
 	}
 
-	public static String generateFileName(String id) throws Exception {
+	public static String generateFileName(String id) {
 		String algorithmName = db.Database.getAlgoritmUsedToExperimentId(id);
 		String plaName = db.Database.getPlaUsedToExperimentId(id);
 

@@ -6,7 +6,6 @@ package com.ufpr.br.opla.utils;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.swing.JPanel;
 import javax.swing.JTable;
 

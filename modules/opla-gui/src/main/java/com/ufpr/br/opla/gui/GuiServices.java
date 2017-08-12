@@ -1,7 +1,5 @@
 package com.ufpr.br.opla.gui;
 
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,8 +11,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import org.apache.commons.lang3.StringUtils;
 
 import com.ufpr.br.opla.configuration.ManagerApplicationConfig;
 import com.ufpr.br.opla.configuration.UserHome;
@@ -30,13 +26,9 @@ public class GuiServices {
 	private static final String FILE_SEPARATOR = FileSystems.getDefault().getSeparator();
 
 	private final ManagerApplicationConfig config;
-
 	private final String profileSmartyName;
-
 	private final String profileConcernsName;
-
 	private final String profilePatternName;
-
 	private final String profileRelationshipName;
 
 	public GuiServices(ManagerApplicationConfig managerConfig) {
@@ -46,15 +38,13 @@ public class GuiServices {
 		profileConcernsName = "concerns.profile.uml";
 		profilePatternName = "patterns.profile.uml";
 		profileRelationshipName = "relationships.profile.uml";
-
 	}
 
-	public void configureSmartyProfile(JTextField fieldSmartyProfile, JCheckBox check, JButton button)
-			throws Exception {
-		if (config.getConfig().getPathToProfileConcern() != null && StringUtils.isEmpty(config.getConfig().getPathToProfileConcern())) {
+	public void configureSmartyProfile(JTextField fieldSmartyProfile, JCheckBox check, JButton button) {
+		if (config.getConfig().getPathToProfile() != null && config.getConfig().getPathToProfile().equals("")) {
 			check.setSelected(true);
 			button.setEnabled(false);
-		} else if (hasSmartyInConfigFile()) {
+		} else if (hasSmartyInConfiFile()) {
 			fieldSmartyProfile.setText(config.getConfig().getPathToProfile());
 		} else {
 			Path target = Paths.get(UserHome.getOplaUserHome() + "profiles" + FILE_SEPARATOR + profileSmartyName);
@@ -66,9 +56,9 @@ public class GuiServices {
 		}
 	}
 
-	public void configureConcernsProfile(JTextField fieldConcernProfile, JCheckBox check, JButton button)
-			throws Exception {
-		if (config.getConfig().getPathToProfileConcern() != null && config.getConfig().getPathToProfileConcern().equals("")) {
+	public void configureConcernsProfile(JTextField fieldConcernProfile, JCheckBox check, JButton button) {
+		if (config.getConfig().getPathToProfileConcern() != null
+				&& config.getConfig().getPathToProfileConcern().equals("")) {
 			check.setSelected(true);
 			button.setEnabled(false);
 		} else if (hasConcernsInConfiFile()) {
@@ -84,14 +74,15 @@ public class GuiServices {
 		}
 	}
 
-	public void configurePatternsProfile(JTextField fieldPatterns, JCheckBox check, JButton button) throws Exception {
-		if (config.getConfig().getPathToProfilePatterns() != null && config.getConfig().getPathToProfilePatterns().equals("")) {
+	public void configurePatternsProfile(JTextField fieldPatterns, JCheckBox check, JButton button) {
+		if (config.getConfig().getPathToProfilePatterns() != null
+				&& config.getConfig().getPathToProfilePatterns().equals("")) {
 			check.setSelected(true);
 			button.setEnabled(false);
 		} else if (hasPatternsInConfigFile()) {
 			fieldPatterns.setText(config.getConfig().getPathToProfilePatterns());
 		} else {
-			
+
 			Path target = Paths.get(UserHome.getOplaUserHome() + "profiles" + FILE_SEPARATOR + profilePatternName);
 			FileUtils.copy(PROFILES_DIR + profilePatternName, target);
 
@@ -101,8 +92,9 @@ public class GuiServices {
 		}
 	}
 
-	public void configureRelationshipsProfile(JTextField fieldRelationships, JCheckBox check, JButton button) throws Exception {
-		if (config.getConfig().getPathToProfileRelationships() != null && config.getConfig().getPathToProfileRelationships().equals("")) {
+	public void configureRelationshipsProfile(JTextField fieldRelationships, JCheckBox check, JButton button) {
+		if (config.getConfig().getPathToProfileRelationships() != null
+				&& config.getConfig().getPathToProfileRelationships().equals("")) {
 			check.setSelected(true);
 			button.setEnabled(false);
 		} else if (hasRelationshipsInConfigFile()) {
@@ -123,9 +115,8 @@ public class GuiServices {
 	 * 
 	 * 
 	 * @param fieldTemplate
-	 * @throws Exception
 	 */
-	public void configureTemplates(JTextField fieldTemplate) throws Exception {
+	public void configureTemplates(JTextField fieldTemplate) {
 		if (hasTemplateInConfigFile()) {
 			fieldTemplate.setText(config.getConfig().getPathToTemplateModelsDirectory());
 		} else {
@@ -153,7 +144,7 @@ public class GuiServices {
 		if (hasPathToSaveModelsInConfigFile()) {
 			fieldOutput.setText(config.getConfig().getDirectoryToExportModels());
 		} else {
-			String path = UserHome.getOplaUserHome() + "output" + FILE_SEPARATOR;
+			final String path = UserHome.getOplaUserHome() + "output" + FILE_SEPARATOR;
 			fieldOutput.setText(path);
 			fieldOutput.updateUI();
 			config.updatePathToExportModels(path);
@@ -182,7 +173,6 @@ public class GuiServices {
 	 * 
 	 * @param comboObjectiveFunctions
 	 * @param experimentId
-	 * @throws Exception
 	 */
 	public static void initializerComboObjectiveFunctions(JComboBox comboObjectiveFunctions, String experimentId) {
 		String metricsSelectedForCurrentExperiment[] = db.Database.getOrdenedObjectives(experimentId).split(" ");
@@ -203,24 +193,24 @@ public class GuiServices {
 		return config.getConfig().getPathToProfilePatterns() != null;
 	}
 
-	private boolean hasSmartyInConfigFile() {
-		return isNotBlank(config.getConfig().getPathToProfile());
+	private boolean hasSmartyInConfiFile() {
+		return config.getConfig().getPathToProfile() != null;
 	}
 
 	private boolean hasConcernsInConfiFile() {
-		return isNotBlank(config.getConfig().getPathToProfileConcern());
+		return config.getConfig().getPathToProfileConcern() != null;
 	}
 
 	private boolean hasTemplateInConfigFile() {
-		return isNotBlank(config.getConfig().getPathToTemplateModelsDirectory());
+		return config.getConfig().getPathToTemplateModelsDirectory() != null;
 	}
 
 	private boolean hasPathToSaveModelsInConfigFile() {
-		return isNotBlank(config.getConfig().getDirectoryToExportModels());
+		return config.getConfig().getDirectoryToExportModels() != null;
 	}
 
 	private boolean hasPathToManipulationDir() {
-		return isNotBlank(config.getConfig().getDirectoryToSaveModels());
+		return config.getConfig().getDirectoryToSaveModels() != null;
 	}
 
 	public void hidePanelPatternScopeByDefault(JPanel panelPatternScope) {
