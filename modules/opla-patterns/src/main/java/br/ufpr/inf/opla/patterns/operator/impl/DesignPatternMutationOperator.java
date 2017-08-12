@@ -5,7 +5,7 @@
  */
 package br.ufpr.inf.opla.patterns.operator.impl;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Priority;
 
@@ -29,10 +29,12 @@ import jmetal.util.PseudoRandom;
  */
 public class DesignPatternMutationOperator extends AbstractMutationOperator {
 
-    protected final ScopeSelectionStrategy scopeSelectionStrategy;
+	private static final long serialVersionUID = 1L;
+
+	protected final ScopeSelectionStrategy scopeSelectionStrategy;
     protected final DesignPatternSelectionStrategy designPatternSelectionStrategy;
 
-    public DesignPatternMutationOperator(HashMap<String, Object> parameters, ScopeSelectionStrategy scopeSelectionStrategy, DesignPatternSelectionStrategy designPatternSelectionStrategy) {
+    public DesignPatternMutationOperator(Map<String, Object> parameters, ScopeSelectionStrategy scopeSelectionStrategy, DesignPatternSelectionStrategy designPatternSelectionStrategy) {
         super(parameters);
         this.scopeSelectionStrategy = scopeSelectionStrategy;
         this.designPatternSelectionStrategy = designPatternSelectionStrategy;

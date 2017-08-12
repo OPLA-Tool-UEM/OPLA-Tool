@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import jmetal.core.Algorithm;
 import jmetal.core.SolutionSet;
@@ -76,7 +77,7 @@ public class NSGAII_Crossover {
          Mutation mutation;
          Selection selection;
 
-         HashMap  parameters ; // Operator parameters
+         Map<String, Object>  parameters ; // Operator parameters
 
                    
          algorithm = new NSGAII(problem) ;
@@ -86,11 +87,11 @@ public class NSGAII_Crossover {
          algorithm.setInputParameter("maxEvaluations",maxEvaluations_);
 
          // Mutation and Crossover
-         parameters = new HashMap() ;
+         parameters = new HashMap<>() ;
          parameters.put("probability", crossoverProbability_) ;
          crossover = CrossoverFactory.getCrossoverOperator("PLACrossover", parameters);                   
 
-         parameters = new HashMap() ;
+         parameters = new HashMap<>() ;
          parameters.put("probability", mutationProbability_) ;
          mutation = MutationFactory.getMutationOperator("PLAFeatureMutation", parameters);                        
 

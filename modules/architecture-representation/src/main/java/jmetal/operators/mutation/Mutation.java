@@ -21,7 +21,7 @@
 
 package jmetal.operators.mutation;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import jmetal.core.Operator;
 
@@ -32,7 +32,7 @@ public abstract class Mutation extends Operator {
 
 	private static final long serialVersionUID = -4307112630484321270L;
 
-	public Mutation(HashMap<String, Object> parameters) {
+	public Mutation(Map<String, Object> parameters) {
 	  super(parameters);
   }
 } // Mutation

@@ -21,7 +21,7 @@
 
 package jmetal.operators.crossover;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import jmetal.core.Operator;
 
@@ -30,7 +30,9 @@ import jmetal.core.Operator;
  */
 public abstract class Crossover extends Operator {
 
-	public Crossover(HashMap<String, Object> parameters) {
+	private static final long serialVersionUID = 1L;
+
+	public Crossover(Map<String, Object> parameters) {
 	  super(parameters);
   }
 } // Crossover

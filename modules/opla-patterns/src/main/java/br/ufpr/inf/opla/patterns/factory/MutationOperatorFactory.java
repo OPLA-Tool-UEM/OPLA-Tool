@@ -5,7 +5,7 @@
  */
 package br.ufpr.inf.opla.patterns.factory;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import br.ufpr.inf.opla.patterns.operator.impl.DesignPatternMutationOperator;
 import br.ufpr.inf.opla.patterns.operator.impl.DesignPatternsAndPLAMutationOperator;
@@ -19,7 +19,7 @@ import jmetal.operators.mutation.Mutation;
  */
 public class MutationOperatorFactory {
 
-    public static Mutation create(String operator, HashMap<String, Object> parameters) {
+    public static Mutation create(String operator, Map<String, Object> parameters) {
         switch (operator) {
             case "DesignPatternsMutationOperator":
                 return new DesignPatternMutationOperator(parameters, null, null);

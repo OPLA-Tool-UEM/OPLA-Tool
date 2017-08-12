@@ -23,17 +23,20 @@ package jmetal.util;
 
 import java.io.Serializable;
 
-
 /**
  * jMetal exception class
  */
 public class JMException extends Exception implements Serializable {
-  
-  /**
-   * Constructor
-   * @param Error message
-   */
-  public JMException (String message){
-     super(message);      
-  } // JmetalException
+
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Constructor
+	 * 
+	 * @param Error
+	 *            message
+	 */
+	public JMException(String message) {
+		super(message);
+	} // JmetalException
 }

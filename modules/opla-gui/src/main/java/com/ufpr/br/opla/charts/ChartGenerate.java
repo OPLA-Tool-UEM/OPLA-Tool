@@ -4,21 +4,21 @@
  */
 package com.ufpr.br.opla.charts;
 
-import com.ufpr.br.opla.configuration.GuiFile;
-import com.ufpr.br.opla.configuration.UserHome;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.swing.JFrame;
+
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.data.xy.XYDataItem;
+
+import com.ufpr.br.opla.configuration.GuiFile;
+import com.ufpr.br.opla.configuration.UserHome;
 
 /**
  *

@@ -21,7 +21,7 @@
 
 package jmetal.operators.mutation;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import jmetal.util.Configuration;
 import jmetal.util.JMException;
@@ -38,14 +38,14 @@ public class MutationFactory {
    * @return the operator
    * @throws JMException 
    */
-	public static Mutation getMutationOperator(String name, HashMap parameters) throws JMException{
+	public static Mutation getMutationOperator(String name, Map<String, Object> parameters) throws JMException{
 		 
 	    	if (name.equalsIgnoreCase("PLAFeatureMutation"))
 			      return new PLAFeatureMutation(parameters);
 		    else
 		    {
 		    	Configuration.logger_.severe("Operator '" + name + "' not found ");
-		    	Class cls = java.lang.String.class;
+		    	Class<?> cls = java.lang.String.class;
 		    	String name2 = cls.getName() ;    
 		    	throw new JMException("Exception in " + name2 + ".getMutationOperator()") ;
 		    }

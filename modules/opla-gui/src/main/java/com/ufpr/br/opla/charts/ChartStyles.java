@@ -5,6 +5,7 @@
 package com.ufpr.br.opla.charts;
 
 import java.awt.BasicStroke;
+
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.Plot;

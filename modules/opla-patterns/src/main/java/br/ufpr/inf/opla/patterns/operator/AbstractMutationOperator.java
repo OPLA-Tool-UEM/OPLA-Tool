@@ -1,8 +1,8 @@
 package br.ufpr.inf.opla.patterns.operator;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 import org.apache.log4j.LogManager;
@@ -22,9 +22,11 @@ import jmetal.util.JMException;
 
 public abstract class AbstractMutationOperator extends Mutation {
 
-    public static final Logger LOGGER = LogManager.getLogger(DesignPatternsAndPLAMutationOperator.class);
+	private static final long serialVersionUID = 1L;
 
-    public AbstractMutationOperator(HashMap<String, Object> parameters) {
+	public static final Logger LOGGER = LogManager.getLogger(DesignPatternsAndPLAMutationOperator.class);
+
+    public AbstractMutationOperator(Map<String, Object> parameters) {
         super(parameters);
     }
 

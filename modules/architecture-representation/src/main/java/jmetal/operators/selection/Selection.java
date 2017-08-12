@@ -21,7 +21,7 @@
 
 package jmetal.operators.selection;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import jmetal.core.Operator;
 
@@ -30,7 +30,9 @@ import jmetal.core.Operator;
  */
 public abstract class Selection extends Operator {
 
-	public Selection(HashMap<String, Object> parameters) {
+	private static final long serialVersionUID = 1L;
+
+	public Selection(Map<String, Object> parameters) {
 	  super(parameters);
   }
 } // Selection

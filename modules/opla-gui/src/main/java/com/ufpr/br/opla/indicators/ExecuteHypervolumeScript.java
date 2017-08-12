@@ -1,12 +1,13 @@
 package com.ufpr.br.opla.indicators;
 
 
-import com.ufpr.br.opla.configuration.UserHome;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import com.ufpr.br.opla.configuration.UserHome;
 
 /*
  * To change this template, choose Tools | Templates and open the template in

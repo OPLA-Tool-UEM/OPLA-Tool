@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import arquitetura.io.ReaderConfig;
 import br.ufpr.inf.opla.patterns.factory.MutationOperatorFactory;
@@ -76,8 +77,8 @@ public class NSGAII_OPLA_PLAThenDPM {
             System.exit(1);
         }
 
-        HashMap parameters; // Operator parameters
-        parameters = new HashMap();
+        Map<String, Object> parameters; // Operator parameters
+        parameters = new HashMap<>();
         parameters.put("probability", mutationProbability_);
         Mutation designPatternMutation = MutationOperatorFactory.create("DesignPatternsMutationOperator", parameters);
         Mutation plaMutation = MutationOperatorFactory.create("PLAMutation", parameters);
@@ -140,7 +141,7 @@ public class NSGAII_OPLA_PLAThenDPM {
         algorithm.setInputParameter("maxEvaluations", maxEvaluations_ / 2);
 
         // Mutation and Crossover
-        parameters = new HashMap();
+        parameters = new HashMap<>();
         parameters.put("probability", crossoverProbability_);
         crossover = CrossoverFactory.getCrossoverOperator("PLACrossover", parameters);
 

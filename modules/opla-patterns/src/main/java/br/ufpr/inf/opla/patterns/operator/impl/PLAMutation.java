@@ -8,10 +8,10 @@ package br.ufpr.inf.opla.patterns.operator.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -47,7 +47,9 @@ import jmetal.util.PseudoRandom;
  */
 public class PLAMutation extends AbstractMutationOperator {
 
-    public PLAMutation(HashMap<String, Object> parameters) {
+	private static final long serialVersionUID = 1L;
+
+	public PLAMutation(Map<String, Object> parameters) {
         super(parameters);
     }
 

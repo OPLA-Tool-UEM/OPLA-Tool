@@ -5,7 +5,7 @@
  */
 package br.ufpr.inf.opla.patterns.operator.impl;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import br.ufpr.inf.opla.patterns.operator.AbstractMutationOperator;
 import br.ufpr.inf.opla.patterns.strategies.designpatternselection.DesignPatternSelectionStrategy;
@@ -18,10 +18,12 @@ import jmetal.core.Solution;
  */
 public class PLAMutationThenDesignPatternsMutationOperator extends AbstractMutationOperator {
 
-    private final PLAMutation pLAMutation;
+	private static final long serialVersionUID = 1L;
+
+	private final PLAMutation pLAMutation;
     private final DesignPatternMutationOperator designPatternMutationOperator;
 
-    public PLAMutationThenDesignPatternsMutationOperator(HashMap<String, Object> parameters, ScopeSelectionStrategy scopeSelectionStrategy, DesignPatternSelectionStrategy designPatternSelectionStrategy) {
+    public PLAMutationThenDesignPatternsMutationOperator(Map<String, Object> parameters, ScopeSelectionStrategy scopeSelectionStrategy, DesignPatternSelectionStrategy designPatternSelectionStrategy) {
         super(parameters);
         pLAMutation = new PLAMutation(parameters);
         designPatternMutationOperator = new DesignPatternMutationOperator(parameters, scopeSelectionStrategy, designPatternSelectionStrategy);

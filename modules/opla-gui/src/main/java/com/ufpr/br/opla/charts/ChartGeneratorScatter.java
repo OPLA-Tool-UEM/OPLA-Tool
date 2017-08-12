@@ -10,10 +10,13 @@ import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.annotations.XYTitleAnnotation;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.TickUnitSource;
 import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
@@ -24,8 +27,6 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.RectangleAnchor;
 import org.jfree.ui.RectangleEdge;
-import org.jfree.chart.annotations.XYTitleAnnotation;
-import org.jfree.chart.axis.TickUnitSource;
 
 public class ChartGeneratorScatter {
 

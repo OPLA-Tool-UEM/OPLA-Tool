@@ -22,7 +22,7 @@
 package jmetal.operators.crossover;
 
 
-import java.util.HashMap;
+import java.util.Map;
 
 import jmetal.util.Configuration;
 import jmetal.util.JMException;
@@ -41,7 +41,7 @@ public class CrossoverFactory {
    */
   
 	
-	public static Crossover getCrossoverOperator(String name, HashMap parameters) throws JMException {
+	public static Crossover getCrossoverOperator(String name, Map<String, Object> parameters) throws JMException {
 	    if (name.equalsIgnoreCase("PLACrossover"))
 		      return new PLACrossover2(parameters);
 	    else {

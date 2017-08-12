@@ -60,7 +60,6 @@ import com.ufpr.br.opla.utils.Time;
 import com.ufpr.br.opla.utils.Utils;
 import com.ufpr.br.opla.utils.Validators;
 
-import arquitetura.helpers.LogConfiguration;
 import arquitetura.io.FileUtils;
 import br.ufpr.dinf.gres.loglog.Level;
 import br.ufpr.dinf.gres.loglog.LogLog;
@@ -81,6 +80,8 @@ import results.Execution;
  */
 public class StartUp extends javax.swing.JFrame {
 	
+	private static final long serialVersionUID = 1L;
+
 	private org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(StartUp.class);
 	private LogLog VIEW_LOG = Logger.getLogger();
 
@@ -1590,11 +1591,11 @@ public class StartUp extends javax.swing.JFrame {
 				new Object[][] { { null, null, null, null }, { null, null, null, null }, { null, null, null, null },
 						{ null, null, null, null }, { null, null, null, null } },
 				new String[] { "id", "name", "algorithm", "Created at" }) {
-			Class[] types = new Class[] { java.lang.Integer.class, java.lang.String.class, java.lang.Object.class,
+			Class<?>[] types = new Class<?>[] { java.lang.Integer.class, java.lang.String.class, java.lang.Object.class,
 					java.lang.String.class };
 			boolean[] canEdit = new boolean[] { false, false, false, false };
 
-			public Class getColumnClass(int columnIndex) {
+			public Class<?> getColumnClass(int columnIndex) {
 				return types[columnIndex];
 			}
 
@@ -2787,8 +2788,8 @@ public class StartUp extends javax.swing.JFrame {
 
 	private void btnGenerateChartActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnGenerateChartActionPerformed
 		String referenceExp = null;
-		List<JCheckBox> allChecks = new ArrayList();
-		List<JCheckBox> checkeds = new ArrayList();
+		List<JCheckBox> allChecks = new ArrayList<>();
+		List<JCheckBox> checkeds = new ArrayList<>();
 		HashMap<String, String> experimentToAlgorithmUsed = new HashMap<>();
 
 		for (Object comp : panelFunctionExecutionsSelecteds.getComponents()) {
