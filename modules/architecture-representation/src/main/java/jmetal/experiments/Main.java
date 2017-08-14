@@ -54,7 +54,7 @@ public class Main {
                                   JMException, SecurityException, IOException, 
                                   IllegalArgumentException, IllegalAccessException, 
                                   ClassNotFoundException {
-    Problem problem;         // The problem to solve
+    Problem problem = null;         // The problem to solve
     Algorithm algorithm ;         // The algorithm to use
 
     QualityIndicator indicators ; // Object to get quality indicators
@@ -66,7 +66,6 @@ public class Main {
     String paretoFrontFile = "" ;
 
     indicators = null ;
-    problem = null ;
 
     if (args.length == 0) { //
       System.err.println("Sintax error. Usage:") ;

@@ -180,15 +180,9 @@ public abstract class Element implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		// String classss = getClass().toString();
-		
 		String objClass = obj.getClass().toString();
-		// System.out.println(objClass);
-
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
 		if (!getClass().toString().equals(objClass.toString()))
 			return false;
 		Element other = (Element) obj;

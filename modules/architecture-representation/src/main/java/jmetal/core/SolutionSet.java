@@ -173,7 +173,7 @@ public class SolutionSet implements Serializable {
 	 * @param comparator
 	 *            <code>Comparator</code> used to compare solutions.
 	 * @return The best Solution attending to the comparator or <code>null<code>
-	 * if the SolutionSet is empty
+	 *         if the SolutionSet is empty
 	 */
 	public Solution best(Comparator<Solution> comparator) {
 		int indexBest = indexBest(comparator);
@@ -224,8 +224,7 @@ public class SolutionSet implements Serializable {
 	 * @param comparator
 	 *            <code>Comparator</code> used to compare solutions.
 	 * @return The worst Solution attending to the comparator or
-	 *         <code>null<code>
-	 * if the SolutionSet is empty
+	 *         <code>null<code> if the SolutionSet is empty
 	 */
 	public Solution worst(Comparator<Solution> comparator) {
 
@@ -314,12 +313,10 @@ public class SolutionSet implements Serializable {
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
 			BufferedWriter bw = new BufferedWriter(osw);
 
-			int numberOfVariables = solutionsList_.get(0)
-					.getDecisionVariables().length;
+			int numberOfVariables = solutionsList_.get(0).getDecisionVariables().length;
 			for (int i = 0; i < solutionsList_.size(); i++) {
 				for (int j = 0; j < numberOfVariables; j++) {
-					bw.write(((Architecture) solutionsList_.get(i)
-							.getDecisionVariables()[j]).getName());
+					bw.write(((Architecture) solutionsList_.get(i).getDecisionVariables()[j]).getName());
 					// bw.write(((Architecture)
 					// solutionsList_.get(i).getDecisionVariables()[j]).getNumber());
 					// bw.write(solutionsList_.get(i).getDecisionVariables()[j].toString()
@@ -343,8 +340,7 @@ public class SolutionSet implements Serializable {
 		System.out.println("Number of solutions: " + solutionsList_.size());
 		for (int i = 0; i < solutionsList_.size(); i++) {
 			for (int j = 0; j < numberOfVariables; j++) {
-				Architecture arch = (Architecture) solutionsList_.get(i)
-						.getDecisionVariables()[j];
+				Architecture arch = (Architecture) solutionsList_.get(i).getDecisionVariables()[j];
 				String pathToSave = path;
 				arch.save(arch, pathToSave, String.valueOf(i));
 			}
@@ -359,10 +355,7 @@ public class SolutionSet implements Serializable {
 			BufferedWriter bw = new BufferedWriter(osw);
 
 			bw.write("Number of solutions: " + solutionsList_.size());
-			int numberOfVariables = solutionsList_.get(0)
-					.getDecisionVariables().length;
-			int contClass = 0;
-			int contIntfs = 0;
+			int numberOfVariables = solutionsList_.get(0).getDecisionVariables().length;
 			for (int i = 0; i < solutionsList_.size(); i++) {
 				for (int j = 0; j < numberOfVariables; j++) {
 					bw.newLine();
@@ -371,8 +364,7 @@ public class SolutionSet implements Serializable {
 					bw.newLine();
 					bw.write("Solution: " + i);
 					bw.newLine();
-					Architecture arch = (Architecture) solutionsList_.get(i)
-							.getDecisionVariables()[j];
+					Architecture arch = (Architecture) solutionsList_.get(i).getDecisionVariables()[j];
 
 					for (Concern concern : arch.getAllConcerns()) {
 						bw.newLine();
@@ -381,49 +373,38 @@ public class SolutionSet implements Serializable {
 
 					bw.newLine();
 					bw.newLine();
-					bw.write("Number of Packages: "
-							+ arch.getAllPackages().size());
+					bw.write("Number of Packages: " + arch.getAllPackages().size());
 					bw.newLine();
 
 					bw.newLine();
-					bw.write("Number of variabilities: "
-							+ arch.getAllVariabilities().size());
+					bw.write("Number of variabilities: " + arch.getAllVariabilities().size());
 
 					bw.newLine();
 					bw.newLine();
-					bw.write("Number of interfaces: "
-							+ arch.getAllInterfaces().size());
+					bw.write("Number of interfaces: " + arch.getAllInterfaces().size());
 					bw.newLine();
 					bw.newLine();
-					bw.write("Number of classes: "
-							+ arch.getAllClasses().size());
+					bw.write("Number of classes: " + arch.getAllClasses().size());
 					bw.newLine();
 					bw.newLine();
 					bw.write("Number of DependencyInterElementRelationships: "
-							+ arch.getRelationshipHolder().getAllDependencies()
-									.size());
+							+ arch.getRelationshipHolder().getAllDependencies().size());
 					bw.newLine();
 					bw.newLine();
 					bw.write("Number of AbstractionInterElementRelationships: "
-							+ arch.getRelationshipHolder().getAllAbstractions()
-									.size());
+							+ arch.getRelationshipHolder().getAllAbstractions().size());
 					bw.newLine();
 					bw.newLine();
 					bw.write("Number of GeneralizationsRelationships: "
-							+ arch.getRelationshipHolder()
-									.getAllGeneralizations().size());
+							+ arch.getRelationshipHolder().getAllGeneralizations().size());
 					bw.newLine();
 					bw.newLine();
 					bw.write("Number of AssociationsRelationships: "
-							+ arch.getRelationshipHolder()
-									.getAllAssociationsRelationships().size());
+							+ arch.getRelationshipHolder().getAllAssociationsRelationships().size());
 					bw.newLine();
 					bw.write("Number of AssociationClasses: "
-							+ arch.getRelationshipHolder()
-									.getAllAssociationsClass().size());
+							+ arch.getRelationshipHolder().getAllAssociationsClass().size());
 					bw.newLine();
-					contIntfs = 0;
-					contClass = 0;
 				}
 			}
 
@@ -516,7 +497,7 @@ public class SolutionSet implements Serializable {
 		if (this.size() == 0) {
 			return null;
 		}
-		System.out.println(size()+"e "+get(0).numberOfObjectives());
+		System.out.println(size() + "e " + get(0).numberOfObjectives());
 		double[][] objectives;
 		objectives = new double[size()][get(0).numberOfObjectives()];
 		for (int i = 0; i < size(); i++) {
@@ -560,8 +541,7 @@ public class SolutionSet implements Serializable {
 			BufferedWriter bw = new BufferedWriter(osw);
 
 			bw.write("Number of solutions: " + solutionsList_.size());
-			int numberOfVariables = solutionsList_.get(0)
-					.getDecisionVariables().length;
+			int numberOfVariables = solutionsList_.get(0).getDecisionVariables().length;
 
 			for (int i = 0; i < solutionsList_.size(); i++) {
 				for (int j = 0; j < numberOfVariables; j++) {
@@ -571,8 +551,7 @@ public class SolutionSet implements Serializable {
 					bw.newLine();
 					bw.write("Solution: " + i);
 					bw.newLine();
-					Architecture arch = (Architecture) solutionsList_.get(i)
-							.getDecisionVariables()[j];
+					Architecture arch = (Architecture) solutionsList_.get(i).getDecisionVariables()[j];
 					bw.newLine();
 					bw.newLine();
 
@@ -581,29 +560,24 @@ public class SolutionSet implements Serializable {
 					bw.newLine();
 					bw.write("ELEGANCE: " + metrics.evaluateElegance(arch));
 					bw.newLine();
-					bw.write("NAC - ELEGANCE: "
-							+ metrics.evaluateNACElegance(arch));
+					bw.write("NAC - ELEGANCE: " + metrics.evaluateNACElegance(arch));
 					bw.newLine();
-					bw.write("ATMR - ELEGANCE: "
-							+ metrics.evaluateATMRElegance(arch));
+					bw.write("ATMR - ELEGANCE: " + metrics.evaluateATMRElegance(arch));
 					bw.newLine();
-					bw.write("EC - ELEGANCE: "
-							+ metrics.evaluateECElegance(arch));
+					bw.write("EC - ELEGANCE: " + metrics.evaluateECElegance(arch));
 					bw.newLine();
 					bw.newLine();
 
 					bw.write("--------  PLA EXTENSIBILITY -----------");
 					bw.newLine();
 					bw.newLine();
-					bw.write("PLA EXTENSIBILITY: "
-							+ metrics.evaluatePLAExtensibility(arch));
+					bw.write("PLA EXTENSIBILITY: " + metrics.evaluatePLAExtensibility(arch));
 					bw.newLine();
 
 					bw.write("-----  FEATURE-DRIVEN METRICS ----------");
 					bw.newLine();
 					bw.newLine();
-					bw.write("MSI AGGREGATION: "
-							+ metrics.evaluateMSIFitness(arch));
+					bw.write("MSI AGGREGATION: " + metrics.evaluateMSIFitness(arch));
 					bw.newLine();
 					bw.write("CDAC: " + metrics.evaluateCDAC(arch));
 					bw.newLine();
@@ -630,59 +604,49 @@ public class SolutionSet implements Serializable {
 					bw.write("------  CONVENTIONAL METRICS -----------");
 					bw.newLine();
 					bw.newLine();
-					bw.write("MAC AGGREGATION: "
-							+ metrics.evaluateMACFitness(arch));
+					bw.write("MAC AGGREGATION: " + metrics.evaluateMACFitness(arch));
 					bw.newLine();
 					bw.write("Cohesion: " + metrics.evaluateCohesion(arch));
 					bw.newLine();
-					bw.write("Mean Dep Comps: "
-							+ metrics.evaluateMeanDepComps(arch));
+					bw.write("Mean Dep Comps: " + metrics.evaluateMeanDepComps(arch));
 					bw.newLine();
-					bw.write("Mean Num Ops: "
-							+ metrics.evaluateMeanNumOps(arch));
+					bw.write("Mean Num Ops: " + metrics.evaluateMeanNumOps(arch));
 					bw.newLine();
-					bw.write("Sum Classes DepIn: "
-							+ metrics.evaluateSumClassesDepIn(arch));
+					bw.write("Sum Classes DepIn: " + metrics.evaluateSumClassesDepIn(arch));
 					bw.newLine();
-					bw.write("Sum Classes DepOut: "
-							+ metrics.evaluateSumClassesDepOut(arch));
+					bw.write("Sum Classes DepOut: " + metrics.evaluateSumClassesDepOut(arch));
 					bw.newLine();
 					bw.write("Sum DepIn: " + metrics.evaluateSumDepIn(arch));
 					bw.newLine();
 					bw.write("Sum DepOut: " + metrics.evaluateSumDepOut(arch));
 					bw.newLine();
 					bw.newLine();
-					
+
 					bw.write("------  ACOMP METRICS -----------");
 					bw.newLine();
 					bw.newLine();
-					bw.write("Sum DepIn: "
-							+ metrics.evaluateSumDepIn(arch));
+					bw.write("Sum DepIn: " + metrics.evaluateSumDepIn(arch));
 					bw.newLine();
 					bw.write("Sum DepOut: " + metrics.evaluateSumDepOut(arch));
 					bw.newLine();
 					bw.newLine();
-					
-					
+
 					bw.write("------  ACLASS METRICS -----------");
 					bw.newLine();
 					bw.newLine();
-					bw.write("Sum DepIn: "
-							+ metrics.evaluateSumDepIn(arch));
+					bw.write("Sum DepIn: " + metrics.evaluateSumDepIn(arch));
 					bw.newLine();
 					bw.write("Sum DepOut: " + metrics.evaluateSumDepOut(arch));
 					bw.newLine();
 					bw.newLine();
-					
-					
+
 					bw.write("------  TAM METRICS -----------");
 					bw.newLine();
 					bw.newLine();
 					bw.write("Mean Num OPs: " + metrics.evaluateMeanNumOps(arch));
 					bw.newLine();
 					bw.newLine();
-					
-					
+
 					bw.write("------  COE METRICS -----------");
 					bw.newLine();
 					bw.newLine();
@@ -691,7 +655,6 @@ public class SolutionSet implements Serializable {
 					bw.write("Lcc: " + metrics.evaluateLCC(arch));
 					bw.newLine();
 					bw.newLine();
-					
 
 					bw.write("------  DC METRICS -----------");
 					bw.newLine();
@@ -702,9 +665,9 @@ public class SolutionSet implements Serializable {
 					bw.newLine();
 					bw.write("CDAO: " + metrics.evaluateCDAO(arch));
 					bw.newLine();
-					
+
 					bw.newLine();
-					
+
 					bw.write("------  EC METRICS -----------");
 					bw.newLine();
 					bw.newLine();
@@ -714,9 +677,9 @@ public class SolutionSet implements Serializable {
 					bw.newLine();
 					bw.write("OOBC: " + metrics.evaluateOOBC(arch));
 					bw.newLine();
-					
+
 					bw.newLine();
-					
+
 				}
 			}
 
@@ -735,20 +698,16 @@ public class SolutionSet implements Serializable {
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
 			BufferedWriter bw = new BufferedWriter(osw);
 
-			int numberOfVariables = solutionsList_.get(0)
-					.getDecisionVariables().length;
+			int numberOfVariables = solutionsList_.get(0).getDecisionVariables().length;
 			bw.write("MSI    MAC     Extensibility       Elegance");
 			bw.newLine();
 			MetricsEvaluation metrics = new MetricsEvaluation();
 
 			for (int i = 0; i < solutionsList_.size(); i++) {
 				for (int j = 0; j < numberOfVariables; j++) {
-					Architecture arch = (Architecture) solutionsList_.get(i)
-							.getDecisionVariables()[j];
-					bw.write(metrics.evaluateMSIFitness(arch) + "  "
-							+ metrics.evaluateMACFitness(arch) + "  "
-							+ metrics.evaluatePLAExtensibility(arch) + "  "
-							+ metrics.evaluateElegance(arch));
+					Architecture arch = (Architecture) solutionsList_.get(i).getDecisionVariables()[j];
+					bw.write(metrics.evaluateMSIFitness(arch) + "  " + metrics.evaluateMACFitness(arch) + "  "
+							+ metrics.evaluatePLAExtensibility(arch) + "  " + metrics.evaluateElegance(arch));
 					// bw.write(solutionsList_.get(i).toString());
 					bw.newLine();
 				}
@@ -762,8 +721,7 @@ public class SolutionSet implements Serializable {
 		}
 	} // printAllMetricsToFile
 
-	public void printDiscardedSolutionsToFile(int[] discardedSolutions,
-			String path) {
+	public void printDiscardedSolutionsToFile(int[] discardedSolutions, String path) {
 		try {
 			/* Open the file */
 			FileOutputStream fos = new FileOutputStream(path);
@@ -788,4 +746,3 @@ public class SolutionSet implements Serializable {
 	} // printDiscardedSolutionsToFile
 
 } // SolutionSet
-

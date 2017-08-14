@@ -68,7 +68,7 @@ public class ProblemFactory {
       base += "cec2009Competition.";    
     
     try {
-      Class problemClass = Class.forName(base+name);
+      Class<?> problemClass = Class.forName(base+name);
       Constructor [] constructors = problemClass.getConstructors();
       int i = 0;
       //find the constructor
@@ -113,7 +113,7 @@ public class ProblemFactory {
       base += "cec2009Competition.";
 
     try {
-      Class problemClass = Class.forName(base+name);
+      Class<?> problemClass = Class.forName(base+name);
       //Constructor constructors = problemClass.getConstructor(Properties.class);
       Constructor constructors = problemClass.getConstructor(Properties.class);
 

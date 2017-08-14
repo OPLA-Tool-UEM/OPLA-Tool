@@ -1843,11 +1843,11 @@ public class StartUp extends javax.swing.JFrame {
 				new Object[][] { { null, null, null, null }, { null, null, null, null }, { null, null, null, null },
 						{ null, null, null, null }, { null, null, null, null } },
 				new String[] { "id", "name", "algorithm", "Created at" }) {
-			Class[] types = new Class[] { java.lang.Integer.class, java.lang.String.class, java.lang.Object.class,
+			Class<?>[] types = new Class[] { java.lang.Integer.class, java.lang.String.class, java.lang.Object.class,
 					java.lang.String.class };
 			boolean[] canEdit = new boolean[] { false, false, false, false };
 
-			public Class getColumnClass(int columnIndex) {
+			public Class<?> getColumnClass(int columnIndex) {
 				return types[columnIndex];
 			}
 
