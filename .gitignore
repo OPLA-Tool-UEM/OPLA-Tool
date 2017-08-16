@@ -3,3 +3,4 @@
 .settings/
 /target/
 **/nb-configuration.xml
+/opla-persistence/target/

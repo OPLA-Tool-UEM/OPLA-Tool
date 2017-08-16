@@ -7,7 +7,7 @@
     <artifactId>opla-desktop-view</artifactId>
     <packaging>jar</packaging>
 
-    <name>..: Opla-Desktop-View :..</name>
+    <name>..:: OPLA - Desktop View ::..</name>
 
     <parent>
         <groupId>br.ufpr.dinf.gres</groupId>
@@ -34,6 +34,15 @@
             <groupId>br.ufpr.dinf.gres</groupId>
             <artifactId>opla-core</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>br.ufpr.dinf.gres</groupId>
+            <artifactId>opla-persistence</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
     </dependencies>
 </project>

@@ -5,7 +5,7 @@
 	<artifactId>architecture-representation</artifactId>
 	<packaging>jar</packaging>
 
-	<name>..: Opla-Architecture-Representation :..</name>
+	<name>..:: OPLA - Architecture Representation ::..</name>
 
 	<parent>
 		<groupId>br.ufpr.dinf.gres</groupId>
