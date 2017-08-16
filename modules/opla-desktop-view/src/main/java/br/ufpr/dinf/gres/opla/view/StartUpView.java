@@ -8,6 +8,8 @@ import org.apache.log4j.Logger;
 import arquitetura.io.ReaderConfig;
 import br.ufpr.dinf.gres.opla.view.util.AlertUtil;
 import br.ufpr.dinf.gres.opla.view.util.UserHome;
+import java.io.IOException;
+import java.util.logging.Level;
 
 /**
  *
@@ -15,9 +17,9 @@ import br.ufpr.dinf.gres.opla.view.util.UserHome;
  */
 public class StartUpView extends javax.swing.JFrame {
 
-	private static final long serialVersionUID = 1L;
-	
-	private static final Logger LOGGER = Logger.getLogger(StartUpView.class);
+    private static final long serialVersionUID = 1L;
+
+    private static final Logger LOGGER = Logger.getLogger(StartUpView.class);
 
     public StartUpView() {
         initComponents();
@@ -71,15 +73,21 @@ public class StartUpView extends javax.swing.JFrame {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
             StartUpView view = new StartUpView();
             java.awt.EventQueue.invokeLater(() -> {
-                view.configureApplicationFile();
-                view.setPathDatabase();
-                view.carregarPrincipal();
-                view.setVisible(false);
+                try {
+                    view.configureApplicationFile();
+                    view.setPathDatabase();
+                    view.carregarPrincipal();
+                    view.setVisible(false);
+                } catch (Exception ex) {
+                    LOGGER.error(ex);
+                    System.exit(0);
+                }
             });
 
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             LOGGER.error(ex);
             AlertUtil.showMessage(AlertUtil.DEFAULT_ALERT_ERROR);
+            System.exit(0);
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -95,7 +103,7 @@ public class StartUpView extends javax.swing.JFrame {
         database.Database.setPathToDB(UserHome.getPathToDb());
     }
 
-    private void carregarPrincipal() {
+    private void carregarPrincipal() throws Exception {
         Principal principal = new Principal();
         principal.configureView();
         principal.setVisible(true);

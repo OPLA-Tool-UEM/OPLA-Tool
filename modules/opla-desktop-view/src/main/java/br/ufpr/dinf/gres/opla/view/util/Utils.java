@@ -2,6 +2,7 @@ package br.ufpr.dinf.gres.opla.view.util;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
+import com.sun.org.apache.bcel.internal.classfile.Constant;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -43,7 +44,7 @@ public class Utils {
                     len = in.read(buffer);
                 }
             }
-            LOGGER.info("File copy from {0} to {1}" + new Object[]{source, target});
+            LOGGER.info(String.format("File copy from %s to %s", source, target));
         } catch (Exception e) {
             LOGGER.error(e);
             throw e;
@@ -133,29 +134,36 @@ public class Utils {
         return "-";
     }
 
-    public static void createPathsOplaTool() throws Exception {
-        try {
-            UserHome.createDefaultOplaPathIfDontExists();
+    public static void createPathsOplaTool() {
+        UserHome.createDefaultOplaPathIfDontExists();
 
-            Path pathApplicationYaml = Paths.get(UserHome.getOplaUserHome() + "application.yaml");
+        Path pathApplicationYaml = Paths.get(UserHome.getOplaUserHome() + Constants.APPLICATION_YAML_NAME);
 
-            if (!Files.exists(pathApplicationYaml)) {
-                arquitetura.io.FileUtils.copy("config/application.yaml", pathApplicationYaml);
-            }
+        if (!Files.exists(pathApplicationYaml)) {
+            arquitetura.io.FileUtils.copy(Constants.CONFIG_PATH + Constants.FILE_SEPARATOR + Constants.APPLICATION_YAML_NAME, pathApplicationYaml);
+        }
 
-            UserHome.createProfilesPath();
-            UserHome.createTemplatePath();
-            UserHome.createOutputPath();
-            UserHome.createTempPath(); // Manipulation dir. apenas para uso intenro      
+        UserHome.createProfilesPath();
+        UserHome.createTemplatePath();
+        UserHome.createOutputPath();
+        UserHome.createTempPath(); // Manipulation dir. apenas para uso intenro      
 
-        } catch (Exception ex) {
-            LOGGER.info(ex);
-            throw ex;
+    }
+
+    public static void createDataBaseIfNotExists() {
+        Path pathDb = Paths.get(UserHome.getPathToDb());
+        LOGGER.info("Verificando diretorio da base de dados");
+
+        if (!Files.exists(pathDb)) {
+            String pathEmptyDbFile = Constants.PATH_EMPTY_DB + Constants.FILE_SEPARATOR + Constants.EMPTY_DB_NAME;
+            arquitetura.io.FileUtils.createDirectory(Paths.get(UserHome.getOplaUserHome() + Constants.DB_DIR));
+            arquitetura.io.FileUtils.copy(pathEmptyDbFile, pathDb);
+        } else {
+            LOGGER.info("Banco de dados já configurado");
         }
     }
 
     // TODO Ajustar quando refatorar database
-    
 //    public static String generateFileName(String id) {
 //        String algorithmName = db.Database.getAlgoritmUsedToExperimentId(id);
 //        String plaName = db.Database.getPlaUsedToExperimentId(id);
@@ -170,5 +178,4 @@ public class Utils {
 //
 //        return fileName.toString();
 //    }
-
 }

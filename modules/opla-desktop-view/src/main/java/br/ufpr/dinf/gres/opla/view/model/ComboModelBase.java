@@ -13,13 +13,13 @@ import javax.swing.event.ListDataListener;
  * @param <T>
  */
 @SuppressWarnings("rawtypes")
-public class AbstractComboModel<T> implements ComboBoxModel {
+public class ComboModelBase<T> implements ComboBoxModel {
 
     private List<T> list;
 
     private T selected;
 
-    public AbstractComboModel(T[] type) {
+    public ComboModelBase(T[] type) {
         if (type != null) {
             this.list = Arrays.asList(type);
         }

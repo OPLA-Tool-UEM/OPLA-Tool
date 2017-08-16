@@ -17,105 +17,105 @@ import br.ufpr.dinf.gres.opla.view.util.AlertUtil;
 import br.ufpr.dinf.gres.opla.view.util.UserHome;
 
 /**
-*
-* @author elf
-*/
+ *
+ * @author elf
+ */
 public class ManagerApplicationConfig {
 
-	private static final Logger LOGGER = Logger.getLogger(ManagerApplicationConfig.class);
-	
-	private DirTarget configurationFile;
+    private static final Logger LOGGER = Logger.getLogger(ManagerApplicationConfig.class);
 
-	public ManagerApplicationConfig() {
-		try {
-			Yaml yaml = new Yaml();
-			Path path = Paths.get(UserHome.getConfigurationFilePath());
-			this.configurationFile = yaml.loadAs(new FileInputStream(path.toFile()), DirTarget.class);
-		} catch (FileNotFoundException ex) {
-			LOGGER.warn(ex);
-			AlertUtil.showMessage(AlertUtil.DEFAULT_ALERT_ERROR);
-		}
-	}
+    private DirTarget configurationFile;
 
-	public DirTarget getConfig() {
-		return this.configurationFile;
-	}
+    public ManagerApplicationConfig() {
+        try {
+            Yaml yaml = new Yaml();
+            Path path = Paths.get(UserHome.getConfigurationFilePath());
+            this.configurationFile = yaml.loadAs(new FileInputStream(path.toFile()), DirTarget.class);
+        } catch (FileNotFoundException ex) {
+            LOGGER.warn(ex);
+            AlertUtil.showMessage(AlertUtil.DEFAULT_ALERT_ERROR);
+        }
+    }
 
-	public void updatePathToProfileSmarty(String newpath) throws IOException {
-		this.configurationFile.setPathToProfile(newpath);
-		updateConfigurationFile();
-	}
+    public DirTarget getConfig() {
+        return this.configurationFile;
+    }
 
-	public void updatePathToProfilePatterns(String newpath) throws IOException {
-		this.configurationFile.setPathToProfilePatterns(newpath);
-		updateConfigurationFile();
-	}
+    public void updatePathToProfileSmarty(String newpath) throws IOException {
+        this.configurationFile.setPathToProfile(newpath);
+        updateConfigurationFile();
+    }
 
-	public void updatePathToProfileRelationships(String newpath) throws IOException {
-		this.configurationFile.setPathToProfileRelationships(newpath);
-		updateConfigurationFile();
-	}
+    public void updatePathToProfilePatterns(String newpath) throws IOException {
+        this.configurationFile.setPathToProfilePatterns(newpath);
+        updateConfigurationFile();
+    }
 
-	public void updatePathToProfileConcerns(String newpath) throws IOException {
-		this.configurationFile.setPathToProfileConcern(newpath);
-		updateConfigurationFile();
-	}
+    public void updatePathToProfileRelationships(String newpath) throws IOException {
+        this.configurationFile.setPathToProfileRelationships(newpath);
+        updateConfigurationFile();
+    }
 
-	public void updatePathToTemplateFiles(String newpath) throws IOException {
-		this.configurationFile.setPathToTemplateModelsDirectory(newpath);
-		updateConfigurationFile();
-	}
+    public void updatePathToProfileConcerns(String newpath) throws IOException {
+        this.configurationFile.setPathToProfileConcern(newpath);
+        updateConfigurationFile();
+    }
 
-	public void updatePathToExportModels(String newpath) throws IOException {
-		this.configurationFile.setDirectoryToExportModels(newpath);
-		updateConfigurationFile();
-	}
+    public void updatePathToTemplateFiles(String newpath) throws IOException {
+        this.configurationFile.setPathToTemplateModelsDirectory(newpath);
+        updateConfigurationFile();
+    }
 
-	public void updatePathToSaveModels(String path) throws IOException {
-		this.configurationFile.setDirectoryToSaveModels(path);
-		updateConfigurationFile();
+    public void updatePathToExportModels(String newpath) throws IOException {
+        this.configurationFile.setDirectoryToExportModels(newpath);
+        updateConfigurationFile();
+    }
 
-	}
+    public void updatePathToSaveModels(String path) throws IOException {
+        this.configurationFile.setDirectoryToSaveModels(path);
+        updateConfigurationFile();
 
-	/**
-	 * Retorna os profile que estão em uso ou seja, não "" nem null.
-	 *
-	 */
-	public String getProfilesUsed() {
-		StringBuilder profiles = new StringBuilder();
+    }
 
-		if (StringUtils.isNotBlank(this.configurationFile.getPathToProfile())) {
-			profiles.append(this.configurationFile.getPathToProfile());
-			profiles.append(",");
-		}
+    /**
+     * Retorna os profile que estão em uso ou seja, não "" nem null.
+     *
+     */
+    public String getProfilesUsed() {
+        StringBuilder profiles = new StringBuilder();
 
-		if (StringUtils.isNotBlank(this.configurationFile.getPathToProfileConcern())) {
-			profiles.append(this.configurationFile.getPathToProfileConcern());
-			profiles.append(",");
-		}
+        if (StringUtils.isNotBlank(this.configurationFile.getPathToProfile())) {
+            profiles.append(this.configurationFile.getPathToProfile());
+            profiles.append(",");
+        }
 
-		if (StringUtils.isNotBlank(this.configurationFile.getPathToProfilePatterns())) {
-			profiles.append(this.configurationFile.getPathToProfilePatterns());
-			profiles.append(",");
-		}
+        if (StringUtils.isNotBlank(this.configurationFile.getPathToProfileConcern())) {
+            profiles.append(this.configurationFile.getPathToProfileConcern());
+            profiles.append(",");
+        }
 
-		if (StringUtils.isNotBlank(this.configurationFile.getPathToProfileRelationships())) {
-			profiles.append(this.configurationFile.getPathToProfileRelationships());
-		}
-		return profiles.toString();
-	}
+        if (StringUtils.isNotBlank(this.configurationFile.getPathToProfilePatterns())) {
+            profiles.append(this.configurationFile.getPathToProfilePatterns());
+            profiles.append(",");
+        }
 
-	private void updateConfigurationFile() throws IOException {
-		try {
-			final DumperOptions options = new DumperOptions();
-			options.setDefaultFlowStyle(DumperOptions.FlowStyle.FLOW);
-			options.setPrettyFlow(true);
-			
-			Yaml yaml = new Yaml(options);
-			yaml.dump(configurationFile, new FileWriter(Paths.get(UserHome.getConfigurationFilePath()).toFile()));
-		} catch (IOException ex) {
-			LOGGER.warn("Ops, Error when try update configuration file:", ex);
-			throw ex;
-		}
-	}
+        if (StringUtils.isNotBlank(this.configurationFile.getPathToProfileRelationships())) {
+            profiles.append(this.configurationFile.getPathToProfileRelationships());
+        }
+        return profiles.toString();
+    }
+
+    private void updateConfigurationFile() throws IOException {
+        try {
+            final DumperOptions options = new DumperOptions();
+            options.setDefaultFlowStyle(DumperOptions.FlowStyle.FLOW);
+            options.setPrettyFlow(true);
+
+            Yaml yaml = new Yaml(options);
+            yaml.dump(configurationFile, new FileWriter(Paths.get(UserHome.getConfigurationFilePath()).toFile()));
+        } catch (IOException ex) {
+            LOGGER.warn("Ops, Error when try update configuration file:", ex);
+            throw ex;
+        }
+    }
 }
