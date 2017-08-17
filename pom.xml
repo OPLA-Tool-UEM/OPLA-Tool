@@ -149,26 +149,31 @@
 				<groupId>org.uml2.profile.l3</groupId>
 				<artifactId>uml2-profilel3</artifactId>
 				<version>1.0.0</version>
+				<optional>true</optional>
 			</dependency>
 			<dependency>
 				<groupId>org.uml2.profile.l2</groupId>
 				<artifactId>uml2-profilel2</artifactId>
 				<version>1.0.0</version>
+				<optional>true</optional>
 			</dependency>
 			<dependency>
 				<groupId>org.uml2.uml24</groupId>
 				<artifactId>uml2-uml24</artifactId>
 				<version>4.0.0</version>
+				<optional>true</optional>
 			</dependency>
 			<dependency>
 				<groupId>org.uml2.common</groupId>
 				<artifactId>uml2-common</artifactId>
 				<version>1.7.0</version>
+				<optional>true</optional>
 			</dependency>
 			<dependency>
 				<groupId>org.uml2.types</groupId>
 				<artifactId>uml2-types</artifactId>
 				<version>1.0.0</version>
+				<scope></scope>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.birt.runtime</groupId>

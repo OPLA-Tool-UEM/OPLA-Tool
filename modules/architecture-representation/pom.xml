@@ -39,22 +39,32 @@
 		<dependency>
 			<groupId>org.uml2.profile.l3</groupId>
 			<artifactId>uml2-profilel3</artifactId>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/uml2-profilel3-1.0.0.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>org.uml2.profile.l2</groupId>
 			<artifactId>uml2-profilel2</artifactId>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/uml2-profilel2-1.0.0.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>org.uml2.uml24</groupId>
 			<artifactId>uml2-uml24</artifactId>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/uml2-uml24-4.0.0.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>org.uml2.common</groupId>
 			<artifactId>uml2-common</artifactId>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/uml2-common-1.7.0.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>org.uml2.types</groupId>
 			<artifactId>uml2-types</artifactId>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/uml2-types-1.0.0.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.birt.runtime</groupId>
@@ -63,6 +73,8 @@
 		<dependency>
 			<groupId>org.uml2.resources4</groupId>
 			<artifactId>uml2-resources</artifactId>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/uml2-resources-4.0.0.jar</systemPath>
 		</dependency>
 		<!-- Others Dependencies -->
 		<dependency>
