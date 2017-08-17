@@ -8,8 +8,6 @@ import org.apache.log4j.Logger;
 import arquitetura.io.ReaderConfig;
 import br.ufpr.dinf.gres.opla.view.util.AlertUtil;
 import br.ufpr.dinf.gres.opla.view.util.UserHome;
-import java.io.IOException;
-import java.util.logging.Level;
 
 /**
  *
@@ -18,7 +16,7 @@ import java.util.logging.Level;
 public class StartUpView extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 1L;
-
+		
     private static final Logger LOGGER = Logger.getLogger(StartUpView.class);
 
     public StartUpView() {

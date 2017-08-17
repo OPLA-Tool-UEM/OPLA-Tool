@@ -1,27 +1,29 @@
 package br.ufpr.dinf.gres.opla.view;
 
-import arquitetura.io.FileUtils;
-import br.ufpr.dinf.gres.loglog.LogLog;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import javax.swing.text.DefaultCaret;
 
+import org.apache.commons.lang.StringUtils;
+
+import arquitetura.io.FileUtils;
+import br.ufpr.dinf.gres.loglog.LogLog;
 import br.ufpr.dinf.gres.loglog.Logger;
 import br.ufpr.dinf.gres.opla.config.ApplicationFile;
-import br.ufpr.dinf.gres.opla.entity.Experiment;
 import br.ufpr.dinf.gres.opla.view.log.LogListener;
 import br.ufpr.dinf.gres.opla.view.model.AlgorithmComboModel;
+import br.ufpr.dinf.gres.opla.view.model.TableModelExecution;
 import br.ufpr.dinf.gres.opla.view.model.TableModelExperiment;
+import br.ufpr.dinf.gres.opla.view.model.TableModelMapObjectiveName;
 import br.ufpr.dinf.gres.opla.view.util.AlertUtil;
 import br.ufpr.dinf.gres.opla.view.util.Constants;
 import br.ufpr.dinf.gres.opla.view.util.OSUtils;
 import br.ufpr.dinf.gres.opla.view.util.UserHome;
 import br.ufpr.dinf.gres.opla.view.util.Utils;
 import br.ufpr.dinf.gres.persistence.dao.ExperimentDAO;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import org.apache.commons.lang.StringUtils;
 
 /**
  *
@@ -34,6 +36,10 @@ public class Principal extends AbstractPrincipalJFrame {
     private static final LogLog VIEW_LOGGER = Logger.getLogger();
     
     private TableModelExperiment tmExperiments = new TableModelExperiment();
+    private TableModelExperiment tmExecExperiments = new TableModelExperiment();
+    private TableModelExecution tmExecution = new TableModelExecution();
+    private TableModelMapObjectiveName tmMapObjectiveSolution = new TableModelMapObjectiveName();
+    
     private ExperimentDAO experimentDAO = new ExperimentDAO();
 
     public Principal() {
@@ -47,6 +53,9 @@ public class Principal extends AbstractPrincipalJFrame {
     private void defineModels() {
         this.cbAlgothm.setModel(new AlgorithmComboModel());
         this.tbExperiments.setModel(tmExperiments);
+        this.tbExecutions.setModel(tmExecExperiments);
+        this.tbRuns.setModel(tmExecution);
+        this.tbObjectiveSolution.setModel(tmMapObjectiveSolution);
     }
 
     public void configureView() throws IOException, Exception {
@@ -65,11 +74,6 @@ public class Principal extends AbstractPrincipalJFrame {
         configureLocaleToExportModels();
         copyBinHypervolume();
         configureDb();
-        
-       tmExperiments.setLista(experimentDAO.getAll());
-       tbExperiments.setModel(tmExperiments);
-       tbExperiments.updateUI();
-        
     }
 
     private void configPaths() {

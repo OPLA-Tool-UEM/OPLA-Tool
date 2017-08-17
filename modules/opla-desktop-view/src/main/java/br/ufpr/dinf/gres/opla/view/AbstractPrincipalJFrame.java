@@ -1,25 +1,30 @@
 package br.ufpr.dinf.gres.opla.view;
 
-import arquitetura.io.FileUtils;
-import br.ufpr.dinf.gres.opla.config.ManagerApplicationConfig;
-import br.ufpr.dinf.gres.opla.view.util.Constants;
-import br.ufpr.dinf.gres.opla.view.util.UserHome;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
+
 import org.apache.commons.lang.StringUtils;
+
+import arquitetura.io.FileUtils;
+import br.ufpr.dinf.gres.opla.config.ManagerApplicationConfig;
+import br.ufpr.dinf.gres.opla.view.util.Constants;
+import br.ufpr.dinf.gres.opla.view.util.UserHome;
 
 /**
  *
  * @author Fernando
  */
 public abstract class AbstractPrincipalJFrame extends javax.swing.JFrame {
+
+    private static final long serialVersionUID = 1L;
 
     private org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(Principal.class);
 
