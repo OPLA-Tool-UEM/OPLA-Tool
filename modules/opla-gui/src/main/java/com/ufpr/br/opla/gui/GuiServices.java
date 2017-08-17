@@ -103,7 +103,7 @@ public class GuiServices {
 
 			Path target = Paths.get(UserHome.getOplaUserHome() + "profiles" + FILE_SEPARATOR + profileRelationshipName);
 			FileUtils.copy(PROFILES_DIR + profileRelationshipName, target);
-			
+
 			fieldRelationships.setText(target.toString());
 			fieldRelationships.updateUI();
 			config.updatePathToProfileRelationships(target.toString());
@@ -112,8 +112,8 @@ public class GuiServices {
 
 	/**
 	 * Directory with templates for models. This files SHOULD NOT BE CHANGED.
-	 * 
-	 * 
+	 *
+	 *
 	 * @param fieldTemplate
 	 */
 	public void configureTemplates(JTextField fieldTemplate) {
@@ -123,7 +123,7 @@ public class GuiServices {
 			Path pathSimplesUml = Paths.get(UserHome.getOplaUserHome() + "templates" + FILE_SEPARATOR + "simples.uml");
 			Path pathSimplesDi = Paths.get(UserHome.getOplaUserHome() + "templates" + GuiServices.FILE_SEPARATOR + "simples.di");
 			Path pathSimplesNotation = Paths.get(UserHome.getOplaUserHome() + "templates" + GuiServices.FILE_SEPARATOR + "simples.notation");
-			
+
 			FileUtils.copy("templates/simples.uml", pathSimplesUml);
 			FileUtils.copy("templates/simples.di", pathSimplesDi);
 			FileUtils.copy("templates/simples.notation", pathSimplesNotation);
@@ -170,7 +170,7 @@ public class GuiServices {
 
 	/**
 	 * Initialize comboObjectiveFunctions with function of given exepriemntID
-	 * 
+	 *
 	 * @param comboObjectiveFunctions
 	 * @param experimentId
 	 */
@@ -230,18 +230,21 @@ public class GuiServices {
 	/**
 	 * Copy hybervolume binary to oplatool bins directory if OS isn't Windows
 	 * (eca).
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	public void copyBinHypervolume() throws Exception {
 		if (!OsUtils.isWindows()) {
-			String target = UserHome.getOplaUserHome() + "bins";
-			Path path = Paths.get(target + FILE_SEPARATOR + "hv");
-			if(!Files.exists(path)){
-				FileUtils.createDirectory(path);
+			Path targetDir = Paths.get(UserHome.getOplaUserHome() + "bins");
+			if(!Files.exists(targetDir)){
+				FileUtils.createDirectory(targetDir);
 			}
-			Utils.copy("hv", target + FILE_SEPARATOR + "hv");
+			
+			Path targetHvFile = Paths.get(targetDir + FILE_SEPARATOR + "hv");
+			if(!Files.exists(targetHvFile)){
+				FileUtils.copy("hv", targetHvFile);
+			}
 		}
 	}
 }
