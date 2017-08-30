@@ -293,6 +293,12 @@
 			<id>bintray-godoy-opla-tool</id>
 			<url>http://dl.bintray.com/godoy/opla-tool</url>
 			<name>LogLog-Repository</name>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
 		</repository>
 		<repository>
 			<id>jitpack.io</id>
