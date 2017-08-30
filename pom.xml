@@ -294,10 +294,10 @@
 			<url>http://dl.bintray.com/godoy/opla-tool</url>
 			<name>LogLog-Repository</name>
 			<snapshots>
-				<enabled>true</enabled>
+				<enabled>false</enabled>
 			</snapshots>
 			<releases>
-				<enabled>false</enabled>
+				<enabled>true</enabled>
 			</releases>
 		</repository>
 		<repository>
