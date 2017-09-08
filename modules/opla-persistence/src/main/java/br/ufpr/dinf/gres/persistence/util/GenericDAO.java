@@ -53,4 +53,8 @@ public abstract class GenericDAO<T extends Serializable> {
 	public void excluir(Integer id) {
 		excluir(getById(id));
 	}
+	
+	public EntityManager getEntityManager() {
+		return emf;
+	}
 }

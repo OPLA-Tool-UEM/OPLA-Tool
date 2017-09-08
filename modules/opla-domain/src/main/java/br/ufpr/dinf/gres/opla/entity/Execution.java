@@ -1,5 +1,6 @@
 package br.ufpr.dinf.gres.opla.entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -16,12 +17,14 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "executions")
-public class Execution {
+public class Execution implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@Column(name = "id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 
 	@Column(name = "description", columnDefinition = "TEXT")
 	private String description;
@@ -33,11 +36,11 @@ public class Execution {
 	@Column(name = "time")
 	private String time;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

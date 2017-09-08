@@ -8,6 +8,8 @@ import org.apache.log4j.Logger;
 import arquitetura.io.ReaderConfig;
 import br.ufpr.dinf.gres.opla.view.util.AlertUtil;
 import br.ufpr.dinf.gres.opla.view.util.UserHome;
+import java.awt.Component;
+import java.util.logging.Level;
 
 /**
  *
@@ -16,20 +18,13 @@ import br.ufpr.dinf.gres.opla.view.util.UserHome;
 public class StartUpView extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 1L;
-		
+
     private static final Logger LOGGER = Logger.getLogger(StartUpView.class);
 
     public StartUpView() {
         initComponents();
-        progressbarconfig();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-    }
-
-    private void progressbarconfig() {
-        loadProgressBar.setIndeterminate(true);
-        loadProgressBar.setString("Carregando configurações");
-        loadProgressBar.setStringPainted(true);
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -39,6 +34,12 @@ public class StartUpView extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        loadProgressBar.setToolTipText("Carregando Configurações");
+        loadProgressBar.setIndeterminate(true);
+        loadProgressBar.setName(""); // NOI18N
+        loadProgressBar.setString("Carregando Configurações");
+        loadProgressBar.setStringPainted(true);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("OPLA-Tool  - 1.0.0");
@@ -70,19 +71,11 @@ public class StartUpView extends javax.swing.JFrame {
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
             StartUpView view = new StartUpView();
-            java.awt.EventQueue.invokeLater(() -> {
-                try {
-                    view.configureApplicationFile();
-                    view.setPathDatabase();
-                    view.carregarPrincipal();
-                    view.setVisible(false);
-                } catch (Exception ex) {
-                    LOGGER.error(ex);
-                    System.exit(0);
-                }
-            });
-
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            view.configureApplicationFile();
+            view.setPathDatabase();
+            view.carregarPrincipal();
+            view.setVisible(false);
+        } catch (Exception ex) {
             LOGGER.error(ex);
             AlertUtil.showMessage(AlertUtil.DEFAULT_ALERT_ERROR);
             System.exit(0);

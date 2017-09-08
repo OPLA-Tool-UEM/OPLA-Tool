@@ -44,6 +44,13 @@
   </Layout>
   <SubComponents>
     <Component class="javax.swing.JProgressBar" name="loadProgressBar">
+      <Properties>
+        <Property name="toolTipText" type="java.lang.String" value="Carregando Configura&#xe7;&#xf5;es"/>
+        <Property name="indeterminate" type="boolean" value="true"/>
+        <Property name="name" type="java.lang.String" value="" noResource="true"/>
+        <Property name="string" type="java.lang.String" value="Carregando Configura&#xe7;&#xf5;es"/>
+        <Property name="stringPainted" type="boolean" value="true"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>

@@ -13,6 +13,7 @@ import arquitetura.io.FileUtils;
 import br.ufpr.dinf.gres.loglog.LogLog;
 import br.ufpr.dinf.gres.loglog.Logger;
 import br.ufpr.dinf.gres.opla.config.ApplicationFile;
+import br.ufpr.dinf.gres.opla.entity.Experiment;
 import br.ufpr.dinf.gres.opla.view.log.LogListener;
 import br.ufpr.dinf.gres.opla.view.model.AlgorithmComboModel;
 import br.ufpr.dinf.gres.opla.view.model.TableModelExecution;
@@ -23,7 +24,9 @@ import br.ufpr.dinf.gres.opla.view.util.Constants;
 import br.ufpr.dinf.gres.opla.view.util.OSUtils;
 import br.ufpr.dinf.gres.opla.view.util.UserHome;
 import br.ufpr.dinf.gres.opla.view.util.Utils;
+import br.ufpr.dinf.gres.persistence.dao.ExecutionDAO;
 import br.ufpr.dinf.gres.persistence.dao.ExperimentDAO;
+import java.util.List;
 
 /**
  *
@@ -32,21 +35,25 @@ import br.ufpr.dinf.gres.persistence.dao.ExperimentDAO;
 public class Principal extends AbstractPrincipalJFrame {
 
     private static final long serialVersionUID = 1L;
-    private org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(Principal.class);
+    private final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(Principal.class);
     private static final LogLog VIEW_LOGGER = Logger.getLogger();
-    
-    private TableModelExperiment tmExperiments = new TableModelExperiment();
-    private TableModelExperiment tmExecExperiments = new TableModelExperiment();
-    private TableModelExecution tmExecution = new TableModelExecution();
-    private TableModelMapObjectiveName tmMapObjectiveSolution = new TableModelMapObjectiveName();
-    
-    private ExperimentDAO experimentDAO = new ExperimentDAO();
+
+    private final TableModelExperiment tmExperiments = new TableModelExperiment();
+    private final TableModelExperiment tmExecExperiments = new TableModelExperiment();
+    private final TableModelExecution tmExecution = new TableModelExecution();
+    private final TableModelMapObjectiveName tmMapObjectiveSolution = new TableModelMapObjectiveName();
+
+    private final ExperimentDAO experimentDAO;
+    private final ExecutionDAO executionDAO;
 
     public Principal() {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setExtendedState(MAXIMIZED_BOTH);
         defineModels();
+        this.experimentDAO = new ExperimentDAO();
+        this.executionDAO = new ExecutionDAO();
+        resultExecutionsLoad();
     }
 
     @SuppressWarnings("unchecked")
@@ -1678,5 +1685,15 @@ public class Principal extends AbstractPrincipalJFrame {
     private void enableMutationOption() {
         jsMutation.setEnabled(ckMutation.isSelected());
         enableAllChecks(panelMutations, ckMutation.isSelected());
+    }
+
+    private void resultExecutionsLoad() {
+        List<Experiment> experiments =  experimentDAO.findAllOrdened();
+        this.tmExecExperiments.setLista(experiments);
+        tbExecutions.setModel(tmExecExperiments);
+        tbExecutions.updateUI();
+        this.tmExperiments.setLista(experiments);
+        tbExperiments.setModel(tmExperiments);
+        tbExperiments.updateUI();
     }
 }
