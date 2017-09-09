@@ -5,6 +5,8 @@
  */
 package br.ufpr.inf.opla.patterns.main;
 
+import br.ufpr.inf.opla.patterns.repositories.ArchitectureRepository;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,14 +16,38 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import br.ufpr.inf.opla.patterns.repositories.ArchitectureRepository;
-
 /**
- *
  * @author giovaniguizzo
  */
 public class NSGAII_OPLA_Multithread {
 
+    private static final String[] PLAS = {
+            ArchitectureRepository.MICROWAVE_OVEN_SOFTWARE,
+            ArchitectureRepository.AGM,
+            ArchitectureRepository.SERVICE_AND_SUPPORT_SYSTEM,
+            ArchitectureRepository.MOBILE_MEDIA
+    };
+    private static final String[] MUTATION_OPERATORS = {
+            "DesignPatternsMutationOperator",
+            "DesignPatternsAndPLAMutationOperator",
+            "PLAMutation",
+            "PLAMutationThenDesignPatternsMutationOperator"
+    };
+    private static final int[] POPULATION_SIZE = {
+            50,
+            100,
+            200
+    };
+    private static final int[] MAX_EVALUATIONS = {
+            3000,
+            30000,
+            300000
+    };
+    private static final double[] MUTATION_PROBABILITY = {
+            0.1,
+            0.5,
+            0.9
+    };
     private static volatile int MAX_THREADS = 4;
     private static volatile int RUNNING_THREADS = 0;
     private static volatile List<Thread> ACTIVE_THREADS;
@@ -29,38 +55,6 @@ public class NSGAII_OPLA_Multithread {
     private static volatile List<String> FINISHED_THREADS;
     private static volatile Thread console;
     private static volatile String consoleToken = ">";
-
-    private static final String[] PLAS = {
-        ArchitectureRepository.MICROWAVE_OVEN_SOFTWARE,
-        ArchitectureRepository.AGM,
-        ArchitectureRepository.SERVICE_AND_SUPPORT_SYSTEM,
-        ArchitectureRepository.MOBILE_MEDIA
-    };
-
-    private static final String[] MUTATION_OPERATORS = {
-        "DesignPatternsMutationOperator",
-        "DesignPatternsAndPLAMutationOperator",
-        "PLAMutation",
-        "PLAMutationThenDesignPatternsMutationOperator"
-    };
-
-    private static final int[] POPULATION_SIZE = {
-        50,
-        100,
-        200
-    };
-
-    private static final int[] MAX_EVALUATIONS = {
-        3000,
-        30000,
-        300000
-    };
-
-    private static final double[] MUTATION_PROBABILITY = {
-        0.1,
-        0.5,
-        0.9
-    };
 
     private static synchronized void initialize() {
         ACTIVE_THREADS = new ArrayList<>();

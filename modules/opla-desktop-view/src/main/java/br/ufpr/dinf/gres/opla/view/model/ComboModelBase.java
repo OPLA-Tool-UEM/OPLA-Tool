@@ -1,16 +1,13 @@
 package br.ufpr.dinf.gres.opla.view.model;
 
+import javax.swing.*;
+import javax.swing.event.ListDataListener;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.swing.ComboBoxModel;
-import javax.swing.event.ListDataListener;
-
 /**
- *
- * @author Fernando
- * 
  * @param <T>
+ * @author Fernando
  */
 @SuppressWarnings("rawtypes")
 public class ComboModelBase<T> implements ComboBoxModel {
@@ -25,15 +22,15 @@ public class ComboModelBase<T> implements ComboBoxModel {
         }
     }
 
-	@Override
-	@SuppressWarnings("unchecked")
-    public void setSelectedItem(Object anItem) {
-        selected = (T) anItem;
-    }
-
     @Override
     public T getSelectedItem() {
         return selected;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public void setSelectedItem(Object anItem) {
+        selected = (T) anItem;
     }
 
     @Override

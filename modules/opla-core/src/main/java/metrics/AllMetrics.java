@@ -16,88 +16,86 @@ public class AllMetrics {
     private List<Dc> dc = new ArrayList<>();
     private List<Ec> ec = new ArrayList<>();
 
-    
 
     public List<Conventional> getConventional() {
-	return conventional;
+        return conventional;
     }
 
     public void setConventional(List<Conventional> conventional) {
-	this.conventional = conventional;
+        this.conventional = conventional;
     }
 
     public List<Elegance> getElegance() {
-	return elegance;
+        return elegance;
     }
 
     public void setElegance(List<Elegance> elegance) {
-	this.elegance = elegance;
+        this.elegance = elegance;
     }
 
     public List<FeatureDriven> getFeatureDriven() {
-	return featureDriven;
+        return featureDriven;
     }
 
     public void setFeatureDriven(List<FeatureDriven> featureDriven) {
-	this.featureDriven = featureDriven;
+        this.featureDriven = featureDriven;
     }
 
     public List<PLAExtensibility> getPlaExtensibility() {
-	return plaExtensibility;
+        return plaExtensibility;
     }
 
     public void setPlaExtensibility(List<PLAExtensibility> plaExtensibility) {
-	this.plaExtensibility = plaExtensibility;
+        this.plaExtensibility = plaExtensibility;
     }
 
-	public List<Acomp> getAcomp() {
-		return acomp;
-	}
+    public List<Acomp> getAcomp() {
+        return acomp;
+    }
 
-	public void setAcomp(List<Acomp> acomp) {
-		this.acomp = acomp;
-	}
+    public void setAcomp(List<Acomp> acomp) {
+        this.acomp = acomp;
+    }
 
-	public List<Aclass> getAclass() {
-		return aclass;
-	}
+    public List<Aclass> getAclass() {
+        return aclass;
+    }
 
-	public void setAclass(List<Aclass> aclass) {
-		this.aclass = aclass;
-	}
+    public void setAclass(List<Aclass> aclass) {
+        this.aclass = aclass;
+    }
 
-	public List<Tam> getTam() {
-		return tam;
-	}
+    public List<Tam> getTam() {
+        return tam;
+    }
 
-	public void setTam(List<Tam> tam) {
-		this.tam = tam;
-	}
+    public void setTam(List<Tam> tam) {
+        this.tam = tam;
+    }
 
-	public List<Coe> getCoe() {
-		return coe;
-	}
+    public List<Coe> getCoe() {
+        return coe;
+    }
 
-	public void setCoe(List<Coe> coe) {
-		this.coe = coe;
-	}
+    public void setCoe(List<Coe> coe) {
+        this.coe = coe;
+    }
 
-	public List<Dc> getDc() {
-		return dc;
-	}
+    public List<Dc> getDc() {
+        return dc;
+    }
 
-	public void setDc(List<Dc> dc) {
-		this.dc = dc;
-	}
+    public void setDc(List<Dc> dc) {
+        this.dc = dc;
+    }
 
-	public List<Ec> getEc() {
-		return ec;
-	}
+    public List<Ec> getEc() {
+        return ec;
+    }
 
-	public void setEc(List<Ec> ec) {
-		this.ec = ec;
-	}
-    
-    
+    public void setEc(List<Ec> ec) {
+        this.ec = ec;
+    }
+
 
 }

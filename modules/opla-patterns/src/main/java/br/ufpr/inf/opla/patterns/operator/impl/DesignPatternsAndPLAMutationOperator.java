@@ -1,18 +1,18 @@
 package br.ufpr.inf.opla.patterns.operator.impl;
 
-import java.util.Map;
-
 import br.ufpr.inf.opla.patterns.operator.AbstractMutationOperator;
 import br.ufpr.inf.opla.patterns.strategies.designpatternselection.DesignPatternSelectionStrategy;
 import br.ufpr.inf.opla.patterns.strategies.scopeselection.ScopeSelectionStrategy;
-import jmetal.core.Solution;
-import jmetal.util.PseudoRandom;
+import jmetal4.core.Solution;
+import jmetal4.util.PseudoRandom;
+
+import java.util.Map;
 
 public class DesignPatternsAndPLAMutationOperator extends AbstractMutationOperator {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private final PLAMutation pLAMutation;
+    private final PLAMutation pLAMutation;
     private final DesignPatternMutationOperator designPatternMutationOperator;
 
     public DesignPatternsAndPLAMutationOperator(Map<String, Object> parameters, ScopeSelectionStrategy scopeSelectionStrategy, DesignPatternSelectionStrategy designPatternSelectionStrategy) {

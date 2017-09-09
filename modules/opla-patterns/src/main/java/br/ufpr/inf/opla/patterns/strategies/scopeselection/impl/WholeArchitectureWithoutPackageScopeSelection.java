@@ -5,16 +5,15 @@
  */
 package br.ufpr.inf.opla.patterns.strategies.scopeselection.impl;
 
-import java.util.Iterator;
-
 import arquitetura.representation.Architecture;
 import arquitetura.representation.Element;
 import arquitetura.representation.Patterns;
 import br.ufpr.inf.opla.patterns.models.Scope;
 import br.ufpr.inf.opla.patterns.strategies.scopeselection.ScopeSelectionStrategy;
 
+import java.util.Iterator;
+
 /**
- *
  * @author giovaniguizzo
  */
 public class WholeArchitectureWithoutPackageScopeSelection implements ScopeSelectionStrategy {
@@ -23,7 +22,7 @@ public class WholeArchitectureWithoutPackageScopeSelection implements ScopeSelec
     public Scope selectScope(Architecture architecture, Patterns pattern) {
         Scope scope = new Scope();
         scope.getElements().addAll(architecture.getElements());
-        for (Iterator<Element> it = scope.getElements().iterator(); it.hasNext();) {
+        for (Iterator<Element> it = scope.getElements().iterator(); it.hasNext(); ) {
             Element element = it.next();
             if (element instanceof arquitetura.representation.Package) {
                 it.remove();

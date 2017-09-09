@@ -1,13 +1,13 @@
 package br.ufpr.inf.opla.patterns.models;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 import arquitetura.representation.Element;
 import br.ufpr.inf.opla.patterns.designpatterns.DesignPattern;
 import br.ufpr.inf.opla.patterns.models.ps.PS;
 import br.ufpr.inf.opla.patterns.models.ps.PSPLA;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class Scope {
 
@@ -42,7 +42,7 @@ public class Scope {
         }
         return psList;
     }
-    
+
     public List<PSPLA> getPSsPLA(DesignPattern designPattern) {
         List<PSPLA> psPLAList = new ArrayList<>();
         for (PSPLA tempPSPLA : psPLA) {

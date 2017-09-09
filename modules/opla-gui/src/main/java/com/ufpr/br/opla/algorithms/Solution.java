@@ -5,15 +5,14 @@
 package com.ufpr.br.opla.algorithms;
 
 /**
- *
  * @author elf
  */
 public class Solution {
-    
+
     private String id;
     private String name;
-    
-    public Solution(String id, String name){
+
+    public Solution(String id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -22,14 +21,14 @@ public class Solution {
         return id;
     }
 
-   
+
     public String getName() {
         return name;
     }
-    
+
     @Override
-    public String toString(){
+    public String toString() {
         return this.name;
     }
-    
+
 }

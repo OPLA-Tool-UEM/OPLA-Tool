@@ -9,7 +9,6 @@ import results.Execution;
 import results.Experiment;
 
 /**
- * 
  * @author elf
  */
 public class Acomp extends Metrics {
@@ -18,36 +17,36 @@ public class Acomp extends Metrics {
     private Double sumDepOut;
 
     public Acomp(String idSolution, Execution execution, Experiment experiement) {
-	super.setExecution(execution);
-	super.setExperiement(experiement);
-	super.setIdSolution(idSolution);
+        super.setExecution(execution);
+        super.setExperiement(experiement);
+        super.setIdSolution(idSolution);
     }
 
 
     public Double getSumDepIn() {
-	return sumDepIn;
+        return sumDepIn;
     }
 
     public void setSumDepIn(Double sumDepIn) {
-	this.sumDepIn = sumDepIn;
+        this.sumDepIn = sumDepIn;
     }
 
     public Double getSumDepOut() {
-	return sumDepOut;
+        return sumDepOut;
     }
 
     public void setSumDepOut(Double sumDepOut) {
-	this.sumDepOut = sumDepOut;
+        this.sumDepOut = sumDepOut;
     }
 
 
     @Override
     public String toString() {
-	return "Acomp [sumDepIn=" + sumDepIn + ", sumDepOut=" + sumDepOut + "]";
+        return "Acomp [sumDepIn=" + sumDepIn + ", sumDepOut=" + sumDepOut + "]";
     }
-    
-    public Double evaluateAcompFitness(){
-	return this.sumDepIn + this.sumDepOut;
-    }    
+
+    public Double evaluateAcompFitness() {
+        return this.sumDepIn + this.sumDepOut;
+    }
 
 }

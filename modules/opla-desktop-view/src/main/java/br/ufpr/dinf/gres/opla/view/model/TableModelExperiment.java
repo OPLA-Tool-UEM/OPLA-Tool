@@ -4,7 +4,6 @@ import br.ufpr.dinf.gres.opla.entity.Experiment;
 
 
 /**
- *
  * @author Fernando
  */
 public class TableModelExperiment extends TableModelBase<Experiment> {

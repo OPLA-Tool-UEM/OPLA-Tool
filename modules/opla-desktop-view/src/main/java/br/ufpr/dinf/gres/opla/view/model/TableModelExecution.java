@@ -3,7 +3,6 @@ package br.ufpr.dinf.gres.opla.view.model;
 import br.ufpr.dinf.gres.opla.entity.Execution;
 
 /**
- *
  * @author Fernando
  */
 public class TableModelExecution extends TableModelBase<Execution> {

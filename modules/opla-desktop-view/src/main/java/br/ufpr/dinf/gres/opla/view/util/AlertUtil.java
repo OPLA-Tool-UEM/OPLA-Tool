@@ -1,9 +1,8 @@
 package br.ufpr.dinf.gres.opla.view.util;
 
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 /**
- *
  * @author Fernando
  */
 public class AlertUtil {

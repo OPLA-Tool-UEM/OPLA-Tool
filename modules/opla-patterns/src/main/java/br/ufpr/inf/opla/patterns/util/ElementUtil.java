@@ -1,28 +1,21 @@
 package br.ufpr.inf.opla.patterns.util;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.commons.collections4.CollectionUtils;
-
 import arquitetura.representation.Class;
-import arquitetura.representation.Concern;
-import arquitetura.representation.Element;
-import arquitetura.representation.Interface;
-import arquitetura.representation.Method;
+import arquitetura.representation.*;
 import arquitetura.representation.relationship.AssociationEnd;
 import arquitetura.representation.relationship.AssociationRelationship;
 import arquitetura.representation.relationship.Relationship;
 import br.ufpr.inf.opla.patterns.comparators.SubElementsComparator;
 import br.ufpr.inf.opla.patterns.designpatterns.Adapter;
 import br.ufpr.inf.opla.patterns.list.MethodArrayList;
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.util.*;
 
 public class ElementUtil {
+
+    private ElementUtil() {
+    }
 
     public static List<Relationship> getRelationships(Element element) {
         ArrayList<Relationship> relationships = new ArrayList<>();
@@ -470,9 +463,6 @@ public class ElementUtil {
         } else {
             return new HashSet<>();
         }
-    }
-
-    private ElementUtil() {
     }
 
 }

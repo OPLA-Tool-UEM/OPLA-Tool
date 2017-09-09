@@ -1,5 +1,13 @@
 package br.ufpr.dinf.gres.opla.config;
 
+import arquitetura.io.DirTarget;
+import br.ufpr.dinf.gres.opla.view.util.AlertUtil;
+import br.ufpr.dinf.gres.opla.view.util.UserHome;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -7,17 +15,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Yaml;
-
-import arquitetura.io.DirTarget;
-import br.ufpr.dinf.gres.opla.view.util.AlertUtil;
-import br.ufpr.dinf.gres.opla.view.util.UserHome;
-
 /**
- *
  * @author elf
  */
 public class ManagerApplicationConfig {
@@ -79,7 +77,6 @@ public class ManagerApplicationConfig {
 
     /**
      * Retorna os profile que estão em uso ou seja, não "" nem null.
-     *
      */
     public String getProfilesUsed() {
         StringBuilder profiles = new StringBuilder();

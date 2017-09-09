@@ -5,12 +5,6 @@
  */
 package br.ufpr.inf.opla.patterns.util;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.apache.commons.collections4.CollectionUtils;
-
 import arquitetura.helpers.UtilResources;
 import arquitetura.representation.Architecture;
 import arquitetura.representation.Class;
@@ -18,9 +12,13 @@ import arquitetura.representation.Element;
 import arquitetura.representation.Interface;
 import arquitetura.representation.relationship.Relationship;
 import br.ufpr.inf.opla.patterns.repositories.ArchitectureRepository;
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
- *
  * @author giovaniguizzo
  */
 public class AdapterUtil {

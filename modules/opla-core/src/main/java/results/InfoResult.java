@@ -9,11 +9,10 @@ package results;
 import utils.Id;
 
 /**
- *
  * @author elf
  */
 public class InfoResult {
-    
+
     private String id;
     private int isAll; // informa se é referente os dados de todas as rodadas
     private String name; // INFO_PLANAME_N (where n is number of run)
@@ -29,22 +28,22 @@ public class InfoResult {
     private Integer numberOfGeneralizations;
     private Integer numberOfassociationsClass;
     private Experiment experiement;
-    
-    public InfoResult(){
-    	this.id = Id.generateUniqueId();
+
+    public InfoResult() {
+        this.id = Id.generateUniqueId();
     }
 
     public String getListOfConcerns() {
         return listOfConcerns;
     }
-    
+
     /**
-    *  String listOfConcerns should be a string of values separated with pipes |.
-    * 
-    * Ex: concern1 | concern2 | concerns3
-    * 
-    * @param listOfConcerns 
-    */
+     * String listOfConcerns should be a string of values separated with pipes |.
+     * <p>
+     * Ex: concern1 | concern2 | concerns3
+     *
+     * @param listOfConcerns
+     */
     public void setListOfConcerns(String listOfConcerns) {
         this.listOfConcerns = listOfConcerns;
     }
@@ -119,7 +118,7 @@ public class InfoResult {
 
     public void setNumberOfassociationsClass(Integer numberOfassociationsClass) {
         this.numberOfassociationsClass = numberOfassociationsClass;
-    }  
+    }
 
     public String getName() {
         return name;
@@ -127,14 +126,14 @@ public class InfoResult {
 
     /**
      * name must be "plaName_runNumber"
-     * 
-     * Then his method will set name 
+     * <p>
+     * Then his method will set name
      * like: INFO_plaName_runNumber
-     * 
-     * @param name 
+     *
+     * @param name
      */
     public void setName(String name) {
-        this.name = "INFO_"+name;
+        this.name = "INFO_" + name;
     }
 
     public String getId() {
@@ -153,20 +152,20 @@ public class InfoResult {
         this.execution = execution;
     }
 
-	public void setIsAll(int i) {
-		this.isAll = i;
-	}
-	
-	public int getIsAll(){
-		return this.isAll;
-	}
+    public int getIsAll() {
+        return this.isAll;
+    }
 
-	public void setExperiement(Experiment experiement) {
-		this.experiement = experiement;
-	}
-	
-	public Experiment getExperiement(){
-		return this.experiement;
-	}
-    
+    public void setIsAll(int i) {
+        this.isAll = i;
+    }
+
+    public Experiment getExperiement() {
+        return this.experiement;
+    }
+
+    public void setExperiement(Experiment experiement) {
+        this.experiement = experiement;
+    }
+
 }

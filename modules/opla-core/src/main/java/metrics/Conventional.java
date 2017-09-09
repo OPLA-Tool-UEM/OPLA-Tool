@@ -9,7 +9,6 @@ import results.Execution;
 import results.Experiment;
 
 /**
- * 
  * @author elf
  */
 public class Conventional extends Metrics {
@@ -24,69 +23,73 @@ public class Conventional extends Metrics {
     private Double sumDepOut;
 
     public Conventional(String idSolution, Execution execution, Experiment experiement) {
-	super.setExecution(execution);
-	super.setExperiement(experiement);
-	super.setIdSolution(idSolution);
+        super.setExecution(execution);
+        super.setExperiement(experiement);
+        super.setIdSolution(idSolution);
     }
 
     public Double getMacAggregation() {
-	return this.meanNumOps + this.meanDepComps  + Double.valueOf(this.sumClassesDepIn) + Double.valueOf(this.sumClassesDepOut) + this.sumDepIn + this.sumDepOut + (1 / this.sumChoesion);
+        return this.meanNumOps + this.meanDepComps + Double.valueOf(this.sumClassesDepIn) + Double.valueOf(this.sumClassesDepOut) + this.sumDepIn + this.sumDepOut + (1 / this.sumChoesion);
     }
 
     public Double getSumChoesion() {
-	return sumChoesion;
+        return sumChoesion;
+    }
+
+    public void setSumChoesion(Double sumChoesion) {
+        this.sumChoesion = sumChoesion;
     }
 
     public void setSumCohesion(Double sumChoesion) {
-	this.sumChoesion = sumChoesion;
+        this.sumChoesion = sumChoesion;
     }
 
     public Double getMeanDepComps() {
-	return meanDepComps;
+        return meanDepComps;
     }
 
     public void setMeanDepComps(Double meanDepComps) {
-	this.meanDepComps = meanDepComps;
+        this.meanDepComps = meanDepComps;
     }
 
     public Double getMeanNumOps() {
-	return meanNumOps;
+        return meanNumOps;
     }
 
     public void setMeanNumOps(Double meanNumOps) {
-	this.meanNumOps = meanNumOps;
+        this.meanNumOps = meanNumOps;
     }
 
     public int getSumClassesDepIn() {
-	return sumClassesDepIn;
+        return sumClassesDepIn;
     }
 
     public void setSumClassesDepIn(int sumClassesDepIn) {
-	this.sumClassesDepIn = sumClassesDepIn;
+        this.sumClassesDepIn = sumClassesDepIn;
     }
 
     public int getSumClassesDepOut() {
-	return sumClassesDepOut;
+        return sumClassesDepOut;
     }
 
     public void setSumClassesDepOut(int sumClassesDepOut) {
-	this.sumClassesDepOut = sumClassesDepOut;
+        this.sumClassesDepOut = sumClassesDepOut;
     }
 
     public Double getSumDepIn() {
-	return sumDepIn;
+        return sumDepIn;
     }
 
     public void setSumDepIn(Double sumDepIn) {
-	this.sumDepIn = sumDepIn;
+        this.sumDepIn = sumDepIn;
     }
 
     public Double getSumDepOut() {
-	return sumDepOut;
+        return sumDepOut;
     }
 
     public void setSumDepOut(Double sumDepOut) {
-	this.sumDepOut = sumDepOut;
+        this.sumDepOut = sumDepOut;
     }
 
     public Double getCohesion() {
@@ -97,19 +100,15 @@ public class Conventional extends Metrics {
         this.cohesion = choesion;
     }
 
-    public void setSumChoesion(Double sumChoesion) {
-        this.sumChoesion = sumChoesion;
-    }
-
     @Override
     public String toString() {
-	return "Conventional [sumChoesion=" + sumChoesion + ", cohesion=" + cohesion + ", meanDepComps=" + meanDepComps
-		+ ", meanNumOps=" + meanNumOps + ", sumClassesDepIn=" + sumClassesDepIn + ", sumClassesDepOut="
-		+ sumClassesDepOut + ", sumDepIn=" + sumDepIn + ", sumDepOut=" + sumDepOut + "]";
+        return "Conventional [sumChoesion=" + sumChoesion + ", cohesion=" + cohesion + ", meanDepComps=" + meanDepComps
+                + ", meanNumOps=" + meanNumOps + ", sumClassesDepIn=" + sumClassesDepIn + ", sumClassesDepOut="
+                + sumClassesDepOut + ", sumDepIn=" + sumDepIn + ", sumDepOut=" + sumDepOut + "]";
     }
-    
-    public Double evaluateMACFitness(){
-	return this.sumClassesDepIn + this.sumClassesDepOut + this.sumDepIn + this.sumDepOut + this.cohesion;
-    }    
+
+    public Double evaluateMACFitness() {
+        return this.sumClassesDepIn + this.sumClassesDepOut + this.sumDepIn + this.sumDepOut + this.cohesion;
+    }
 
 }
