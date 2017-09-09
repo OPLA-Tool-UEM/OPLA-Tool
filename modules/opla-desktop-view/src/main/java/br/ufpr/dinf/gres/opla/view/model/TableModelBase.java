@@ -61,5 +61,9 @@ public abstract class TableModelBase<T> extends AbstractTableModel {
     public void setLista(List<T> lista) {
         this.lista = lista;
     }
+    
+    public T getValue(int index){
+        return this.lista.get(index);
+    }
 
 }

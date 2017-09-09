@@ -23,11 +23,11 @@ public abstract class GenericDAO<T extends Serializable> {
 		this.clazz = clazz;
 	}
 
-	public T getById(Integer id) {
+	public T findById(Integer id) {
 		return emf.find(clazz, id);
 	}
 
-	public List<T> getAll() {
+	public List<T> findAll() {
 		TypedQuery<T> query = emf.createQuery(" FROM " + clazz.getSimpleName(), clazz);
 		return query.getResultList();
 	}
@@ -51,7 +51,7 @@ public abstract class GenericDAO<T extends Serializable> {
 	}
 
 	public void excluir(Integer id) {
-		excluir(getById(id));
+		excluir(findById(id));
 	}
 	
 	public EntityManager getEntityManager() {

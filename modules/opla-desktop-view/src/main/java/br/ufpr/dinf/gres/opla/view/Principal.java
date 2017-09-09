@@ -53,7 +53,7 @@ public class Principal extends AbstractPrincipalJFrame {
         defineModels();
         this.experimentDAO = new ExperimentDAO();
         this.executionDAO = new ExecutionDAO();
-        resultExecutionsLoad();
+        loadExecutionsData();
     }
 
     @SuppressWarnings("unchecked")
@@ -1147,6 +1147,11 @@ public class Principal extends AbstractPrincipalJFrame {
 
             }
         ));
+        tbExecutions.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbExecutionsMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tbExecutions);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -1556,6 +1561,14 @@ public class Principal extends AbstractPrincipalJFrame {
         enableMutationOption();
     }//GEN-LAST:event_ckMutationActionPerformed
 
+    private void tbExecutionsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbExecutionsMouseClicked
+        int clicks = evt.getClickCount();
+        if (clicks == 2) {
+            Experiment experiment = tmExecExperiments.getValue(tbExecutions.getSelectedRow());
+            loadExecutionsInfo(experiment);
+        }
+    }//GEN-LAST:event_tbExecutionsMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btBrowserFeatureProfile;
@@ -1687,13 +1700,17 @@ public class Principal extends AbstractPrincipalJFrame {
         enableAllChecks(panelMutations, ckMutation.isSelected());
     }
 
-    private void resultExecutionsLoad() {
-        List<Experiment> experiments =  experimentDAO.findAllOrdened();
+    private void loadExecutionsData() {
+        List<Experiment> experiments = experimentDAO.findAllOrdened();
         this.tmExecExperiments.setLista(experiments);
         tbExecutions.setModel(tmExecExperiments);
         tbExecutions.updateUI();
         this.tmExperiments.setLista(experiments);
         tbExperiments.setModel(tmExperiments);
         tbExperiments.updateUI();
+    }
+    
+    private void loadExecutionsInfo(Experiment experiment){
+        executionDAO.findByExperiment(experiment);
     }
 }
