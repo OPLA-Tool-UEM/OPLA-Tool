@@ -3,7 +3,6 @@ package br.ufpr.dinf.gres.opla.view.util;
 import java.nio.file.FileSystems;
 
 /**
- *
  * @author Fernando
  */
 public class Constants {

@@ -8,17 +8,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- *
  * @author elf
  */
 public class Time {
 
-  public static String timeNow() {
-    return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss ").format(new Date());
-  }
-  
-  public static String convertMsToMin(long time){
-    return new SimpleDateFormat("mm:ss").format(new Date(time));
-  }
-  
+    public static String timeNow() {
+        return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss ").format(new Date());
+    }
+
+    public static String convertMsToMin(long time) {
+        return new SimpleDateFormat("mm:ss").format(new Date(time));
+    }
+
 }

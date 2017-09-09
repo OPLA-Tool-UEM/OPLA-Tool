@@ -5,27 +5,26 @@
  */
 package br.ufpr.inf.opla.patterns.indicadores;
 
+import jmetal4.qualityIndicator.util.MetricsUtil;
+
 import java.io.IOException;
 import java.text.DecimalFormat;
 
-import jmetal.qualityIndicator.util.MetricsUtil;
-
 /**
- *
  * @author giovaniguizzo
  */
 public class FormatForMe {
 
     public static void main(String[] args) throws IOException {
         String[] plas = {
-            "agm", //            "MicrowaveOvenSoftware",
-        //            "ServiceAndSupportSystem"
+                "agm", //            "MicrowaveOvenSoftware",
+                //            "ServiceAndSupportSystem"
         };
 
         String[] contexts = {
-            "PLAMutation",
-            "PLAMutationWithPatterns",
-            "OnlyPatternsMutation", //            "Original"
+                "PLAMutation",
+                "PLAMutationWithPatterns",
+                "OnlyPatternsMutation", //            "Original"
         };
 
         MetricsUtil mu = new MetricsUtil();

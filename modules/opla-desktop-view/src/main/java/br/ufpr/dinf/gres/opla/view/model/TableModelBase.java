@@ -1,13 +1,11 @@
 package br.ufpr.dinf.gres.opla.view.model;
 
-import java.util.List;
 import javax.swing.table.AbstractTableModel;
+import java.util.List;
 
 /**
- *
- * @author Fernando
- *
  * @param <T>
+ * @author Fernando
  */
 public abstract class TableModelBase<T> extends AbstractTableModel {
 

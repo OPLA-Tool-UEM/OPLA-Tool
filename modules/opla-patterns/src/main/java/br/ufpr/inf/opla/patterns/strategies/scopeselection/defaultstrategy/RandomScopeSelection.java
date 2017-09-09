@@ -1,13 +1,13 @@
 package br.ufpr.inf.opla.patterns.strategies.scopeselection.defaultstrategy;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import arquitetura.representation.Architecture;
 import arquitetura.representation.Patterns;
 import br.ufpr.inf.opla.patterns.models.Scope;
 import br.ufpr.inf.opla.patterns.strategies.scopeselection.ScopeSelectionStrategy;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class RandomScopeSelection implements ScopeSelectionStrategy {
 

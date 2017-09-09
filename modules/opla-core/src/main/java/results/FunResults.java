@@ -6,7 +6,6 @@ package results;
 import utils.Id;
 
 /**
- * 
  * @author elf`
  */
 public class FunResults {
@@ -17,56 +16,54 @@ public class FunResults {
     private Execution execution;
     private int isAll;
     private Experiment experiement;
-
-    public FunResults() {
-	this.id = Id.generateUniqueId();
-    }
-
     /**
      * Objectives are stored on a single attribute, the values are separated by
      * pipe ("|").
-     * 
      */
     private String objectives;
 
+    public FunResults() {
+        this.id = Id.generateUniqueId();
+    }
+
     public String getObjectives() {
-	return objectives;
+        return objectives;
     }
 
     /**
      * String objs should be a string of values separated with pipes |.
-     * 
+     * <p>
      * Ex: 0.19191919|0.199193393|39393993
-     * 
+     *
      * @param objs
      */
     public void setObjectives(String objs) {
-	this.objectives = objs;
+        this.objectives = objs;
     }
 
     public String getId() {
-	return this.id;
-    }
-
-    public void setExecution(Execution execution) {
-	this.execution = execution;
+        return this.id;
     }
 
     public Execution getExecution() {
-	return this.execution;
+        return this.execution;
+    }
+
+    public void setExecution(Execution execution) {
+        this.execution = execution;
     }
 
     public String getName() {
-	return this.name;
+        return this.name;
     }
 
     public void setName(String name) {
-	this.name = "FUN_" + name;
+        this.name = "FUN_" + name;
 
     }
 
     public int getIsAll() {
-	return isAll;
+        return isAll;
     }
 
     /*
@@ -75,15 +72,15 @@ public class FunResults {
      * Using int type because SQLITE don't have a boolean type
      */
     public void setIsAll(int isAll) {
-	this.isAll = isAll;
-    }
-
-    public void setExperiement(Experiment experiement) {
-	this.experiement = experiement;
+        this.isAll = isAll;
     }
 
     public Experiment getExperiement() {
-	return this.experiement;
+        return this.experiement;
+    }
+
+    public void setExperiement(Experiment experiement) {
+        this.experiement = experiement;
     }
 
     public String getSolution_name() {
@@ -93,6 +90,6 @@ public class FunResults {
     public void setSolution_name(String solution_name) {
         this.solution_name = solution_name;
     }
-    
+
 
 }

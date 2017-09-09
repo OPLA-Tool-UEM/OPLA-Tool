@@ -1,28 +1,22 @@
 package br.ufpr.inf.opla.patterns.util;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import arquitetura.representation.Architecture;
-import arquitetura.representation.Element;
-import arquitetura.representation.Interface;
-import arquitetura.representation.Variability;
-import arquitetura.representation.Variant;
-import arquitetura.representation.VariationPoint;
+import arquitetura.representation.*;
 import arquitetura.representation.relationship.Relationship;
 import br.ufpr.inf.opla.patterns.comparators.SubElementsComparator;
 import br.ufpr.inf.opla.patterns.list.MethodArrayList;
 import br.ufpr.inf.opla.patterns.models.AlgorithmFamily;
 import br.ufpr.inf.opla.patterns.repositories.ArchitectureRepository;
 
+import java.util.*;
+
 public class StrategyUtil {
+
+    private StrategyUtil() {
+    }
 
     /**
      * Gets the Strategy interface from the algorithm family, if there is one.
-     *
+     * <p>
      * A Strategy interface is an interface implemented by all elements from an algorithm family and with all the methods from these elements (methods are equal if their names and return types are equal).
      *
      * @param algorithmFamily The algorithm family you want to get the Strategy interface from.
@@ -160,9 +154,6 @@ public class StrategyUtil {
                 }
             }
         }
-    }
-
-    private StrategyUtil() {
     }
 
 }

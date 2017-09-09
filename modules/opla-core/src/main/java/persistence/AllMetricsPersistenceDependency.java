@@ -13,41 +13,41 @@ public class AllMetricsPersistenceDependency {
     private PLAExtensibilityPersistence plaExtensibilityPersistence;
 
     public AllMetricsPersistenceDependency(Connection connection) {
-	this.connection = connection;
-	this.infosPersistence = new InfosResultPersistence(connection);
-	this.funsPersistence = new FunsResultPersistence(connection);
-	this.elegancePersistence = new ElegancePersistence(connection);
-	this.featureDrivenPersistence = new FeatureDrivenPersistence(connection);
-	this.conventionalPersistence = new ConventionalPersistence(connection);
-	this.plaExtensibilityPersistence = new PLAExtensibilityPersistence(connection);
+        this.connection = connection;
+        this.infosPersistence = new InfosResultPersistence(connection);
+        this.funsPersistence = new FunsResultPersistence(connection);
+        this.elegancePersistence = new ElegancePersistence(connection);
+        this.featureDrivenPersistence = new FeatureDrivenPersistence(connection);
+        this.conventionalPersistence = new ConventionalPersistence(connection);
+        this.plaExtensibilityPersistence = new PLAExtensibilityPersistence(connection);
     }
 
     public Connection getConnection() {
-	return connection;
+        return connection;
     }
 
     public InfosResultPersistence getInfosPersistence() {
-	return infosPersistence;
+        return infosPersistence;
     }
 
     public FunsResultPersistence getFunsPersistence() {
-	return funsPersistence;
+        return funsPersistence;
     }
 
     public ElegancePersistence getElegancePersistence() {
-	return elegancePersistence;
+        return elegancePersistence;
     }
 
     public FeatureDrivenPersistence getFeatureDrivenPersistence() {
-	return featureDrivenPersistence;
+        return featureDrivenPersistence;
     }
 
     public ConventionalPersistence getConventionalPersistence() {
-	return conventionalPersistence;
+        return conventionalPersistence;
     }
 
     public PLAExtensibilityPersistence getPlaExtensibilityPersistence() {
-	return plaExtensibilityPersistence;
+        return plaExtensibilityPersistence;
     }
 
 }

@@ -1,19 +1,17 @@
 package br.ufpr.inf.opla.patterns.util;
 
-import java.util.UUID;
-
 import arquitetura.representation.Architecture;
 import arquitetura.representation.Element;
 import arquitetura.representation.Interface;
-import arquitetura.representation.relationship.AssociationRelationship;
-import arquitetura.representation.relationship.DependencyRelationship;
-import arquitetura.representation.relationship.GeneralizationRelationship;
-import arquitetura.representation.relationship.RealizationRelationship;
-import arquitetura.representation.relationship.Relationship;
-import arquitetura.representation.relationship.UsageRelationship;
+import arquitetura.representation.relationship.*;
 import br.ufpr.inf.opla.patterns.repositories.ArchitectureRepository;
 
+import java.util.UUID;
+
 public class RelationshipUtil {
+
+    private RelationshipUtil() {
+    }
 
     public static Element getUsedElementFromRelationship(Relationship relationship) {
         Element supplier = null;
@@ -127,9 +125,6 @@ public class RelationshipUtil {
         architecture.addRelationship(associationRelationship);
         ElementUtil.addRequiredInterface(aggregator, aggregated);
         return associationRelationship;
-    }
-
-    private RelationshipUtil() {
     }
 
 }

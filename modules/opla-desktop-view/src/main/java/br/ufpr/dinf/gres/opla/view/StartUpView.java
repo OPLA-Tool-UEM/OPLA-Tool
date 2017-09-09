@@ -1,18 +1,13 @@
 package br.ufpr.dinf.gres.opla.view;
 
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
-import org.apache.log4j.Logger;
-
 import arquitetura.io.ReaderConfig;
 import br.ufpr.dinf.gres.opla.view.util.AlertUtil;
 import br.ufpr.dinf.gres.opla.view.util.UserHome;
-import java.awt.Component;
-import java.util.logging.Level;
+import org.apache.log4j.Logger;
+
+import javax.swing.*;
 
 /**
- *
  * @author Fernando
  */
 public class StartUpView extends javax.swing.JFrame {
@@ -25,6 +20,22 @@ public class StartUpView extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+    }
+
+    public static void main(String args[]) {
+
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+            StartUpView view = new StartUpView();
+            view.configureApplicationFile();
+            view.setPathDatabase();
+            view.carregarPrincipal();
+            view.setVisible(false);
+        } catch (Exception ex) {
+            LOGGER.error(ex);
+            AlertUtil.showMessage(AlertUtil.DEFAULT_ALERT_ERROR);
+            System.exit(0);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -47,45 +58,29 @@ public class StartUpView extends javax.swing.JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(loadProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(149, 149, 149)
-                .addComponent(jLabel1)
-                .addContainerGap(161, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(loadProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(149, 149, 149)
+                                .addComponent(jLabel1)
+                                .addContainerGap(161, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(loadProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(loadProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    public static void main(String args[]) {
-
-        try {
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-            StartUpView view = new StartUpView();
-            view.configureApplicationFile();
-            view.setPathDatabase();
-            view.carregarPrincipal();
-            view.setVisible(false);
-        } catch (Exception ex) {
-            LOGGER.error(ex);
-            AlertUtil.showMessage(AlertUtil.DEFAULT_ALERT_ERROR);
-            System.exit(0);
-        }
-    }
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+ // Variables declaration - do not modify                     
     private javax.swing.JLabel jLabel1;
     private javax.swing.JProgressBar loadProgressBar;
-    // End of variables declaration//GEN-END:variables
 
+// End of variables declaration                   
     private void configureApplicationFile() {
         ReaderConfig.load();
     }

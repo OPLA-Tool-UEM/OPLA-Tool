@@ -5,10 +5,6 @@
  */
 package br.ufpr.inf.opla.patterns.operator.impl;
 
-import java.util.Map;
-
-import org.apache.log4j.Priority;
-
 import arquitetura.representation.Architecture;
 import arquitetura.representation.Patterns;
 import br.ufpr.inf.opla.patterns.designpatterns.DesignPattern;
@@ -19,19 +15,21 @@ import br.ufpr.inf.opla.patterns.strategies.designpatternselection.DesignPattern
 import br.ufpr.inf.opla.patterns.strategies.designpatternselection.defaultstrategy.RandomDesignPatternSelection;
 import br.ufpr.inf.opla.patterns.strategies.scopeselection.ScopeSelectionStrategy;
 import br.ufpr.inf.opla.patterns.strategies.scopeselection.defaultstrategy.RandomScopeSelection;
-import jmetal.core.Solution;
-import jmetal.problems.OPLA;
-import jmetal.util.PseudoRandom;
+import jmetal4.core.Solution;
+import jmetal4.problems.OPLA;
+import jmetal4.util.PseudoRandom;
+import org.apache.log4j.Priority;
+
+import java.util.Map;
 
 /**
- *
  * @author giovaniguizzo
  */
 public class DesignPatternMutationOperator extends AbstractMutationOperator {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	protected final ScopeSelectionStrategy scopeSelectionStrategy;
+    protected final ScopeSelectionStrategy scopeSelectionStrategy;
     protected final DesignPatternSelectionStrategy designPatternSelectionStrategy;
 
     public DesignPatternMutationOperator(Map<String, Object> parameters, ScopeSelectionStrategy scopeSelectionStrategy, DesignPatternSelectionStrategy designPatternSelectionStrategy) {

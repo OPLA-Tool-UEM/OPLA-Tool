@@ -1,7 +1,6 @@
 package br.ufpr.dinf.gres.opla.view.enumerators;
 
 /**
- *
  * @author Fernando
  */
 public enum AlgorithmType {

@@ -1,10 +1,10 @@
 package br.ufpr.dinf.gres.opla.view.util;
 
 import arquitetura.io.FileUtils;
+
 import java.nio.file.Paths;
 
 /**
- *
  * @author elf
  */
 public class UserHome {
@@ -31,7 +31,7 @@ public class UserHome {
     }
 
     public static void createProfilesPath() {
-        Utils.createPath(getOplaUserHome()+ "profiles/");
+        Utils.createPath(getOplaUserHome() + "profiles/");
     }
 
     public static void createTemplatePath() {

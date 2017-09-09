@@ -5,21 +5,20 @@
 package com.ufpr.br.opla.configuration;
 
 /**
- *
  * @author elf
  */
 public class GuiFile {
-  
-  private static ManagerGuiSettingsConfig instance = null;
 
-  protected GuiFile() {
-  }
-  
-   public static ManagerGuiSettingsConfig getInstance() {
-    if (instance == null)
-      instance = new ManagerGuiSettingsConfig();
+    private static ManagerGuiSettingsConfig instance = null;
 
-    return instance;
-  }
-  
+    protected GuiFile() {
+    }
+
+    public static ManagerGuiSettingsConfig getInstance() {
+        if (instance == null)
+            instance = new ManagerGuiSettingsConfig();
+
+        return instance;
+    }
+
 }

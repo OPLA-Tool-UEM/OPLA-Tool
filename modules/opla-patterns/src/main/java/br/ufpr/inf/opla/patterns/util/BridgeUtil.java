@@ -1,22 +1,9 @@
 package br.ufpr.inf.opla.patterns.util;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import arquitetura.exceptions.ConcernNotFoundException;
 import arquitetura.helpers.UtilResources;
-import arquitetura.representation.Architecture;
+import arquitetura.representation.*;
 import arquitetura.representation.Class;
-import arquitetura.representation.Concern;
-import arquitetura.representation.Element;
-import arquitetura.representation.Interface;
-import arquitetura.representation.Method;
 import arquitetura.representation.relationship.AssociationEnd;
 import arquitetura.representation.relationship.AssociationRelationship;
 import arquitetura.representation.relationship.Multiplicity;
@@ -25,7 +12,14 @@ import br.ufpr.inf.opla.patterns.list.MethodArrayList;
 import br.ufpr.inf.opla.patterns.models.AlgorithmFamily;
 import br.ufpr.inf.opla.patterns.repositories.ArchitectureRepository;
 
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class BridgeUtil {
+
+    private BridgeUtil() {
+    }
 
     public static HashMap<Concern, List<Interface>> getImplementationInterfaces(AlgorithmFamily algorithmFamily) {
         List<Element> elements = algorithmFamily.getParticipants();
@@ -261,9 +255,6 @@ public class BridgeUtil {
             AssociationEnd end2 = aggregation.getParticipants().get(0);
             end2.setMultiplicity(new Multiplicity("1", "1"));
         }
-    }
-
-    private BridgeUtil() {
     }
 
 }

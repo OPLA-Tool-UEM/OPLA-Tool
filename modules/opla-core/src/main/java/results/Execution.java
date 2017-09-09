@@ -1,15 +1,12 @@
 package results;
 
-import java.util.List;
-
 import metrics.AllMetrics;
 import utils.Id;
 
+import java.util.List;
+
 /**
- * 
  * Essa classe representa cada execucao de um dado experiementos.
- * 
- * 
  */
 public class Execution {
 
@@ -21,57 +18,57 @@ public class Execution {
     private long time = 0l;
 
     public Execution(Experiment experiment) {
-	setId(Id.generateUniqueId());
-	this.experiment = experiment;
+        setId(Id.generateUniqueId());
+        this.experiment = experiment;
     }
 
     public Execution(String id, long t) {
-	this.id = id;
-	this.time = t;
+        this.id = id;
+        this.time = t;
     }
 
     public List<InfoResult> getInfos() {
-	return infos;
+        return infos;
     }
 
     public void setInfos(List<InfoResult> infos) {
-	this.infos = infos;
+        this.infos = infos;
     }
 
     public List<FunResults> getFuns() {
-	return funs;
+        return funs;
     }
 
     public void setFuns(List<FunResults> funResults) {
-	this.funs = funResults;
+        this.funs = funResults;
     }
 
     public String getId() {
-	return this.id;
+        return this.id;
     }
 
     public void setId(String id) {
-	this.id = id;
+        this.id = id;
     }
 
     public Experiment getExperiement() {
-	return this.experiment;
+        return this.experiment;
     }
 
     public long getTime() {
-	return time;
+        return time;
     }
 
     public void setTime(long estimatedTime) {
-	this.time = estimatedTime;
-    }
-
-    public void setAllMetrics(AllMetrics allMetrics) {
-	this.allMetrics = allMetrics;
+        this.time = estimatedTime;
     }
 
     public AllMetrics getAllMetrics() {
-	return this.allMetrics;
+        return this.allMetrics;
+    }
+
+    public void setAllMetrics(AllMetrics allMetrics) {
+        this.allMetrics = allMetrics;
     }
 
     // public List<FunResults> getObjectives() throws ClassNotFoundException,

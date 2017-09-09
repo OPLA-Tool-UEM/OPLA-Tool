@@ -5,10 +5,9 @@
 package com.ufpr.br.opla.charts;
 
 /**
- *
  * @author elf
  */
 public class ExportAsPdf {
 
-  
+
 }

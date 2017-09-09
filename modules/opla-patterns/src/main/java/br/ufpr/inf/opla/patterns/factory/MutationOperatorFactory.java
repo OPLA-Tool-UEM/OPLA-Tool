@@ -5,16 +5,15 @@
  */
 package br.ufpr.inf.opla.patterns.factory;
 
-import java.util.Map;
-
 import br.ufpr.inf.opla.patterns.operator.impl.DesignPatternMutationOperator;
 import br.ufpr.inf.opla.patterns.operator.impl.DesignPatternsAndPLAMutationOperator;
 import br.ufpr.inf.opla.patterns.operator.impl.PLAMutation;
 import br.ufpr.inf.opla.patterns.operator.impl.PLAMutationThenDesignPatternsMutationOperator;
-import jmetal.operators.mutation.Mutation;
+import jmetal4.operators.mutation.Mutation;
+
+import java.util.Map;
 
 /**
- *
  * @author giovaniguizzo
  */
 public class MutationOperatorFactory {

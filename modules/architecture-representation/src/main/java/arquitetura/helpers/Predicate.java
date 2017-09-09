@@ -2,9 +2,9 @@ package arquitetura.helpers;
 
 
 /**
- * 
- * @author edipofederle<edipofederle@gmail.com>
- *
  * @param <T>
+ * @author edipofederle<edipofederle@gmail.com>
  */
-public interface Predicate<T> { boolean apply(T element); }
+public interface Predicate<T> {
+    boolean apply(T element);
+}

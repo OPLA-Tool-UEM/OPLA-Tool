@@ -1,17 +1,15 @@
 package br.ufpr.dinf.gres.persistence.util;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-
 /**
  * Generic implementation for DAO Pattern
- * 
- * @author Fernando
  *
  * @param <T>
+ * @author Fernando
  */
 public abstract class GenericDAO<T extends Serializable> {
 
@@ -54,7 +52,13 @@ public abstract class GenericDAO<T extends Serializable> {
 		excluir(findById(id));
 	}
 	
-	public EntityManager getEntityManager() {
-		return emf;
-	}
+	
+    public List<T> getAll() {
+        TypedQuery<T> query = emf.createQuery(" FROM " + clazz.getSimpleName(), clazz);
+        return query.getResultList();
+    }
+
+    public EntityManager getEntityManager() {
+        return emf;
+    }
 }

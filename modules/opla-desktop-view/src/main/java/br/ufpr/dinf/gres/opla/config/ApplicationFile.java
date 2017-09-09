@@ -1,7 +1,6 @@
 package br.ufpr.dinf.gres.opla.config;
 
 /**
- *
  * @author elf
  */
 public class ApplicationFile {

@@ -7,15 +7,14 @@
 package com.ufpr.br.opla.exceptions;
 
 /**
- *
  * @author elf
  */
-public class MissingConfigurationException extends Exception{
-    
-	private static final long serialVersionUID = 1L;
+public class MissingConfigurationException extends Exception {
 
-	public MissingConfigurationException(String message){
+    private static final long serialVersionUID = 1L;
+
+    public MissingConfigurationException(String message) {
         super(message);
     }
-    
+
 }

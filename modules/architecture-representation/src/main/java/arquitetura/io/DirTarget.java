@@ -5,107 +5,104 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class DirTarget {
 
-	private String directoryToSaveModels;
-	
-	private String directoryToExportModels;
-	
-	private String pathToProfile;
-	
-	private String pathToProfileConcern;
-	
-	private String pathToTemplateModelsDirectory;
-	
-	private String pathToProfileRelationships;
-	
-	private String pathToProfilePatterns;
+    private String directoryToSaveModels;
 
-	/**
-	 * @return the directoryToSaveModels
-	 */
-	public String getDirectoryToSaveModels() {
-		return directoryToSaveModels;
-	}
+    private String directoryToExportModels;
 
-	/**
-	 * @param directoryToSaveModels
-	 *            the directoryToSaveModels to set
-	 */
-	public void setDirectoryToSaveModels(String directoryToSaveModels) {
-		this.directoryToSaveModels = directoryToSaveModels;
-	}
+    private String pathToProfile;
 
-	/**
-	 * @return the directoryToExportModels
-	 */
-	public String getDirectoryToExportModels() {
-		return directoryToExportModels;
-	}
+    private String pathToProfileConcern;
 
-	/**
-	 * @param directoryToExportModels
-	 *            the directoryToExportModels to set
-	 */
-	public void setDirectoryToExportModels(String directoryToExportModels) {
-		this.directoryToExportModels = directoryToExportModels;
-	}
+    private String pathToTemplateModelsDirectory;
 
-	/**
-	 * @return the pathToProfile
-	 */
-	public String getPathToProfile() {
-		return pathToProfile;
-	}
+    private String pathToProfileRelationships;
 
-	/**
-	 * @param pathToProfile
-	 *            the pathToProfile to set
-	 */
-	public void setPathToProfile(String pathToProfile) {
-		this.pathToProfile = pathToProfile;
-	}
+    private String pathToProfilePatterns;
 
-	public void setPathToProfileConcern(String pathToProfileConcern) {
-		this.pathToProfileConcern = pathToProfileConcern;
-	}
+    /**
+     * @return the directoryToSaveModels
+     */
+    public String getDirectoryToSaveModels() {
+        return directoryToSaveModels;
+    }
 
-	public String getPathToProfileConcern() {
-		return pathToProfileConcern;
-	}
+    /**
+     * @param directoryToSaveModels the directoryToSaveModels to set
+     */
+    public void setDirectoryToSaveModels(String directoryToSaveModels) {
+        this.directoryToSaveModels = directoryToSaveModels;
+    }
 
-	public String getPathToTemplateModelsDirectory() {
-		return pathToTemplateModelsDirectory;
-	}
+    /**
+     * @return the directoryToExportModels
+     */
+    public String getDirectoryToExportModels() {
+        return directoryToExportModels;
+    }
 
-	public void setPathToTemplateModelsDirectory(String pathToTemplateModelsDirectory) {
-		this.pathToTemplateModelsDirectory = pathToTemplateModelsDirectory;
-	}
+    /**
+     * @param directoryToExportModels the directoryToExportModels to set
+     */
+    public void setDirectoryToExportModels(String directoryToExportModels) {
+        this.directoryToExportModels = directoryToExportModels;
+    }
 
-	public String getPathToProfileRelationships() {
-		return pathToProfileRelationships;
-	}
+    /**
+     * @return the pathToProfile
+     */
+    public String getPathToProfile() {
+        return pathToProfile;
+    }
 
-	public void setPathToProfileRelationships(String pathToProfileRelationships) {
-		this.pathToProfileRelationships = pathToProfileRelationships;
-	}
+    /**
+     * @param pathToProfile the pathToProfile to set
+     */
+    public void setPathToProfile(String pathToProfile) {
+        this.pathToProfile = pathToProfile;
+    }
 
-	public String getPathToProfilePatterns() {
-		return pathToProfilePatterns;
-	}
+    public String getPathToProfileConcern() {
+        return pathToProfileConcern;
+    }
 
-	public void setPathToProfilePatterns(String pathToProfilePatterns) {
-		this.pathToProfilePatterns = pathToProfilePatterns;
-	}
+    public void setPathToProfileConcern(String pathToProfileConcern) {
+        this.pathToProfileConcern = pathToProfileConcern;
+    }
 
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-				.append("directoryToSaveModels", directoryToSaveModels)
-				.append("directoryToExportModels", directoryToExportModels).append("pathToProfile", pathToProfile)
-				.append("pathToProfileConcern", pathToProfileConcern)
-				.append("pathToTemplateModelsDirectory", pathToTemplateModelsDirectory)
-				.append("pathToProfileRelationships", pathToProfileRelationships)
-				.append("pathToProfilePatterns", pathToProfilePatterns).toString();
-	}
+    public String getPathToTemplateModelsDirectory() {
+        return pathToTemplateModelsDirectory;
+    }
 
-	
+    public void setPathToTemplateModelsDirectory(String pathToTemplateModelsDirectory) {
+        this.pathToTemplateModelsDirectory = pathToTemplateModelsDirectory;
+    }
+
+    public String getPathToProfileRelationships() {
+        return pathToProfileRelationships;
+    }
+
+    public void setPathToProfileRelationships(String pathToProfileRelationships) {
+        this.pathToProfileRelationships = pathToProfileRelationships;
+    }
+
+    public String getPathToProfilePatterns() {
+        return pathToProfilePatterns;
+    }
+
+    public void setPathToProfilePatterns(String pathToProfilePatterns) {
+        this.pathToProfilePatterns = pathToProfilePatterns;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+                .append("directoryToSaveModels", directoryToSaveModels)
+                .append("directoryToExportModels", directoryToExportModels).append("pathToProfile", pathToProfile)
+                .append("pathToProfileConcern", pathToProfileConcern)
+                .append("pathToTemplateModelsDirectory", pathToTemplateModelsDirectory)
+                .append("pathToProfileRelationships", pathToProfileRelationships)
+                .append("pathToProfilePatterns", pathToProfilePatterns).toString();
+    }
+
+
 }
