@@ -4,37 +4,31 @@
  */
 package com.ufpr.br.opla.algorithms;
 
-import java.util.List;
-
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-
+import arquitetura.io.ReaderConfig;
 import com.ufpr.br.opla.configuration.UserHome;
 import com.ufpr.br.opla.configuration.VolatileConfs;
 import com.ufpr.br.opla.utils.MutationOperatorsSelected;
+import jmetal4.experiments.FeatureMutationOperators;
+import jmetal4.experiments.OPLAConfigs;
+import jmetal4.experiments.PAES_OPLA_FeatMutInitializer;
+import jmetal4.experiments.PaesConfigs;
 
-import arquitetura.io.ReaderConfig;
-import jmetal.experiments.FeatureMutationOperators;
-import jmetal.experiments.OPLAConfigs;
-import jmetal.experiments.PAES_OPLA_FeatMutInitializer;
-import jmetal.experiments.PaesConfigs;
+import javax.swing.*;
+import java.util.List;
 
 /**
- *
  * @author elf
  */
 public class PAES {
-     
-	
+
+
     public void execute(JComboBox comboAlgorithms, JCheckBox checkMutation, JTextField fieldMutationProb,
-            JTextArea fieldArchitectureInput, JTextField fieldNumberOfRuns, JTextField fieldPaesArchiveSize,
-            JTextField fieldMaxEvaluations, JCheckBox checkCrossover, JTextField fieldCrossoverProbability, String executionDescription) {
-      
-	ReaderConfig.setPathToConfigurationFile(UserHome.getPathToConfigFile());
+                        JTextArea fieldArchitectureInput, JTextField fieldNumberOfRuns, JTextField fieldPaesArchiveSize,
+                        JTextField fieldMaxEvaluations, JCheckBox checkCrossover, JTextField fieldCrossoverProbability, String executionDescription) {
+
+        ReaderConfig.setPathToConfigurationFile(UserHome.getPathToConfigFile());
         ReaderConfig.load();
-        
+
         PaesConfigs configs = new PaesConfigs();
         configs.setDescription(executionDescription);
 
@@ -45,26 +39,26 @@ public class PAES {
             configs.setMutationOperators(mutationsOperators);
             configs.setMutationProbability(Double.parseDouble(fieldMutationProb.getText()));
         }
-        
+
         configs.setPlas(fieldArchitectureInput.getText());
         configs.setNumberOfRuns(Integer.parseInt(fieldNumberOfRuns.getText()));
         configs.setMaxEvaluations(Integer.parseInt(fieldMaxEvaluations.getText()));
         configs.setArchiveSize(Integer.parseInt(fieldPaesArchiveSize.getText()));
-               
+
 
         //Se crossover estiver marcado, configura probabilidade
         //Caso contrario desativa
         if (checkCrossover.isSelected()) {
             configs.setCrossoverProbability(Double.parseDouble(fieldCrossoverProbability.getText()));
         } else {
-            configs.disableCrossover();            
+            configs.disableCrossover();
         }
-        
+
         //OPA-Patterns Configurations
         if (MutationOperatorsSelected.getSelectedMutationOperators().contains(FeatureMutationOperators.DESIGN_PATTERNS.getOperatorName())) {
-          String[] array = new String[MutationOperatorsSelected.getSelectedPatternsToApply().size()];
-          configs.setPatterns(MutationOperatorsSelected.getSelectedPatternsToApply().toArray(array));
-         configs.setDesignPatternStrategy(VolatileConfs.getScopePatterns());
+            String[] array = new String[MutationOperatorsSelected.getSelectedPatternsToApply().size()];
+            configs.setPatterns(MutationOperatorsSelected.getSelectedPatternsToApply().toArray(array));
+            configs.setDesignPatternStrategy(VolatileConfs.getScopePatterns());
         }
 
         //Configura onde o db esta localizado
@@ -72,8 +66,8 @@ public class PAES {
 
         //Instancia a classe de configuracao da OPLA.java
         OPLAConfigs oplaConfig = new OPLAConfigs();
-        
-      
+
+
         oplaConfig.setSelectedObjectiveFunctions(VolatileConfs.getObjectiveFunctionSelected());
 
         //Add as confs de OPLA na classe de configuracoes gerais.
@@ -84,8 +78,8 @@ public class PAES {
 
         //Executa
         paes.run();
-        
+
     }
-    
-    
+
+
 }

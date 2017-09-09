@@ -1,27 +1,27 @@
 package br.ufpr.inf.opla.patterns.designpatterns;
 
-import java.util.Collection;
-import java.util.Objects;
-import java.util.Random;
-
 import arquitetura.representation.Element;
 import arquitetura.representation.Interface;
 import arquitetura.representation.Patterns;
 import br.ufpr.inf.opla.patterns.models.Scope;
 
+import java.util.Collection;
+import java.util.Objects;
+import java.util.Random;
+
 public abstract class DesignPattern {
 
     public static final DesignPattern[] FEASIBLE = new DesignPattern[]{
-        Strategy.getInstance(),
-        Bridge.getInstance(),
-        Facade.getInstance(),
-        Mediator.getInstance()
+            Strategy.getInstance(),
+            Bridge.getInstance(),
+            Facade.getInstance(),
+            Mediator.getInstance()
     };
 
     public static final DesignPattern[] IMPLEMENTED = new DesignPattern[]{
-        Strategy.getInstance(),
-        Bridge.getInstance(),
-        Mediator.getInstance()
+            Strategy.getInstance(),
+            Bridge.getInstance(),
+            Mediator.getInstance()
     };
 
     private final String name;

@@ -2,12 +2,12 @@ package br.ufpr.dinf.gres.opla.view.log;
 
 import br.ufpr.dinf.gres.loglog.Listener;
 import br.ufpr.dinf.gres.loglog.LogLogData;
+
+import javax.swing.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import javax.swing.JTextArea;
 
 /**
- *
  * @author elf
  */
 public class LogListener implements Listener {

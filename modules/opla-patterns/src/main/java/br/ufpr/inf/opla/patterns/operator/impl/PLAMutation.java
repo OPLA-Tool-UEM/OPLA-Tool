@@ -5,51 +5,35 @@
  */
 package br.ufpr.inf.opla.patterns.operator.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Level;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 import arquitetura.exceptions.ConcernNotFoundException;
 import arquitetura.helpers.UtilResources;
-import arquitetura.representation.Architecture;
-import arquitetura.representation.Attribute;
-import arquitetura.representation.Concern;
-import arquitetura.representation.Element;
-import arquitetura.representation.Interface;
-import arquitetura.representation.Method;
-import arquitetura.representation.Variability;
-import arquitetura.representation.Variant;
-import arquitetura.representation.VariationPoint;
+import arquitetura.representation.*;
 import arquitetura.representation.relationship.AssociationRelationship;
 import arquitetura.representation.relationship.GeneralizationRelationship;
 import arquitetura.representation.relationship.RealizationRelationship;
 import arquitetura.representation.relationship.Relationship;
 import br.ufpr.inf.opla.patterns.operator.AbstractMutationOperator;
-import jmetal.core.Solution;
-import jmetal.operators.mutation.PLAFeatureMutation;
-import jmetal.problems.OPLA;
-import jmetal.util.Configuration;
-import jmetal.util.JMException;
-import jmetal.util.PseudoRandom;
+import jmetal4.core.Solution;
+import jmetal4.operators.mutation.PLAFeatureMutation;
+import jmetal4.problems.OPLA;
+import jmetal4.util.Configuration;
+import jmetal4.util.JMException;
+import jmetal4.util.PseudoRandom;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
+import java.util.*;
+import java.util.logging.Level;
 
 /**
- *
  * @author giovaniguizzo
  */
 public class PLAMutation extends AbstractMutationOperator {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
+    static Logger LOGGER = LogManager.getLogger(PLAFeatureMutation.class.getName());
 
-	public PLAMutation(Map<String, Object> parameters) {
+    public PLAMutation(Map<String, Object> parameters) {
         super(parameters);
     }
 
@@ -57,8 +41,6 @@ public class PLAMutation extends AbstractMutationOperator {
     protected boolean hookMutation(Solution solution, Double probability) throws Exception {
         return doMutation(probability, solution);
     }
-
-    static Logger LOGGER = LogManager.getLogger(PLAFeatureMutation.class.getName());
 
     public boolean doMutation(double probability, Solution solution) throws Exception {
         String scope = "sameComponent"; //"allComponents" usar "sameComponent" para que a troca seja realizada dentro do mesmo componente da arquitetura
@@ -470,7 +452,7 @@ public class PLAMutation extends AbstractMutationOperator {
                 } else {
                     Configuration.logger_.log(
                             Level.SEVERE, "AddManagerClassMutation.doMutation: invalid type. "
-                            + "{0}", solution.getDecisionVariables()[0].getVariableType());
+                                    + "{0}", solution.getDecisionVariables()[0].getVariableType());
                     java.lang.Class<String> cls = java.lang.String.class;
                     String name = cls.getName();
                     throw new JMException("Exception in " + name + ".doMutation()");
@@ -835,7 +817,7 @@ public class PLAMutation extends AbstractMutationOperator {
         return false;
     }
 
-//	//Édipo
+    //	//Édipo
     //	private void addConcernToNewInterface(Concern concern, Interface targetInterface, Interface sourceInterface) {
     //		Set<Concern> interfaceConcerns = sourceInterface.getOwnConcerns();
     //		try {
@@ -964,18 +946,18 @@ public class PLAMutation extends AbstractMutationOperator {
      * metodo que move a hierarquia de classes para um outro componente que esta
      * modularizando o interesse concern
      *
-     *
-     * @param classComp - Classe selecionada
-     * @param targetComp - Pacote destino
-     * @param sourceComp - Pacote de origem
+     * @param classComp    - Classe selecionada
+     * @param targetComp   - Pacote destino
+     * @param sourceComp   - Pacote de origem
      * @param architecture - arquiteutra
-     * @param concern - interesse sendo modularizado
+     * @param concern      - interesse sendo modularizado
      */
     private void moveHierarchyToComponent(arquitetura.representation.Class classComp, arquitetura.representation.Package targetComp, arquitetura.representation.Package sourceComp, Architecture architecture, Concern concern) {
         architecture.forGeneralization().moveGeneralizationToPackage(getGeneralizationRelationshipForClass(classComp), targetComp);
     }
 
     //EDIPO Identifica quem é o parent para a classComp
+
     /**
      * Dado um {@link Element} retorna a {@link GeneralizationRelationship} no
      * qual o mesmo pertence.

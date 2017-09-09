@@ -3,7 +3,7 @@ package arquitetura.main;
 import br.ufpr.dinf.gres.loglog.LogLog;
 
 public class GuiLogs {
-    
+
     private static LogLog logger;
 
     public static LogLog getLogger() {
@@ -13,5 +13,5 @@ public class GuiLogs {
     public static void setLogger(LogLog ll) {
         logger = ll;
     }
-    
+
 }

@@ -5,7 +5,7 @@ import arquitetura.representation.Patterns;
 import br.ufpr.inf.opla.patterns.models.Scope;
 import br.ufpr.inf.opla.patterns.strategies.scopeselection.ScopeSelectionStrategy;
 
-public class WholeArchitectureScopeSelection implements ScopeSelectionStrategy{
+public class WholeArchitectureScopeSelection implements ScopeSelectionStrategy {
 
     @Override
     public Scope selectScope(Architecture architecture, Patterns pattern) {

@@ -1,26 +1,26 @@
 package br.ufpr.inf.opla.patterns.main;
 
+import arquitetura.io.ReaderConfig;
+import br.ufpr.inf.opla.patterns.factory.MutationOperatorFactory;
+import br.ufpr.inf.opla.patterns.indicadores.Hypervolume;
+import br.ufpr.inf.opla.patterns.repositories.ArchitectureRepository;
+import jmetal4.core.Solution;
+import jmetal4.core.SolutionSet;
+import jmetal4.metaheuristics.nsgaII.NSGAII;
+import jmetal4.operators.crossover.Crossover;
+import jmetal4.operators.crossover.CrossoverFactory;
+import jmetal4.operators.mutation.Mutation;
+import jmetal4.operators.selection.Selection;
+import jmetal4.operators.selection.SelectionFactory;
+import jmetal4.problems.OPLA;
+import jmetal4.util.JMException;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import arquitetura.io.ReaderConfig;
-import br.ufpr.inf.opla.patterns.factory.MutationOperatorFactory;
-import br.ufpr.inf.opla.patterns.indicadores.Hypervolume;
-import br.ufpr.inf.opla.patterns.repositories.ArchitectureRepository;
-import jmetal.core.Solution;
-import jmetal.core.SolutionSet;
-import jmetal.metaheuristics.nsgaII.NSGAII;
-import jmetal.operators.crossover.Crossover;
-import jmetal.operators.crossover.CrossoverFactory;
-import jmetal.operators.mutation.Mutation;
-import jmetal.operators.selection.Selection;
-import jmetal.operators.selection.SelectionFactory;
-import jmetal.problems.OPLA;
-import jmetal.util.JMException;
 
 public class NSGAII_OPLA_PLAThenDPM {
 
@@ -29,7 +29,7 @@ public class NSGAII_OPLA_PLAThenDPM {
     public static double mutationProbability_;
     public static double crossoverProbability_;
 
-//--  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --
+    //--  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --
     public static void main(String[] args) throws FileNotFoundException, IOException, JMException, ClassNotFoundException {
 
 //        args = new String[]{"100", "1000", "0.9", ArchitectureRepository.AGM, "Teste", "false"};
@@ -185,7 +185,7 @@ public class NSGAII_OPLA_PLAThenDPM {
             algorithm.addOperator("mutation", designPatternMutation);
             {
                 SolutionSet tempResultFront = new SolutionSet(populationSize_);
-                for (Iterator<Solution> it = resultFront.iterator(); it.hasNext();) {
+                for (Iterator<Solution> it = resultFront.iterator(); it.hasNext(); ) {
                     Solution solution = it.next();
                     tempResultFront.add(solution);
                 }

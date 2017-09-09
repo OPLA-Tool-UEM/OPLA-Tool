@@ -2,7 +2,10 @@ package br.ufpr.dinf.gres.opla.view.util;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
-import com.sun.org.apache.bcel.internal.classfile.Constant;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.WordUtils;
+import org.apache.log4j.Logger;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -13,12 +16,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.WordUtils;
-import org.apache.log4j.Logger;
 
 /**
- *
  * @author elf
  */
 public class Utils {
@@ -56,7 +55,7 @@ public class Utils {
     }
 
     /*
-	 * Get the extension of a file.
+     * Get the extension of a file.
      */
     public static String getExtension(File f) {
         String ext = null;
@@ -104,12 +103,11 @@ public class Utils {
     }
 
     /**
-     *
      * @param selectedExperiment
      * @param directoryToExportModels
      */
     public static String getProfilesUsedForSelectedExperiment(String selectedExperiment,
-            String directoryToExportModels) {
+                                                              String directoryToExportModels) {
         try {
             String exts[] = {"uml"};
             StringBuilder names = new StringBuilder();

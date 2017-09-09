@@ -9,7 +9,6 @@ import results.Execution;
 import results.Experiment;
 
 /**
- * 
  * @author elf
  */
 public class Tam extends Metrics {
@@ -17,26 +16,26 @@ public class Tam extends Metrics {
     private Double meanNumOps;
 
     public Tam(String idSolution, Execution execution, Experiment experiement) {
-	super.setExecution(execution);
-	super.setExperiement(experiement);
-	super.setIdSolution(idSolution);
+        super.setExecution(execution);
+        super.setExperiement(experiement);
+        super.setIdSolution(idSolution);
     }
 
     public Double getMeanNumOps() {
-	return meanNumOps;
+        return meanNumOps;
     }
 
     public void setMeanNumOps(Double meanNumOps) {
-	this.meanNumOps = meanNumOps;
+        this.meanNumOps = meanNumOps;
     }
 
     @Override
     public String toString() {
-	return "Tam [meanNumOps=" + meanNumOps + "]";
+        return "Tam [meanNumOps=" + meanNumOps + "]";
     }
-    
-    public Double evaluateTamFitness(){
-	return this.meanNumOps;
-    }    
+
+    public Double evaluateTamFitness() {
+        return this.meanNumOps;
+    }
 
 }

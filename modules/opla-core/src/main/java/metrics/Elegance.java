@@ -10,37 +10,37 @@ public class Elegance extends Metrics {
     private double ec;
 
     public Elegance(String idSolution, Execution execution, Experiment experiement) {
-	super.setExecution(execution);
-	super.setExperiement(experiement);
-	super.setIdSolution(idSolution);
+        super.setExecution(execution);
+        super.setExperiement(experiement);
+        super.setIdSolution(idSolution);
     }
 
     public double getNac() {
-	return nac;
+        return nac;
     }
 
     public void setNac(double nac) {
-	this.nac = nac;
+        this.nac = nac;
     }
 
     public double getAtmr() {
-	return atmr;
+        return atmr;
     }
 
     public void setAtmr(double d) {
-	this.atmr = d;
+        this.atmr = d;
     }
 
     public double getEc() {
-	return ec;
+        return ec;
     }
 
     public void setEc(double ec) {
-	this.ec = ec;
+        this.ec = ec;
     }
 
     public double evaluateEleganceFitness() {
-	return this.nac + this.atmr + this.ec;
+        return this.nac + this.atmr + this.ec;
     }
 
 }

@@ -1,21 +1,12 @@
 package br.ufpr.inf.opla.patterns.util;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-
 import arquitetura.exceptions.AttributeNotFoundException;
 import arquitetura.exceptions.ConcernNotFoundException;
 import arquitetura.exceptions.MethodNotFoundException;
 import arquitetura.helpers.UtilResources;
-import arquitetura.representation.Architecture;
+import arquitetura.representation.*;
 import arquitetura.representation.Class;
-import arquitetura.representation.Concern;
-import arquitetura.representation.Element;
-import arquitetura.representation.Interface;
-import arquitetura.representation.Method;
 import arquitetura.representation.Package;
-import arquitetura.representation.ParameterMethod;
 import arquitetura.representation.relationship.DependencyRelationship;
 import arquitetura.representation.relationship.Relationship;
 import arquitetura.representation.relationship.UsageRelationship;
@@ -23,7 +14,14 @@ import arquitetura.touml.Types;
 import arquitetura.touml.VisibilityKind;
 import br.ufpr.inf.opla.patterns.repositories.ArchitectureRepository;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+
 public class MediatorUtil {
+
+    private MediatorUtil() {
+    }
 
     public static Class getOrCreateEventOfInterestClass() {
         Architecture architecture = ArchitectureRepository.getCurrentArchitecture();
@@ -252,8 +250,5 @@ public class MediatorUtil {
                 }
             }
         }
-    }
-
-    private MediatorUtil() {
     }
 }

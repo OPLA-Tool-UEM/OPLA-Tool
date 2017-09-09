@@ -5,13 +5,12 @@
  */
 package br.ufpr.inf.opla.patterns.strategies.designpatternselection.impl;
 
-import java.util.Random;
-
 import br.ufpr.inf.opla.patterns.designpatterns.DesignPattern;
 import br.ufpr.inf.opla.patterns.strategies.designpatternselection.DesignPatternSelectionStrategy;
 
+import java.util.Random;
+
 /**
- *
  * @author giovaniguizzo
  */
 public class CustomDesignPatternSelection implements DesignPatternSelectionStrategy {
@@ -19,7 +18,6 @@ public class CustomDesignPatternSelection implements DesignPatternSelectionStrat
     private String[] availablePatterns = null;
 
     /**
-     *
      * @param selectedPatterns Design patterns selecionados na GUI.
      */
     public CustomDesignPatternSelection(String... selectedPatterns) {

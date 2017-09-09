@@ -3,10 +3,9 @@ package br.ufpr.dinf.gres.opla.view.model;
 import br.ufpr.dinf.gres.opla.entity.MapObjectiveName;
 
 /**
- *
  * @author Fernando
  */
-public class TableModelMapObjectiveName extends  TableModelBase<MapObjectiveName>{
+public class TableModelMapObjectiveName extends TableModelBase<MapObjectiveName> {
 
     @Override
     public int getColumnCount() {
@@ -21,7 +20,7 @@ public class TableModelMapObjectiveName extends  TableModelBase<MapObjectiveName
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-         MapObjectiveName obj = lista.get(rowIndex);
+        MapObjectiveName obj = lista.get(rowIndex);
 
         switch (columnIndex) {
             case 0:
@@ -31,5 +30,5 @@ public class TableModelMapObjectiveName extends  TableModelBase<MapObjectiveName
         }
         return obj;
     }
-    
+
 }

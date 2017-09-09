@@ -1,10 +1,10 @@
 package br.ufpr.inf.opla.patterns.models;
 
+import arquitetura.representation.Element;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import arquitetura.representation.Element;
 
 public class AlgorithmFamily implements Comparable<AlgorithmFamily> {
 
@@ -26,12 +26,12 @@ public class AlgorithmFamily implements Comparable<AlgorithmFamily> {
         return name;
     }
 
-    public String getNameCapitalized() {
-        return Character.toUpperCase(name.charAt(0)) + name.substring(1);
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getNameCapitalized() {
+        return Character.toUpperCase(name.charAt(0)) + name.substring(1);
     }
 
     public List<Element> getParticipants() {

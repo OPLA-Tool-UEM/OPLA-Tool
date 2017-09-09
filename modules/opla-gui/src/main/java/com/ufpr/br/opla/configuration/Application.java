@@ -5,11 +5,10 @@
 package com.ufpr.br.opla.configuration;
 
 /**
- *
  * @author elf
  */
 public class Application {
-    
+
     private String pathConfigFileHome;
 
     public String getPathConfigFileHome() {
@@ -19,6 +18,6 @@ public class Application {
     public void setPathConfigFileHome(String pathConfigFileHome) {
         this.pathConfigFileHome = pathConfigFileHome;
     }
-      
-    
+
+
 }

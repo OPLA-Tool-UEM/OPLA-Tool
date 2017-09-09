@@ -9,7 +9,6 @@ import results.Execution;
 import results.Experiment;
 
 /**
- * 
  * @author elf
  */
 public class Coe extends Metrics {
@@ -18,41 +17,41 @@ public class Coe extends Metrics {
     private Double lcc;
 
     public Coe(String idSolution, Execution execution, Experiment experiement) {
-	super.setExecution(execution);
-	super.setExperiement(experiement);
-	super.setIdSolution(idSolution);
+        super.setExecution(execution);
+        super.setExperiement(experiement);
+        super.setIdSolution(idSolution);
     }
 
 
     public Double getCohesion() {
-		return cohesion;
-	}
+        return cohesion;
+    }
 
 
-	public void setCohesion(Double cohesion) {
-		this.cohesion = cohesion;
-	}
+    public void setCohesion(Double cohesion) {
+        this.cohesion = cohesion;
+    }
 
 
-	public Double getLcc() {
-		return lcc;
-	}
+    public Double getLcc() {
+        return lcc;
+    }
 
 
-	public void setLcc(Double lcc) {
-		this.lcc = lcc;
-	}
+    public void setLcc(Double lcc) {
+        this.lcc = lcc;
+    }
 
 
-	@Override
+    @Override
     public String toString() {
-	return "Coe [cohesion=" + cohesion + ", lcc=" + lcc + "]";
-    }
-    
-    public Double evaluateCoeFitness(){
-	//return this.lcc + this.cohesion;
-	return this.lcc;
+        return "Coe [cohesion=" + cohesion + ", lcc=" + lcc + "]";
     }
 
-	
+    public Double evaluateCoeFitness() {
+        //return this.lcc + this.cohesion;
+        return this.lcc;
+    }
+
+
 }

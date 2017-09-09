@@ -1,24 +1,18 @@
 package br.ufpr.inf.opla.patterns.util;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import arquitetura.exceptions.ConcernNotFoundException;
+import arquitetura.representation.*;
+import br.ufpr.inf.opla.patterns.list.MethodArrayList;
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.collections4.CollectionUtils;
-
-import arquitetura.exceptions.ConcernNotFoundException;
-import arquitetura.representation.Concern;
-import arquitetura.representation.Element;
-import arquitetura.representation.Interface;
-import arquitetura.representation.Method;
-import arquitetura.representation.ParameterMethod;
-import br.ufpr.inf.opla.patterns.list.MethodArrayList;
-
 public class MethodUtil {
+
+    private MethodUtil() {
+    }
 
     public static Set<Method> getMethodsFromElement(Element element) {
         Set<Method> iMethods;
@@ -263,8 +257,5 @@ public class MethodUtil {
             }
         }
         return methods;
-    }
-
-    private MethodUtil() {
     }
 }

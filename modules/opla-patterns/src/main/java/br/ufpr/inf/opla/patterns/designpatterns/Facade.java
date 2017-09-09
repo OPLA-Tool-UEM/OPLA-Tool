@@ -6,15 +6,15 @@ public class Facade extends DesignPattern {
 
     private static volatile Facade INSTANCE;
 
+    private Facade() {
+        super("Facade", "Structural");
+    }
+
     public static synchronized Facade getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new Facade();
         }
         return INSTANCE;
-    }
-
-    private Facade() {
-        super("Facade", "Structural");
     }
 
     @Override
