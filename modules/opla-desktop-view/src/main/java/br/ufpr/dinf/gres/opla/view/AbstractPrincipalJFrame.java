@@ -68,4 +68,8 @@ public abstract class AbstractPrincipalJFrame extends javax.swing.JFrame {
         }
     }
 
+    protected Boolean isDoubleClick(java.awt.event.MouseEvent evt) {
+        return evt.getClickCount() == 2;
+    }
+
 }

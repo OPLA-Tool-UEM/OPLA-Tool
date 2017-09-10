@@ -38,49 +38,45 @@ public class StartUpView extends javax.swing.JFrame {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+	// <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+	private void initComponents() {
 
-        loadProgressBar = new javax.swing.JProgressBar();
-        jLabel1 = new javax.swing.JLabel();
+		loadProgressBar = new javax.swing.JProgressBar();
+		jLabel1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        loadProgressBar.setToolTipText("Carregando Configurações");
-        loadProgressBar.setIndeterminate(true);
-        loadProgressBar.setName(""); // NOI18N
-        loadProgressBar.setString("Carregando Configurações");
-        loadProgressBar.setStringPainted(true);
+		loadProgressBar.setToolTipText("Carregando Configurações");
+		loadProgressBar.setIndeterminate(true);
+		loadProgressBar.setName(""); // NOI18N
+		loadProgressBar.setString("Carregando Configurações");
+		loadProgressBar.setStringPainted(true);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setText("OPLA-Tool  - 1.0.0");
+		jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+		jLabel1.setText("OPLA-Tool  - 1.0.0");
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(loadProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createSequentialGroup()
-                                .addGap(149, 149, 149)
-                                .addComponent(jLabel1)
-                                .addContainerGap(161, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(loadProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+		getContentPane().setLayout(layout);
+		layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addComponent(loadProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE,
+						javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+				.addGroup(layout.createSequentialGroup().addGap(149, 149, 149).addComponent(jLabel1)
+						.addContainerGap(161, Short.MAX_VALUE)));
+		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
+				javax.swing.GroupLayout.Alignment.TRAILING,
+				layout.createSequentialGroup().addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(jLabel1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+						.addComponent(loadProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 31,
+								javax.swing.GroupLayout.PREFERRED_SIZE)));
 
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
- // Variables declaration - do not modify                     
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JProgressBar loadProgressBar;
+		pack();
+	}// </editor-fold>//GEN-END:initComponents
 
-// End of variables declaration                   
+	// Variables declaration - do not modify//GEN-BEGIN:variables
+	private javax.swing.JLabel jLabel1;
+	private javax.swing.JProgressBar loadProgressBar;
+	// End of variables declaration//GEN-END:variables
+
     private void configureApplicationFile() {
         ReaderConfig.load();
     }

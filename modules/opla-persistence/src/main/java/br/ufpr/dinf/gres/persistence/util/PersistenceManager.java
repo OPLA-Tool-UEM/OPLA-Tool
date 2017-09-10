@@ -9,14 +9,18 @@ import javax.persistence.Persistence;
  */
 public class PersistenceManager {
 
-    private static EntityManagerFactory entityManager;
+	private static EntityManagerFactory entityManagerFactory;
+	private static EntityManager entityManager;
 
-    static {
-        entityManager = Persistence.createEntityManagerFactory("oplaPU");
-    }
+	static {
+		entityManagerFactory = Persistence.createEntityManagerFactory("oplaPU");
+	}
 
-    public static EntityManager getEntityManager() {
-        return entityManager.createEntityManager();
-    }
+	public static EntityManager getEntityManager() {
+		if (entityManager == null) {
+			entityManager = entityManagerFactory.createEntityManager();
+		}
+		return entityManager;
+	}
 
 }

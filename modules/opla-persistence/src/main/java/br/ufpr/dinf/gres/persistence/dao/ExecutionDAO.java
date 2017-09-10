@@ -9,18 +9,17 @@ import java.util.List;
 
 public class ExecutionDAO extends GenericDAO<Execution> {
 
-    public ExecutionDAO() {
-        super(Execution.class);
-    }
+	public ExecutionDAO() {
+		super(Execution.class);
+	}
 
-    public Execution findByExperiment(Experiment experiment) {
-    	
-    	TypedQuery<Execution> query = getEntityManager().createQuery("SELECT o FROM Execution o where o.experiement_id = :idExperiment", Execution.class);
-    	query.setParameter("idExperiment", experiment.getId());
-    	
-    	List<Execution> results = query.getResultList();
-    	
-    	return null;
-    }
+	public List<Execution> findByExperiment(Experiment experiment) {
+
+		TypedQuery<Execution> query = getEntityManager()
+				.createQuery("SELECT o FROM Execution o where o.experiment = :experiment", Execution.class);
+		query.setParameter("experiment", experiment);
+
+		return query.getResultList();
+	}
 
 }
