@@ -1,6 +1,7 @@
 package br.ufpr.dinf.gres.opla.view;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,6 +20,7 @@ import br.ufpr.dinf.gres.opla.entity.Execution;
 import br.ufpr.dinf.gres.opla.entity.Experiment;
 import br.ufpr.dinf.gres.opla.view.log.LogListener;
 import br.ufpr.dinf.gres.opla.view.model.AlgorithmComboModel;
+import br.ufpr.dinf.gres.opla.view.model.ObjectiveNameComboModel;
 import br.ufpr.dinf.gres.opla.view.model.SolutionNameComboModel;
 import br.ufpr.dinf.gres.opla.view.model.TableModelExecution;
 import br.ufpr.dinf.gres.opla.view.model.TableModelExperiment;
@@ -30,6 +32,7 @@ import br.ufpr.dinf.gres.opla.view.util.UserHome;
 import br.ufpr.dinf.gres.opla.view.util.Utils;
 import br.ufpr.dinf.gres.persistence.dao.ExecutionDAO;
 import br.ufpr.dinf.gres.persistence.dao.ExperimentDAO;
+import br.ufpr.dinf.gres.persistence.dao.MapObjectivesDAO;
 import br.ufpr.dinf.gres.persistence.dao.ObjectiveDAO;
 
 /**
@@ -45,9 +48,13 @@ public class Principal extends AbstractPrincipalJFrame {
 	private final TableModelExecution tmExecution = new TableModelExecution();
 	private final TableModelMapObjectiveName tmMapObjectiveSolution = new TableModelMapObjectiveName();
 
+	private final SolutionNameComboModel solutionNameComboModel = new SolutionNameComboModel(Collections.emptyList());
+	private final ObjectiveNameComboModel objetiveNameComboModel = new ObjectiveNameComboModel(Collections.emptyList());
+
 	private final ExperimentDAO experimentDAO;
 	private final ExecutionDAO executionDAO;
 	private final ObjectiveDAO objectiveDAO;
+	private final MapObjectivesDAO mapObjectivesDAO;
 
 	public Principal() {
 		initComponents();
@@ -57,6 +64,7 @@ public class Principal extends AbstractPrincipalJFrame {
 		this.experimentDAO = new ExperimentDAO();
 		this.executionDAO = new ExecutionDAO();
 		this.objectiveDAO = new ObjectiveDAO();
+		this.mapObjectivesDAO = new MapObjectivesDAO();
 		loadExecutionsData();
 	}
 
@@ -254,7 +262,6 @@ public class Principal extends AbstractPrincipalJFrame {
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="Generated
-	// <editor-fold defaultstate="collapsed" desc="Generated
 	// Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
@@ -352,10 +359,10 @@ public class Principal extends AbstractPrincipalJFrame {
 		jPanel26 = new javax.swing.JPanel();
 		jScrollPane4 = new javax.swing.JScrollPane();
 		tbRuns = new javax.swing.JTable();
-		jPanel27 = new javax.swing.JPanel();
+		panelResultSolution = new javax.swing.JPanel();
 		cbSolutionName = new javax.swing.JComboBox<>();
-		jLabel15 = new javax.swing.JLabel();
-		jPanel28 = new javax.swing.JPanel();
+		lbSolution = new javax.swing.JLabel();
+		panelResultObjetive = new javax.swing.JPanel();
 		cbObjectiveSoluction = new javax.swing.JComboBox<>();
 		jLabel16 = new javax.swing.JLabel();
 		jScrollPane5 = new javax.swing.JScrollPane();
@@ -392,11 +399,6 @@ public class Principal extends AbstractPrincipalJFrame {
 
 		ckSmarty.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
 		ckSmarty.setText("SMarty");
-		ckSmarty.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				ckSmartyActionPerformed(evt);
-			}
-		});
 
 		ckFeature.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
 		ckFeature.setText("Feature");
@@ -531,11 +533,6 @@ public class Principal extends AbstractPrincipalJFrame {
 		tfTemplateDiretory.setColumns(63);
 
 		btTemplateDirectory.setText("Select a Directory");
-		btTemplateDirectory.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btTemplateDirectoryActionPerformed(evt);
-			}
-		});
 
 		jLabel2.setText("Directory:");
 
@@ -707,11 +704,6 @@ public class Principal extends AbstractPrincipalJFrame {
 		ckFeatureDriven.setText("Feature Driven");
 
 		ckFeatureInterlacing.setText("Features Interlacing");
-		ckFeatureInterlacing.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				ckFeatureInterlacingActionPerformed(evt);
-			}
-		});
 
 		ckFeatureDifusion.setText("Features Diffusion");
 
@@ -1144,27 +1136,38 @@ public class Principal extends AbstractPrincipalJFrame {
 						.addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
 						.addGap(15, 15, 15)));
 
-		jPanel27.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+		panelResultSolution.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+		panelResultSolution.setName("Panel Result Solution"); // NOI18N
 
-		jLabel15.setText("Solution:");
+		cbSolutionName.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				cbSolutionNameActionPerformed(evt);
+			}
+		});
 
-		javax.swing.GroupLayout jPanel27Layout = new javax.swing.GroupLayout(jPanel27);
-		jPanel27.setLayout(jPanel27Layout);
-		jPanel27Layout.setHorizontalGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(jPanel27Layout.createSequentialGroup().addContainerGap().addComponent(jLabel15)
+		lbSolution.setText("Solution:");
+
+		javax.swing.GroupLayout panelResultSolutionLayout = new javax.swing.GroupLayout(panelResultSolution);
+		panelResultSolution.setLayout(panelResultSolutionLayout);
+		panelResultSolutionLayout.setHorizontalGroup(panelResultSolutionLayout
+				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(panelResultSolutionLayout.createSequentialGroup().addContainerGap().addComponent(lbSolution)
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 						.addComponent(cbSolutionName, javax.swing.GroupLayout.PREFERRED_SIZE, 414,
 								javax.swing.GroupLayout.PREFERRED_SIZE)
 						.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
-		jPanel27Layout.setVerticalGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(jPanel27Layout.createSequentialGroup().addContainerGap()
-						.addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+		panelResultSolutionLayout.setVerticalGroup(panelResultSolutionLayout
+				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(panelResultSolutionLayout.createSequentialGroup().addContainerGap()
+						.addGroup(panelResultSolutionLayout
+								.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
 								.addComponent(cbSolutionName, javax.swing.GroupLayout.PREFERRED_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jLabel15))
+								.addComponent(lbSolution))
 						.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 
-		jPanel28.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+		panelResultObjetive.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+		panelResultObjetive.setName("Panel Result Objetive"); // NOI18N
 
 		jLabel16.setText("Objective Solution:");
 
@@ -1174,21 +1177,25 @@ public class Principal extends AbstractPrincipalJFrame {
 		}));
 		jScrollPane5.setViewportView(tbObjectiveSolution);
 
-		javax.swing.GroupLayout jPanel28Layout = new javax.swing.GroupLayout(jPanel28);
-		jPanel28.setLayout(jPanel28Layout);
-		jPanel28Layout.setHorizontalGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(jPanel28Layout.createSequentialGroup().addContainerGap()
-						.addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+		javax.swing.GroupLayout panelResultObjetiveLayout = new javax.swing.GroupLayout(panelResultObjetive);
+		panelResultObjetive.setLayout(panelResultObjetiveLayout);
+		panelResultObjetiveLayout.setHorizontalGroup(panelResultObjetiveLayout
+				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(panelResultObjetiveLayout.createSequentialGroup().addContainerGap()
+						.addGroup(panelResultObjetiveLayout
+								.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 								.addComponent(jScrollPane5)
-								.addGroup(jPanel28Layout.createSequentialGroup().addComponent(jLabel16)
+								.addGroup(panelResultObjetiveLayout.createSequentialGroup().addComponent(jLabel16)
 										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 										.addComponent(cbObjectiveSoluction, javax.swing.GroupLayout.PREFERRED_SIZE, 362,
 												javax.swing.GroupLayout.PREFERRED_SIZE)
 										.addGap(0, 0, Short.MAX_VALUE)))
 						.addContainerGap()));
-		jPanel28Layout.setVerticalGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(jPanel28Layout.createSequentialGroup().addContainerGap()
-						.addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+		panelResultObjetiveLayout.setVerticalGroup(panelResultObjetiveLayout
+				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(panelResultObjetiveLayout.createSequentialGroup().addContainerGap()
+						.addGroup(panelResultObjetiveLayout
+								.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
 								.addComponent(cbObjectiveSoluction, javax.swing.GroupLayout.PREFERRED_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
 								.addComponent(jLabel16))
@@ -1226,9 +1233,9 @@ public class Principal extends AbstractPrincipalJFrame {
 		jPanel18Layout.setHorizontalGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(jPanel18Layout.createSequentialGroup().addContainerGap()
 						.addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addComponent(jPanel27, javax.swing.GroupLayout.DEFAULT_SIZE,
+								.addComponent(panelResultSolution, javax.swing.GroupLayout.DEFAULT_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(jPanel28, javax.swing.GroupLayout.DEFAULT_SIZE,
+								.addComponent(panelResultObjetive, javax.swing.GroupLayout.DEFAULT_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addGroup(jPanel18Layout.createSequentialGroup()
 										.addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE,
@@ -1250,10 +1257,10 @@ public class Principal extends AbstractPrincipalJFrame {
 								.addComponent(jPanel26, javax.swing.GroupLayout.DEFAULT_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-						.addComponent(jPanel27, javax.swing.GroupLayout.PREFERRED_SIZE,
+						.addComponent(panelResultSolution, javax.swing.GroupLayout.PREFERRED_SIZE,
 								javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-						.addComponent(jPanel28, javax.swing.GroupLayout.PREFERRED_SIZE,
+						.addComponent(panelResultObjetive, javax.swing.GroupLayout.PREFERRED_SIZE,
 								javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 						.addComponent(jPanel29, javax.swing.GroupLayout.PREFERRED_SIZE,
@@ -1420,17 +1427,9 @@ public class Principal extends AbstractPrincipalJFrame {
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
 
-	private void ckSmartyActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_ckSmartyActionPerformed
-		// TODO add your handling code here:
-	}// GEN-LAST:event_ckSmartyActionPerformed
-
-	private void btTemplateDirectoryActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btTemplateDirectoryActionPerformed
-		// TODO add your handling code here:
-	}// GEN-LAST:event_btTemplateDirectoryActionPerformed
-
-	private void ckFeatureInterlacingActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_ckFeatureInterlacingActionPerformed
-		// TODO add your handling code here:
-	}// GEN-LAST:event_ckFeatureInterlacingActionPerformed
+	private void cbSolutionNameActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cbSolutionNameActionPerformed
+		loadObjetiveNames();
+	}// GEN-LAST:event_cbSolutionNameActionPerformed
 
 	private void ckMutationActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_ckMutationActionPerformed
 		enableMutationOption();
@@ -1446,6 +1445,8 @@ public class Principal extends AbstractPrincipalJFrame {
 	private void tbRunsMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_tbRunsMouseClicked
 		if (isDoubleClick(evt)) {
 			loadComboSoluctions();
+			loadComboObjectiveSolutionName();
+			loadObjetiveNames();
 		}
 	}// GEN-LAST:event_tbRunsMouseClicked
 
@@ -1502,7 +1503,6 @@ public class Principal extends AbstractPrincipalJFrame {
 	private javax.swing.JLabel jLabel12;
 	private javax.swing.JLabel jLabel13;
 	private javax.swing.JLabel jLabel14;
-	private javax.swing.JLabel jLabel15;
 	private javax.swing.JLabel jLabel16;
 	private javax.swing.JLabel jLabel17;
 	private javax.swing.JLabel jLabel2;
@@ -1527,8 +1527,6 @@ public class Principal extends AbstractPrincipalJFrame {
 	private javax.swing.JPanel jPanel24;
 	private javax.swing.JPanel jPanel25;
 	private javax.swing.JPanel jPanel26;
-	private javax.swing.JPanel jPanel27;
-	private javax.swing.JPanel jPanel28;
 	private javax.swing.JPanel jPanel29;
 	private javax.swing.JPanel jPanel3;
 	private javax.swing.JPanel jPanel4;
@@ -1546,10 +1544,13 @@ public class Principal extends AbstractPrincipalJFrame {
 	private javax.swing.JTabbedPane jTabbedPane1;
 	private javax.swing.JSlider jsCrossover;
 	private javax.swing.JSlider jsMutation;
+	private javax.swing.JLabel lbSolution;
 	private javax.swing.JPanel panelCkProfiles;
 	private javax.swing.JPanel panelMutations;
 	private javax.swing.JPanel panelOperatorOption;
 	private javax.swing.JPanel panelOperators;
+	private javax.swing.JPanel panelResultObjetive;
+	private javax.swing.JPanel panelResultSolution;
 	private javax.swing.JPanel panelScopeSelection;
 	private javax.swing.JRadioButton rbElements;
 	private javax.swing.JRadioButton rbRandom;
@@ -1587,18 +1588,12 @@ public class Principal extends AbstractPrincipalJFrame {
 		this.tmExperiments.setLista(experiments);
 		tbExperiments.setModel(tmExperiments);
 		tbExperiments.updateUI();
-	}
 
-	@SuppressWarnings("unchecked")
-	private void cleanCompoments() {
-		cbSolutionName.setModel(new SolutionNameComboModel(Collections.emptyList()));
-		cbSolutionName.updateUI();
 	}
 
 	private void loadExecutionsInfo(Experiment experiment) {
-		cleanCompoments();
 		List<Execution> executions = executionDAO.findByExperiment(experiment);
-		Long numberNonDominatedSolution = objectiveDAO.countNonDominatedSolutionByExperiment(experiment);
+		Long numberNonDominatedSolution = objectiveDAO.countNonDominatedSolution(experiment);
 		tmExecution.setData(executions, numberNonDominatedSolution);
 		tbRuns.setModel(tmExecution);
 		tbRuns.updateUI();
@@ -1609,9 +1604,49 @@ public class Principal extends AbstractPrincipalJFrame {
 	private void loadComboSoluctions() {
 		Experiment experiment = tmExecExperiments.getValue(tbExecutions.getSelectedRow());
 		Execution execution = tmExecution.getValue(tbRuns.getSelectedRow());
-		List<String> solutionsName = objectiveDAO.findNameSolutionByExperimentAndExecution(experiment, execution);
-		cbSolutionName.setModel(new SolutionNameComboModel(solutionsName));
+		List<String> solutionsName = objectiveDAO.findNameSolution(experiment, execution);
+		solutionNameComboModel.setList(solutionsName);
+		cbSolutionName.setModel(solutionNameComboModel);
+		cbSolutionName.setSelectedIndex(0);
 		cbSolutionName.updateUI();
 
+	}
+
+	@SuppressWarnings("unchecked")
+	private void loadComboObjectiveSolutionName() {
+		Experiment experiment = tmExecExperiments.getValue(tbExecutions.getSelectedRow());
+		List<String> listNames = mapObjectivesDAO.findNamesByExperiment(experiment);
+		objetiveNameComboModel.setList(listNames);
+		cbObjectiveSoluction.setModel(objetiveNameComboModel);
+		cbObjectiveSoluction.setSelectedIndex(0);
+		cbObjectiveSoluction.updateUI();
+	}
+
+	private void loadObjetiveNames() {
+		String solutionName = solutionNameComboModel.getSelectedItem();
+		if (solutionName != null) {
+			Experiment experiment = tmExecExperiments.getValue(tbExecutions.getSelectedRow());
+			Execution execution = tmExecution.getValue(tbRuns.getSelectedRow());
+			List<BigDecimal> objectiveValues = objectiveDAO.findObjectiveValues(experiment, execution, solutionName);
+			List<String> listNames = mapObjectivesDAO.findNamesByExperiment(experiment);
+			tmMapObjectiveSolution.setData(objectiveValues, listNames);
+			tbObjectiveSolution.setModel(tmMapObjectiveSolution);
+			tbObjectiveSolution.updateUI();
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private void cleanCompoments() {
+		cleanAllSelectedComboBox(panelResultSolution);
+		cleanAllSelectedComboBox(panelResultObjetive);
+		solutionNameComboModel.setList(Collections.emptyList());
+		cbSolutionName.setModel(solutionNameComboModel);
+		cbSolutionName.updateUI();
+		objetiveNameComboModel.setList(Collections.emptyList());
+		cbObjectiveSoluction.setModel(objetiveNameComboModel);
+		cbObjectiveSoluction.updateUI();
+		tmMapObjectiveSolution.setData(Collections.emptyList(), Collections.emptyList());
+		tbObjectiveSolution.setModel(tmMapObjectiveSolution);
+		tbObjectiveSolution.updateUI();
 	}
 }

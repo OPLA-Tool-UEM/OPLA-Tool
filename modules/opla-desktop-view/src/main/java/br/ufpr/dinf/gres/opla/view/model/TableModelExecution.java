@@ -31,7 +31,7 @@ public class TableModelExecution extends TableModelBase<Execution> {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Execution obj = lista.get(rowIndex);
 
-		Long numberSoluction = objectiveDAO.countAllSoluctionsByExperimentAndExecution(obj.getExperiment(), obj);
+		Long numberSoluction = objectiveDAO.countAllSoluctions(obj.getExperiment(), obj);
 
 		switch (columnIndex) {
 		case 0:

@@ -26,7 +26,7 @@ public abstract class AbstractPrincipalJFrame extends javax.swing.JFrame {
                 .filter(component -> component instanceof JCheckBox)
                 .map(JCheckBox.class::cast)
                 .forEach(check -> check.setSelected(isChecked));
-        LOGGER.info("checked all JCheckBox " + panel.getName());
+        LOGGER.debug("checked all JCheckBox " + panel.getName());
     }
 
     protected void enableAllChecks(JPanel panel, Boolean isDisabled) {
@@ -35,7 +35,7 @@ public abstract class AbstractPrincipalJFrame extends javax.swing.JFrame {
                 .map(JCheckBox.class::cast)
                 .forEach(check -> check.setEnabled(isDisabled));
 
-        LOGGER.info("JCheckBox in " + panel.getName() + " enable = " + isDisabled);
+        LOGGER.debug("JCheckBox in " + panel.getName() + " enable = " + isDisabled);
     }
 
     protected void enableAllRadioButons(JPanel panel, Boolean isDisabled) {
@@ -44,7 +44,7 @@ public abstract class AbstractPrincipalJFrame extends javax.swing.JFrame {
                 .map(JRadioButton.class::cast)
                 .forEach(radioButon -> radioButon.setEnabled(isDisabled));
 
-        LOGGER.info("JRadioButton in " + panel.getName() + " enable = " + isDisabled);
+        LOGGER.debug("JRadioButton in " + panel.getName() + " enable = " + isDisabled);
     }
 
     protected void enableAllSliders(JPanel panel, Boolean isDisabled) {
@@ -54,6 +54,15 @@ public abstract class AbstractPrincipalJFrame extends javax.swing.JFrame {
                 .forEach(jSlider -> jSlider.setEnabled(isDisabled));
 
         LOGGER.info("JSlider in " + panel.getName() + " enable = " + isDisabled);
+    }
+    
+    protected void cleanAllSelectedComboBox(JPanel panel) {
+        Arrays.asList(panel.getComponents()).stream()
+                .filter(component -> component instanceof JComboBox<?>)
+                .map(JComboBox.class::cast)
+                .forEach(jComboBox -> jComboBox.setSelectedItem(null));
+
+        LOGGER.debug("JComboBox in " + panel.getName() + " is cleaned");
     }
 
     protected void configureProfile(JTextField jTexField, String path, String profileName) throws IOException {

@@ -8,8 +8,12 @@ import java.util.List;
  */
 public class SolutionNameComboModel extends ComboModelBase<String> {
 
-    public SolutionNameComboModel(List<String> values) {
-        super(values);
-    }
+	public SolutionNameComboModel(List<String> values) {
+		super(values);
+	}
+
+	public void setList(List<String> list) {
+		this.list = list;
+	}
 
 }

@@ -10,7 +10,7 @@ import javax.swing.event.ListDataListener;
  * @author Fernando
  */
 @SuppressWarnings("rawtypes")
-public class ComboModelBase<T> implements ComboBoxModel {
+public abstract class ComboModelBase<T> implements ComboBoxModel {
 
 	protected List<T> list;
 

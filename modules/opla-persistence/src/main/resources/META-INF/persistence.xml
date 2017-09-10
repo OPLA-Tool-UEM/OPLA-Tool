@@ -8,6 +8,7 @@
 		<class>br.ufpr.dinf.gres.opla.entity.Experiment</class>
 		<class>br.ufpr.dinf.gres.opla.entity.Execution</class>
 		<class>br.ufpr.dinf.gres.opla.entity.Objective</class>
+		<class>br.ufpr.dinf.gres.opla.entity.MapObjectiveName</class>
 
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.SQLiteDialect" />
