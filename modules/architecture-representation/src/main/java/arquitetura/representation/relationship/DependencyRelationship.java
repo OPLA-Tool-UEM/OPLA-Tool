@@ -111,6 +111,11 @@ public class DependencyRelationship extends Relationship {
         this.name = name;
     }
 
+    @Override
+    public boolean hasRelationshipWithElement(Element element) {
+        return client.equals(element) || supplier.equals(element);
+    }
+
     private void setRequiredInterfaces(Element supplier, Element client) {
         if ((client instanceof Package) && (supplier instanceof Interface)) {
             ((Package) client).addRequiredInterface((Interface) supplier);

@@ -1,6 +1,7 @@
 package arquitetura.representation;
 
 import arquitetura.exceptions.ConcernNotFoundException;
+import arquitetura.representation.relationship.Relationship;
 
 import java.io.Serializable;
 import java.util.*;
@@ -17,7 +18,6 @@ public abstract class Element implements Serializable {
     private VariationPoint variationPoint;
     private Variant variant;
     private Set<Concern> concerns = new HashSet<Concern>();
-    private Architecture architecture;
     private String typeElement;
     private String namespace;
     private boolean belongsToGeneralization;
@@ -31,6 +31,10 @@ public abstract class Element implements Serializable {
     }
 
     public abstract Collection<Concern> getAllConcerns();
+
+    public Set<Relationship> getRelationships() {
+        return Collections.emptySet();
+    }
 
     /**
      * @return the id
@@ -79,6 +83,10 @@ public abstract class Element implements Serializable {
         return getName();
     }
 
+    public boolean nameEquals(String name) {
+        return getName().equalsIgnoreCase(name);
+    }
+
     /**
      * Retorna apenas os interesses pertencentes a este elemento.<br />
      *
@@ -91,17 +99,45 @@ public abstract class Element implements Serializable {
     }
 
     public boolean containsConcern(Concern concern) {
-        for (Concern conc : getOwnConcerns()) {
-            if (conc.getName().equalsIgnoreCase(concern.getName()))
-                return true;
-        }
-        return false;
+        return getOwnConcerns().stream().anyMatch(conc -> conc.getName().equalsIgnoreCase(concern.getName()));
     }
 
-    public void addConcerns(List<String> concernsNames) throws ConcernNotFoundException {
-        for (String name : concernsNames)
-            addConcern(name);
+    /**
+     * Métodos para adicionar um interesse diretamente,
+     * pois é comum não precisar do NOME do interesse para repassá-lo ao elemento
+     * <p>
+     * Estes métodos não fazem nenhuma checagem ou criação de concern
+     *
+     * @param concern: um Concern VÁLIDO
+     */
+    public void addConcern(Concern concern) {
+        concerns.add(concern);
     }
+
+    /**
+     * Métodos para adicionar um interesse diretamente,
+     * pois é comum não precisar do NOME do interesse para repassá-lo ao elemento
+     * <p>
+     * Estes métodos não fazem nenhuma checagem ou criação de concern
+     *
+     * @param concernGroup: uma list de concerns VÁLIDOS
+     */
+    public void addConcerns(Concern... concernGroup) {
+        Arrays.stream(concernGroup).forEach(this::addConcern);
+    }
+
+    /**
+     * Métodos para adicionar um interesse diretamente,
+     * pois é comum não precisar do NOME do interesse para repassá-lo ao elemento
+     * <p>
+     * Estes métodos não fazem nenhuma checagem ou criação de concern
+     *
+     * @param concernGroup: uma coleção(Set, List, etc...) de Concerns VÁLIDOS
+     */
+    public void addConcerns(Collection<Concern> concernGroup) {
+        concernGroup.forEach(this::addConcern);
+    }
+
 
     /**
      * Adiciona um interesse a classe.<br/>
@@ -117,10 +153,16 @@ public abstract class Element implements Serializable {
         concerns.add(concern);
     }
 
+    public void addConcerns(List<String> concernsNames) throws ConcernNotFoundException {
+        for (String name : concernsNames)
+            addConcern(name);
+    }
+
     public void removeConcern(String concernName) {
         Concern concern = ConcernHolder.INSTANCE.getConcernByName(concernName);
         concerns.remove(concern);
     }
+
 
     /**
      * @return the namespace
@@ -131,10 +173,6 @@ public abstract class Element implements Serializable {
 
     public void setNamespace(String namespace) {
         this.namespace = namespace;
-    }
-
-    public Architecture getArchitecture() {
-        return architecture;
     }
 
     /**
@@ -170,23 +208,15 @@ public abstract class Element implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        String objClass = obj.getClass().toString();
-        if (this == obj)
-            return true;
-        if (!getClass().toString().equals(objClass.toString()))
+        if (this == obj) return true;
+
+        if (!(obj instanceof Element))
             return false;
+
         Element other = (Element) obj;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
-        if (namespace == null) {
-            if (other.namespace != null)
-                return false;
-        } else if (!namespace.equals(other.namespace))
-            return false;
-        return true;
+        return other.getClass() == this.getClass() &&
+                Objects.equals(name, other.name) &&
+                Objects.equals(namespace, other.namespace);
     }
 
 }

@@ -103,6 +103,11 @@ public class AssociationClassRelationship extends Relationship {
 
 
     @Override
+    public boolean hasRelationshipWithElement(Element element) {
+        return memebersEnd.stream().anyMatch(memberEnd -> memberEnd.getType().equals(element));
+    }
+
+    @Override
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();

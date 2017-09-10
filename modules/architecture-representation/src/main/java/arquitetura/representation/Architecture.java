@@ -11,10 +11,13 @@ import arquitetura.representation.relationship.RealizationRelationship;
 import arquitetura.representation.relationship.Relationship;
 import com.rits.cloning.Cloner;
 import jmetal4.core.Variable;
+import org.apache.commons.lang3.SerializationUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author edipofederle<edipofederle@gmail.com>
@@ -22,8 +25,8 @@ import java.util.*;
 public class Architecture extends Variable {
     private static final long serialVersionUID = -7764906574709840088L;
     public static String ARCHITECTURE_TYPE = "arquitetura.representation.Architecture";
-    static Logger LOGGER = LogManager.getLogger(Architecture.class.getName());
-    private Cloner cloner;
+    private static Logger LOGGER = LogManager.getLogger(Architecture.class.getName());
+    //    private Cloner cloner;
     private Set<Package> packages = new HashSet<Package>();
     private Set<Class> classes = new HashSet<Class>();
     private Set<Interface> interfaces = new HashSet<Interface>();
@@ -46,32 +49,14 @@ public class Architecture extends Variable {
     }
 
     public List<Element> getElements() {
-        final List<Element> elts = new ArrayList<Element>();
-
-        for (Package p : getAllPackages())
-            for (Element element : p.getElements())
-                elts.add(element);
-
-        for (Class c : this.classes)
-            elts.add(c);
-        for (Interface i : this.interfaces)
-            elts.add(i);
-
-        return elts;
+        return Stream.concat(getAllPackages().stream().map(Package::getElements).flatMap(Set::stream),
+                Stream.concat(this.classes.stream(), this.interfaces.stream()))
+                .collect(Collectors.toList());
     }
 
-    /**
-     * Retorna um Map imutável. É feito isso para garantir que nenhum modificação seja
-     * feita diretamente na lista
-     *
-     * @return Map<String, Concern>
-     */
-    public List<Concern> getAllConcerns() {
-        final List<Concern> concerns = new ArrayList<Concern>();
-        for (Map.Entry<String, Concern> entry : ConcernHolder.INSTANCE.getConcerns().entrySet()) {
-            concerns.add(entry.getValue());
-        }
-        return concerns;
+
+    public Collection<Concern> getAllConcerns() {
+        return ConcernHolder.INSTANCE.getConcerns().values();
     }
 
     /**
@@ -105,12 +90,9 @@ public class Architecture extends Variable {
      * @return
      */
     public Set<Interface> getAllInterfaces() {
-        final Set<Interface> interfaces = new HashSet<Interface>();
-        for (Package p : this.packages)
-            interfaces.addAll(p.getAllInterfaces());
-
-        interfaces.addAll(this.interfaces);
-        return Collections.unmodifiableSet(interfaces);
+        return Stream.concat(this.packages.stream().map(Package::getAllInterfaces).flatMap(Set::stream),
+                             this.interfaces.stream())
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -132,13 +114,9 @@ public class Architecture extends Variable {
      * @return
      */
     public Set<Class> getAllClasses() {
-        final Set<Class> klasses = new HashSet<Class>();
-        for (Package p : this.packages)
-            klasses.addAll(p.getAllClasses());
-
-        klasses.addAll(this.classes);
-        return Collections.unmodifiableSet(klasses);
-
+        return Stream.concat(this.packages.stream().map(Package::getAllClasses).flatMap(Set::stream),
+                             this.classes.stream())
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -158,39 +136,26 @@ public class Architecture extends Variable {
     }
 
     private Element findElement(String name, String type) {
+        Optional<Element> maybeElement = Optional.empty();
+
         if (type.equalsIgnoreCase("class")) {
-            for (Element element : getClasses()) {
-                if (element.getName().equalsIgnoreCase(name))
-                    return element;
-            }
-            for (Package p : getAllPackages()) {
-                for (Element element : p.getElements()) {
-                    if (element.getName().equalsIgnoreCase(name))
-                        return element;
-                }
-            }
+
+            maybeElement = getClasses().stream().map(Element.class::cast)
+                    .filter(element -> element.nameEquals(name)).findAny();
+
+        } else if (type.equalsIgnoreCase("interface")) {
+
+            maybeElement = getInterfaces().stream().map(Element.class::cast)
+                    .filter(element -> element.nameEquals(name)).findAny();
+
         }
 
-        if (type.equalsIgnoreCase("interface")) {
-            for (Element element : getInterfaces()) {
-                if (element.getName().equalsIgnoreCase(name))
-                    return element;
-            }
-
-            for (Package p : getAllPackages()) {
-                for (Element element : p.getElements()) {
-                    if (element.getName().equalsIgnoreCase(name))
-                        return element;
-                }
-            }
+        if (!maybeElement.isPresent()) {
+            maybeElement = getAllPackages().stream().map(Package::getElements).flatMap(Set::stream)
+                    .filter(element -> element.nameEquals(name)).findAny();
         }
 
-        if (type.equalsIgnoreCase("package")) {
-            for (Element element : getAllPackages())
-                if (element.getName().equalsIgnoreCase(name))
-                    return element;
-        }
-        return null;
+        return maybeElement.orElse(null);
     }
 
 
@@ -201,15 +166,10 @@ public class Architecture extends Variable {
      * @return {@link Class}
      */
     public List<Class> findClassByName(String className) {
-        List<Class> classesFound = new ArrayList<Class>();
-        for (Class klass : getClasses())
-            if (className.trim().equalsIgnoreCase(klass.getName().trim()))
-                classesFound.add(klass);
-
-        for (Package p : this.packages)
-            for (Class klass : p.getAllClasses())
-                if (className.trim().equalsIgnoreCase(klass.getName().trim()))
-                    classesFound.add(klass);
+        List<Class> classesFound =
+                Stream.concat(getClasses().stream(), this.packages.stream().flatMap(p -> p.getAllClasses().stream()))
+                        .filter(klass -> className.trim().equalsIgnoreCase(klass.getName().trim()))
+                        .collect(Collectors.toList());
 
         if (classesFound.isEmpty())
             return null;
@@ -223,46 +183,38 @@ public class Architecture extends Variable {
      * @return - null se nao encontrar
      */
     public Element findElementByName(String elementName) {
-        Element element = searchRecursivellyInPackage(this.packages, elementName);
+        Element element = deepPackageSearch(this.packages, elementName);
         if (element == null) {
-            for (Class klass : this.classes)
-                if (klass.getName().equals(elementName))
-                    return klass;
-            for (Interface inter : this.interfaces)
-                if (inter.getName().equals(elementName))
-                    return inter;
-        }
-        if (element == null)
+            Optional<Element> maybeElement = Stream.concat(this.classes.stream(), this.interfaces.stream())
+                    .filter(elm -> elm.getName().equals(elementName)).findFirst();
+            if(maybeElement.isPresent()) return maybeElement.get();
+
             LOGGER.info("No element called: " + elementName + " found");
+        }
         return element;
     }
 
-    private Element searchRecursivellyInPackage(Set<Package> packages, String elementName) {
-        for (Package p : packages) {
-            for (Element element : p.getElements()) {
-                if (element.getName().equals(elementName))
-                    return element;
-                searchRecursivellyInPackage(p.getNestedPackages(), elementName);
+    private Element deepPackageSearch(Set<Package> packages, String elementName) {
+        return packages.stream().map(p -> {
+            if(p.nameEquals(elementName))
+                return p;
+
+            for(Element e : p.getElements()) {
+                if(e.nameEquals(elementName))
+                    return e;
             }
 
-            if (p.getName().equals(elementName))
-                return p;
-            searchRecursivellyInPackage(p.getNestedPackages(), elementName);
-        }
+            Element recursiveSearch = deepPackageSearch(p.getNestedPackages(), elementName);
+            if(recursiveSearch != null)
+                return recursiveSearch;
 
-        return null;
+            return null;
+        }).filter(Objects::nonNull).findFirst().orElse(null);
     }
 
     public Interface findInterfaceByName(String interfaceName) {
-        for (Interface interfacee : getInterfaces())
-            if (interfaceName.equalsIgnoreCase(interfacee.getName()))
-                return interfacee;
-        for (Package p : this.packages)
-            for (Interface interfacee : p.getAllInterfaces())
-                if (interfaceName.equalsIgnoreCase(interfacee.getName()))
-                    return interfacee;
-
-        return null;
+        return Stream.concat(getInterfaces().stream(), packages.stream().flatMap(p->p.getAllInterfaces().stream()))
+                .filter(i->i.nameEquals(interfaceName)).findFirst().orElse(null);
     }
 
     /**
@@ -270,14 +222,10 @@ public class Architecture extends Variable {
      *
      * @param packageName
      * @return Package
-     * @throws Retorna null caso pacote não existir.
      */
     public Package findPackageByName(String packageName) {
-        for (Package pkg : getAllPackages())
-            if (packageName.equalsIgnoreCase(pkg.getName()))
-                return pkg;
+        return getAllPackages().stream().filter(pkg -> packageName.equalsIgnoreCase(pkg.getName())).findFirst().orElse(null);
 
-        return null;
     }
 
 
@@ -293,14 +241,12 @@ public class Architecture extends Variable {
         return pkg;
     }
 
+    /**
+     * Remove qualquer relacionamento que os elementos do pacote
+     * que esta sendo deletado possa ter.
+     */
     public void removePackage(Package p) {
-        /**
-         * Remove qualquer relacionamento que os elementos do pacote
-         * que esta sendo deletado possa ter.
-         */
-        for (Element element : p.getElements()) {
-            relationshipHolder.removeRelatedRelationships(element);
-        }
+        p.getElements().forEach(element -> relationshipHolder.removeRelatedRelationships(element));
         //Remove os relacionamentos que o pacote possa pertencer
         relationshipHolder.removeRelatedRelationships(p);
 
@@ -336,26 +282,19 @@ public class Architecture extends Variable {
 
 
     private boolean removeInterfaceFromArch(Interface interfacee) {
-        if (this.interfaces.remove(interfacee))
-            return true;
-        for (Package p : this.packages) {
-            if (p.removeInterface(interfacee))
-                return true;
-        }
-        return false;
+        return this.interfaces.remove(interfacee) || this.packages.stream().anyMatch(p -> p.removeInterface(interfacee));
     }
 
     public void removeClass(Element klass) {
+        if(!(klass instanceof Class)) return;
+
         relationshipHolder.removeRelatedRelationships(klass);
         if (this.classes.remove(klass))
             LOGGER.info("Classe " + klass.getName() + "(" + klass.getId() + ") removida da arquitetura");
 
-        for (Package pkg : this.getAllPackages()) {
-            if (pkg.getAllClasses().contains(klass)) {
-                if (pkg.removeClass(klass))
-                    LOGGER.info("Classe " + klass.getName() + "(" + klass.getId() + ") removida da arquitetura. Pacote(" + pkg.getName() + ")");
-            }
-        }
+        this.getAllPackages().stream().filter(pkg -> pkg.getAllClasses().contains(klass))
+                .filter(pkg -> pkg.removeClass(klass))
+                .forEach(pkg -> LOGGER.info("Classe " + klass.getName() + "(" + klass.getId() + ") removida da arquitetura. Pacote(" + pkg.getName() + ")"));
     }
 
     public List<VariationPoint> getAllVariationPoints() {
@@ -371,24 +310,14 @@ public class Architecture extends Variable {
     }
 
     public Class findClassById(String idClass) throws ClassNotFound {
-        for (Class klass : getClasses())
-            if (idClass.equalsIgnoreCase(klass.getId().trim()))
-                return klass;
-
-        for (Package p : getAllPackages())
-            for (Class klass : p.getAllClasses())
-                if (idClass.equalsIgnoreCase(klass.getId().trim()))
-                    return klass;
-
-        throw new ClassNotFound("Class " + idClass + " can not found.\n");
+        return Stream.concat(getClasses().stream(), getAllPackages().stream().map(Package::getAllClasses).flatMap(Set::stream))
+                .filter(c -> idClass.equalsIgnoreCase(c.getId())).findAny()
+                .orElseThrow(() -> new ClassNotFound("Class " + idClass + " can not found.\n"));
     }
 
-    public Interface findIntefaceById(String idClass) throws ClassNotFound {
-        for (Interface klass : getInterfaces())
-            if (idClass.equalsIgnoreCase(klass.getId().trim()))
-                return klass;
-
-        throw new ClassNotFound("Class " + idClass + " can not found.\n");
+    public Interface findInterfaceById(String idClass) throws ClassNotFound {
+        return getInterfaces().stream().filter(i -> idClass.equalsIgnoreCase(i.getId()))
+                .findAny().orElseThrow(() -> new ClassNotFound("Class " + idClass + " can not found.\n"));
     }
 
     public void addExternalInterface(Interface interface_) {
@@ -477,14 +406,19 @@ public class Architecture extends Variable {
         return this.deepClone();
     }
 
-    //private static int count = 1;
     public Architecture deepClone() {
-        if (cloner == null)
-            cloner = new Cloner();
-        Architecture newArchitecture = cloner.deepClone(this);
-        return newArchitecture;
+        return SerializationUtils.clone(this);
     }
 
+    public boolean addImplementedInterface(Interface supplier, Element genericElement) {
+        if (genericElement instanceof Class) {
+            return addImplementedInterface(supplier, (Class) genericElement);
+        } else if (genericElement instanceof Package) {
+            return addImplementedInterface(supplier, (Package) genericElement);
+        }
+
+        return true;
+    }
 
     public boolean addImplementedInterface(Interface supplier, Class client) {
         if (!haveRelationship(supplier, client)) {
@@ -500,16 +434,19 @@ public class Architecture extends Variable {
     }
 
     private boolean haveRelationship(Interface supplier, Element client) {
-        for (Relationship r : relationshipHolder.getAllRelationships()) {
-            if (r instanceof RealizationRelationship)
-                if (((RealizationRelationship) r).getClient().equals(client) && ((RealizationRelationship) r).getSupplier().equals(supplier))
+        return relationshipHolder.getAllRelationships().stream().anyMatch(r -> {
+            if (r instanceof RealizationRelationship) {
+                RealizationRelationship rR = (RealizationRelationship) r;
+                if (rR.getClient().equals(client) && rR.getSupplier().equals(supplier))
                     return true;
+            } else if (r instanceof DependencyRelationship) {
+                DependencyRelationship dR = (DependencyRelationship) r;
+                if (dR.getClient().equals(client) && dR.getSupplier().equals(supplier))
+                    return true;
+            }
+            return false;
+        });
 
-            if (r instanceof DependencyRelationship)
-                if (((DependencyRelationship) r).getClient().equals(client) && ((DependencyRelationship) r).getSupplier().equals(supplier))
-                    return true;
-        }
-        return false;
     }
 
     public boolean addImplementedInterface(Interface supplier, Package client) {
@@ -530,11 +467,6 @@ public class Architecture extends Variable {
         relationshipHolder.removeRelatedRelationships(inter);
     }
 
-    public void removeImplementedInterface(Class foo, Interface inter) {
-        foo.removeImplementedInterface(inter);
-        relationshipHolder.removeRelatedRelationships(inter);
-    }
-
     public void addRequiredInterface(Interface supplier, Class client) {
         if (!haveRelationship(supplier, client)) {
             if (addRelationship(new DependencyRelationship(supplier, client, "", UtilResources.getRandonUUID())))
@@ -550,16 +482,6 @@ public class Architecture extends Variable {
                 LOGGER.info("RequiredInterface: " + supplier.getName() + " adicionada a: " + client.getName());
             else
                 LOGGER.info("TENTOU adicionar RequiredInterface: " + supplier.getName() + " a : " + client.getName() + " porém não consegiu");
-        }
-    }
-
-    public void deleteClassRelationships(Class class_) {
-        Collection<Relationship> relationships = new ArrayList<Relationship>(class_.getRelationships());
-
-        if (relationships != null) {
-            for (Relationship relationship : relationships) {
-                this.removeRelationship(relationship);
-            }
         }
     }
 
@@ -666,10 +588,6 @@ public class Architecture extends Variable {
         }
 
         return false;
-    }
-
-    public void setCloner(Cloner cloner) {
-        this.cloner = cloner;
     }
 
     public RelationshipsHolder getRelationshipHolder() {

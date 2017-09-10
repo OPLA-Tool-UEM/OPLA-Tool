@@ -23,7 +23,7 @@ package jmetal4.operators.mutation;
 
 import br.ufpr.inf.opla.patterns.operator.impl.DesignPatternMutationOperator;
 import br.ufpr.inf.opla.patterns.strategies.designpatternselection.impl.CustomDesignPatternSelection;
-import jmetal4.experiments.ExperimentCommomConfigs;
+import jmetal4.experiments.ExperimentCommonConfigs;
 import jmetal4.util.Configuration;
 import jmetal4.util.JMException;
 
@@ -42,7 +42,7 @@ public class MutationFactory {
      * @throws JMException
      * @params configs
      */
-    public static Mutation getMutationOperator(String name, HashMap<String, Object> parameters, ExperimentCommomConfigs configs) throws JMException {
+    public static Mutation getMutationOperator(String name, HashMap<String, Object> parameters, ExperimentCommonConfigs configs) throws JMException {
         if (isOnlyDesignPattern(configs)) {
             return new DesignPatternMutationOperator(parameters, configs.getDesignPatternStrategy(), new CustomDesignPatternSelection(configs.getPatterns()));
         } else if (isDesignPatternAndPlaFeatureMutation(configs)) {
@@ -63,15 +63,15 @@ public class MutationFactory {
         }
     }
 
-    private static boolean isOnlyPLAFeatureMutation(ExperimentCommomConfigs configs) {
+    private static boolean isOnlyPLAFeatureMutation(ExperimentCommonConfigs configs) {
         return !configs.getMutationOperators().contains(DESIGN_PATTERNS) && configs.getMutationOperators().size() >= 1;
     }
 
-    private static boolean isDesignPatternAndPlaFeatureMutation(ExperimentCommomConfigs configs) {
+    private static boolean isDesignPatternAndPlaFeatureMutation(ExperimentCommonConfigs configs) {
         return configs.getMutationOperators().contains(DESIGN_PATTERNS) && configs.getMutationOperators().size() > 1;
     }
 
-    private static boolean isOnlyDesignPattern(ExperimentCommomConfigs configs) {
+    private static boolean isOnlyDesignPattern(ExperimentCommonConfigs configs) {
         return configs.getMutationOperators().contains(DESIGN_PATTERNS) && configs.getMutationOperators().size() == 1;
     }
 }

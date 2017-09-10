@@ -2,6 +2,7 @@ package arquitetura.representation;
 
 import arquitetura.touml.Stereotype;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
  *
  * @author edipofederle<edipofederle@gmail.com>
  */
-public class Variant implements Stereotype {
+public class Variant implements Stereotype, Serializable {
 
     private Element variantElement;
     private String name;

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class GenerateArchitecture extends ArchitectureBase {
 
@@ -28,7 +29,7 @@ public class GenerateArchitecture extends ArchitectureBase {
     private LogLog logger; //para poder capturar logs na GUI.
     private List<String> packageCreated = new ArrayList<String>();
 
-    private static void generateAggregation(Operations op, AssociationRelationship r) throws NotSuppportedOperation {
+    private static void generateAggregation(Operations op, AssociationRelationship r) {
         try {
             AssociationEnd p1 = r.getParticipants().get(0);
             AssociationEnd p2 = r.getParticipants().get(1);
@@ -57,8 +58,7 @@ public class GenerateArchitecture extends ArchitectureBase {
         }
     }
 
-    private static void generateComposition(Operations op, AssociationRelationship r) throws CustonTypeNotFound,
-            NodeNotFound, InvalidMultiplictyForAssociationException {
+    private static void generateComposition(Operations op, AssociationRelationship r) {
         try {
             AssociationEnd p1 = r.getParticipants().get(0);
             AssociationEnd p2 = r.getParticipants().get(1);
@@ -142,10 +142,9 @@ public class GenerateArchitecture extends ArchitectureBase {
             LOGGER.warn("Smarty Profile note Applied: " + e1.getMessage());
         }
 
-        Operations op = null;
 
         try {
-            op = new Operations(doc, a);
+            Operations op = new Operations(doc, a);
 
             Set<Package> packages = a.getAllPackages();
 
@@ -288,67 +287,74 @@ public class GenerateArchitecture extends ArchitectureBase {
             if (!packages.isEmpty())
                 buildPackages(op, packages);
 
-            for (AssociationRelationship r : a.getRelationshipHolder().getAllAssociationsRelationships())
-                generateSimpleAssociation(op, r);
 
-            for (AssociationRelationship r : a.getRelationshipHolder().getAllCompositions())
-                generateComposition(op, r);
+            a.getRelationshipHolder().getAllAssociationsRelationshipsStream().forEach(r -> {
+                if(!r.isAggregation() && !r.isComposition()) {
+                    generateSimpleAssociation(op, r);
+                } else {
+                    if (r.isComposition()) {
+                        generateComposition(op, r);
+                    }
+                    if (r.isAggregation()) {
+                        generateAggregation(op, r);
+                    }
+                }
 
-            for (AssociationRelationship r : a.getRelationshipHolder().getAllAgragations())
-                generateAggregation(op, r);
+            });
 
-            for (GeneralizationRelationship g : a.getRelationshipHolder().getAllGeneralizations()) {
+
+            a.getRelationshipHolder().getAllGeneralizations().forEach(g -> {
                 try {
                     op.forGeneralization().createRelation().between(g.getChild().getId()).and(g.getParent().getId())
                             .build();
                 } catch (Exception e) {
                     LOGGER.info("Generalizacao nao criada");
                 }
-            }
+            });
 
-            for (DependencyRelationship d : a.getRelationshipHolder().getAllDependencies()) {
+            a.getRelationshipHolder().getAllDependencies().forEach(d -> {
                 try {
                     op.forDependency().createRelation().withName(d.getName()).withStereotypes(d.getStereotypes())
                             .between(d.getClient().getId()).and(d.getSupplier().getId()).build();
                 } catch (Exception e) {
                     LOGGER.info("Dependencia nao criada");
                 }
-            }
-            for (RealizationRelationship r : a.getRelationshipHolder().getAllRealizations()) {
+            });
+            a.getRelationshipHolder().getAllRealizations().forEach(r -> {
                 try {
                     op.forRealization().createRelation().withName(r.getName()).between(r.getClient().getId())
                             .and(r.getSupplier().getId()).build();
                 } catch (Exception e) {
                     LOGGER.info("Realizacao nao criada");
                 }
-            }
+            });
 
-            for (AbstractionRelationship r : a.getRelationshipHolder().getAllAbstractions()) {
+            a.getRelationshipHolder().getAllAbstractions().forEach(r -> {
                 try {
                     op.forAbstraction().createRelation().withName(r.getName()).between(r.getClient().getId())
                             .and(r.getSupplier().getId()).build();
                 } catch (Exception e) {
                     LOGGER.info("Abstracao nao criada");
                 }
-            }
+            });
 
-            for (UsageRelationship u : a.getRelationshipHolder().getAllUsage()) {
+            a.getRelationshipHolder().getAllUsage().forEach(u -> {
                 try {
                     op.forUsage().createRelation("").between(u.getClient().getId()).and(u.getSupplier().getId())
                             .build();
                 } catch (Exception e) {
                     LOGGER.info("Usage nao criada");
                 }
-            }
+            });
 
-            for (AssociationClassRelationship asr : a.getRelationshipHolder().getAllAssociationsClass()) {
+            a.getRelationshipHolder().getAllAssociationsClass().forEach(asr -> {
                 try {
                     op.forAssociationClass().createAssociationClass(asr).build();
                     op.forPackage().withId(asr.getPackageOwner()).add(asr.getId());
                 } catch (Exception e) {
                     LOGGER.info("AssociationClass nao criada");
                 }
-            }
+            });
 
             // Variabilidades - Notes
             List<Variability> variabilities = a.getAllVariabilities();
@@ -356,13 +362,13 @@ public class GenerateArchitecture extends ArchitectureBase {
             for (Variability variability : variabilities) {
                 try {
                     VariationPoint variationPointForVariability = variability.getVariationPoint();
-            /*
-             * Um Variabilidade pode estar ligada a uma classe que não
-		     * seja um ponto de variação, neste caso a chama do método
-		     * acima vai retornar null. Quando isso acontecer é usado o
-		     * método getOwnerClass() que retorna a classe que é dona da
-		     * variabilidade.
-		     */
+                    /*
+                     * Um Variabilidade pode estar ligada a uma classe que não
+                     * seja um ponto de variação, neste caso a chama do método
+                     * acima vai retornar null. Quando isso acontecer é usado o
+                     * método getOwnerClass() que retorna a classe que é dona da
+                     * variabilidade.
+                     */
                     if (variationPointForVariability == null) {
                         idOwner = a.findClassByName(variability.getOwnerClass()).get(0).getId();
                     } else {
@@ -405,9 +411,7 @@ public class GenerateArchitecture extends ArchitectureBase {
 
     private void buildPackage(Operations op, Package pack) throws CustonTypeNotFound, NodeNotFound,
             InvalidMultiplictyForAssociationException {
-        List<String> nestedIds = new ArrayList<String>();
         for (Package p : pack.getNestedPackages()) {
-            nestedIds.add(p.getId());
             if (!p.getNestedPackages().isEmpty())
                 buildPackage(op, p);
             if (!packageCreated.contains(p.getId())) {
@@ -415,17 +419,11 @@ public class GenerateArchitecture extends ArchitectureBase {
                 packageCreated.add(p.getId());
             }
         }
-        nestedIds.clear();
     }
 
     private List<String> getOnlyInterfacesAndClasses(Package package1) {
-        List<String> elements = new ArrayList<String>();
-        for (Element element : package1.getElements()) {
-            if (!(element instanceof Package)) {
-                elements.add(element.getId());
-            }
-        }
-        return elements;
+        return package1.getElements().stream().filter(element -> (element instanceof Interface) || (element instanceof Class))
+                .map(Element::getId).collect(Collectors.toList());
     }
 
     private void getLogLog() {

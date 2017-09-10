@@ -3,10 +3,9 @@ package arquitetura.helpers;
 import arquitetura.representation.Element;
 import arquitetura.representation.relationship.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 /**
@@ -25,13 +24,24 @@ public class UtilResources {
         return original.substring(0, 1).toUpperCase() + original.substring(1);
     }
 
+    /**
+     * @deprecated {@link UtilResources#getFilteredList(Collection, Class)}
+     */
     @SuppressWarnings("unchecked")
+    @Deprecated
     public static <T, U extends T> List<U> filter(Set<T> target, Predicate<T> predicate) {
         List<U> result = new ArrayList<U>();
         for (T element : target)
             if (predicate.apply(element))
                 result.add((U) element);
         return result;
+    }
+
+    public static <T, U extends T> List<U> getFilteredList(Collection<T> collection, Class<U> filterClass) {
+        return filterInstances(collection, filterClass).collect(Collectors.toList());
+    }
+    public static <T, U extends T> Stream<U> filterInstances(Collection<T> collection, Class<U> filterClass) {
+        return collection.stream().filter(filterClass::isInstance).map(filterClass::cast);
     }
 
     /**

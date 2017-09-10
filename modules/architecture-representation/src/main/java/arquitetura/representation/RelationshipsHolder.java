@@ -1,12 +1,17 @@
 package arquitetura.representation;
 
-import arquitetura.helpers.Predicate;
 import arquitetura.helpers.UtilResources;
 import arquitetura.representation.relationship.*;
 
-import java.util.*;
+import java.io.Serializable;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class RelationshipsHolder {
+public class RelationshipsHolder implements Serializable {
 
     private Set<Relationship> relationships = new HashSet<Relationship>();
 
@@ -29,45 +34,7 @@ public class RelationshipsHolder {
      * @param element
      */
     public void removeRelatedRelationships(Element element) {
-        for (Iterator<Relationship> i = relationships.iterator(); i.hasNext(); ) {
-            Relationship r = i.next();
-            if (r instanceof GeneralizationRelationship) {
-                if (((GeneralizationRelationship) r).getParent().equals(element) || ((GeneralizationRelationship) r).getChild().equals(element)) {
-                    i.remove();
-                }
-            }
-            if (r instanceof RealizationRelationship) {
-                if (((RealizationRelationship) r).getClient().equals(element) || ((RealizationRelationship) r).getSupplier().equals(element)) {
-                    i.remove();
-                }
-            }
-            if (r instanceof DependencyRelationship) {
-                if (((DependencyRelationship) r).getClient().equals(element) || ((DependencyRelationship) r).getSupplier().equals(element)) {
-                    i.remove();
-                }
-            }
-            if (r instanceof AbstractionRelationship) {
-                if (((AbstractionRelationship) r).getClient().equals(element) || ((AbstractionRelationship) r).getSupplier().equals(element)) {
-                    i.remove();
-                }
-            }
-            if (r instanceof AssociationRelationship) {
-                for (AssociationEnd a : ((AssociationRelationship) r).getParticipants()) {
-                    if (a.getCLSClass().equals(element)) {
-                        i.remove();
-                    }
-                }
-            }
-
-            if (r instanceof AssociationClassRelationship) {
-                for (MemberEnd memberEnd : ((AssociationClassRelationship) r).getMemebersEnd()) {
-                    if (memberEnd.getType().equals(element)) {
-                        i.remove();
-                    }
-
-                }
-            }
-        }
+        relationships.removeIf(r -> r.hasRelationshipWithElement(element));
     }
 
     public Set<Relationship> getAllRelationships() {
@@ -75,127 +42,52 @@ public class RelationshipsHolder {
     }
 
     public List<GeneralizationRelationship> getAllGeneralizations() {
-        Predicate<Relationship> isValid = new Predicate<Relationship>() {
-            public boolean apply(Relationship parent) {
-                return GeneralizationRelationship.class.isInstance(parent);
-            }
-        };
-
-        final List<GeneralizationRelationship> generalizations = UtilResources.filter(getRelationships(), isValid);
-
-        return generalizations;
+        return UtilResources.getFilteredList(getRelationships(), GeneralizationRelationship.class);
     }
 
-    public List<AssociationRelationship> getAllAssociationsRelationships() {
-        final List<AssociationRelationship> associations = getAllAssociations();
-        final List<AssociationRelationship> association = new ArrayList<AssociationRelationship>();
-        for (AssociationRelationship associationRelationship : associations) {
-            if ((notComposition(associationRelationship)) && (notAgregation(associationRelationship))) {
-                association.add(associationRelationship);
-            }
-        }
-        return association;
-
+    public Stream<AssociationRelationship> getAllAssociationsRelationshipsStream() {
+        return UtilResources.filterInstances(getRelationships(), AssociationRelationship.class);
     }
 
-    private boolean notAgregation(AssociationRelationship associationRelationship) {
-        return ((!associationRelationship.getParticipants().get(0).isAggregation()) && (!associationRelationship.getParticipants().get(1).isAggregation()));
-    }
-
-    private boolean notComposition(AssociationRelationship associationRelationship) {
-        return ((!associationRelationship.getParticipants().get(0).isComposite()) && (!associationRelationship.getParticipants().get(1).isComposite()));
-    }
-
-    public List<AssociationRelationship> getAllAssociations() {
-        Predicate<Relationship> isValid = new Predicate<Relationship>() {
-            public boolean apply(Relationship parent) {
-                return AssociationRelationship.class.isInstance(parent);
-            }
-        };
-
-        final List<AssociationRelationship> allAssociations = UtilResources.filter(getRelationships(), isValid);
-
-        return allAssociations;
-
-    }
-
-    public List<AssociationRelationship> getAllCompositions() {
-        final List<AssociationRelationship> associations = getAllAssociations();
-        final List<AssociationRelationship> compositions = new ArrayList<AssociationRelationship>();
-        for (AssociationRelationship associationRelationship : associations) {
-            if ((associationRelationship.getParticipants().get(0).isComposite()) || (associationRelationship.getParticipants().get(1).isComposite())) {
-                compositions.add(associationRelationship);
-            }
-        }
-        return compositions;
-    }
-
-    public List<AssociationRelationship> getAllAgragations() {
-        final List<AssociationRelationship> associations = getAllAssociations();
-        final List<AssociationRelationship> agragation = new ArrayList<AssociationRelationship>();
-        for (AssociationRelationship associationRelationship : associations) {
-            if ((associationRelationship.getParticipants().get(0).isAggregation()) || (associationRelationship.getParticipants().get(1).isAggregation())) {
-                agragation.add(associationRelationship);
-            }
-        }
-        return agragation;
+    public List<AssociationRelationship> getAllAssociationsRelationshipsNotCompOrAgreg() {
+        return getAllAssociationsRelationshipsStream().filter(r -> !r.isAggregation() && !r.isComposition()).collect(Collectors.toList());
     }
 
     public List<UsageRelationship> getAllUsage() {
-        Predicate<Relationship> isValid = new Predicate<Relationship>() {
-            public boolean apply(Relationship parent) {
-                return UsageRelationship.class.isInstance(parent);
-            }
-        };
-
-        return UtilResources.filter(getRelationships(), isValid);
+        return UtilResources.getFilteredList(getRelationships(), UsageRelationship.class);
     }
 
     public List<DependencyRelationship> getAllDependencies() {
-        Predicate<Relationship> isValid = new Predicate<Relationship>() {
-            public boolean apply(Relationship parent) {
-                return DependencyRelationship.class.isInstance(parent);
-            }
-        };
-
-        return UtilResources.filter(getRelationships(), isValid);
+        return UtilResources.getFilteredList(getRelationships(), DependencyRelationship.class);
     }
 
     public List<RealizationRelationship> getAllRealizations() {
-        Predicate<Relationship> realizations = new Predicate<Relationship>() {
-            public boolean apply(Relationship parent) {
-                return RealizationRelationship.class.isInstance(parent);
-            }
-        };
-
-        return UtilResources.filter(getRelationships(), realizations);
+        return UtilResources.getFilteredList(getRelationships(), RealizationRelationship.class);
     }
 
     public List<AbstractionRelationship> getAllAbstractions() {
-        Predicate<Relationship> realizations = new Predicate<Relationship>() {
-            public boolean apply(Relationship parent) {
-                return AbstractionRelationship.class.isInstance(parent);
-            }
-        };
-
-        return UtilResources.filter(getRelationships(), realizations);
-
+        return UtilResources.getFilteredList(getRelationships(), AbstractionRelationship.class);
     }
 
-
     public List<AssociationClassRelationship> getAllAssociationsClass() {
-        Predicate<Relationship> associationClasses = new Predicate<Relationship>() {
-            public boolean apply(Relationship parent) {
-                return AssociationClassRelationship.class.isInstance(parent);
-            }
-        };
+        return UtilResources.getFilteredList(getRelationships(), AssociationClassRelationship.class);
+    }
 
-        return UtilResources.filter(getRelationships(), associationClasses);
+    public <R extends Relationship> List<R> getAllRelationshipsOfType(java.lang.Class<R> type) {
+        return UtilResources.getFilteredList(getRelationships(), type);
     }
 
     public boolean haveRelationship(Relationship relationship) {
+        if(relationship instanceof AssociationRelationship) {
+            AssociationRelationship associationRelationship = (AssociationRelationship) relationship;
+            if(getAllAssociationsRelationshipsStream().anyMatch(ar -> ar.getParticipants().equals(associationRelationship.getParticipants())))
+                return true;
+        }
+
+        return getAllRelationships().contains(relationship);
+
         //Association
-        for (Relationship r : getAllRelationships()) {
+        /*for (Relationship r : getAllRelationships()) {
             if ((r instanceof AssociationRelationship) && (relationship instanceof AssociationRelationship)) {
                 final List<AssociationEnd> participantsNew = ((AssociationRelationship) relationship).getParticipants();
                 final List<AssociationEnd> participantsExists = ((AssociationRelationship) r).getParticipants();
@@ -218,7 +110,7 @@ public class RelationshipsHolder {
         if (relationship instanceof AssociationClassRelationship)
             if (getAllAssociationsClass().contains(relationship)) return true;
 
-        return false;
+        return false;*/
 
     }
 
@@ -227,10 +119,7 @@ public class RelationshipsHolder {
     }
 
     public boolean addRelationship(Relationship relationship) {
-        if (!haveRelationship(relationship)) {
-            return this.relationships.add(relationship);
-        }
-        return false;
+        return !haveRelationship(relationship) && this.relationships.add(relationship);
     }
 
 }

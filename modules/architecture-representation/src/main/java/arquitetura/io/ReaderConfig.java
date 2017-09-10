@@ -124,7 +124,7 @@ public class ReaderConfig {
      * @return boolean
      */
     public static boolean hasSmartyProfile() {
-        return getPathToProfileSMarty().isEmpty() || getPathToProfileSMarty() == null ? false : true;
+        return getPathToProfileSMarty() != null && !getPathToProfileSMarty().isEmpty();
     }
 
     /**
@@ -133,7 +133,7 @@ public class ReaderConfig {
      * @return boolean
      */
     public static boolean hasConcernsProfile() {
-        return getPathToProfileConcerns().isEmpty() || getPathToProfileConcerns() == null ? false : true;
+        return getPathToProfileConcerns() != null && !getPathToProfileConcerns().isEmpty();
     }
 
     /**
@@ -142,11 +142,11 @@ public class ReaderConfig {
      * @return boolean
      */
     public static boolean hasRelationsShipProfile() {
-        return getPathToProfileRelationships().isEmpty() || getPathToProfileRelationships() == null ? false : true;
+        return getPathToProfileRelationships() != null && !getPathToProfileRelationships().isEmpty();
     }
 
     public static boolean hasPatternsProfile() {
-        return getPathToProfilePatterns().isEmpty() || getPathToProfilePatterns() == null ? false : true;
+        return getPathToProfilePatterns() != null && !getPathToProfilePatterns().isEmpty();
     }
 
     public static String getPathToProfileRelationships() {
@@ -191,7 +191,7 @@ public class ReaderConfig {
             Yaml yaml = new Yaml();
             if (StringUtils.isNotBlank(newPathToConfigurationFile)) {
                 dir = yaml.loadAs(new FileInputStream(Paths.get(newPathToConfigurationFile).toFile()), DirTarget.class);
-                LOGGER.info("New Path" + dir);
+                LOGGER.info("New Path " + dir);
             } else {
                 InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("config/application.yaml");
                 dir = yaml.loadAs(inputStream, DirTarget.class);

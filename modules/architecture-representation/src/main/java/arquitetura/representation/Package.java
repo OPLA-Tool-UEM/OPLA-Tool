@@ -6,9 +6,13 @@ import arquitetura.representation.relationship.Relationship;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 /**
@@ -32,11 +36,6 @@ public class Package extends Element {
     /**
      * Construtor Para um Elemento do Tipo Pacote
      *
-     * @param architecture     - A qual arquitetura pertence
-     * @param name             - Nome do Pacote
-     * @param isVariationPoint - Se o mesmo é um ponto de variação
-     * @param variantType      - Qual o tipo ( {@link VariantType} ) da variante
-     * @param parent           - Qual o {@link Element} pai
      */
     public Package(RelationshipsHolder relationshipHolder, String name, Variant variantType, String namespace, String id) {
         super(name, variantType, "package", namespace, id);
@@ -161,30 +160,16 @@ public class Package extends Element {
 
     @Override
     public Set<Concern> getAllConcerns() {
-        Set<Concern> concerns = new HashSet<Concern>();
-
-        for (Element klass : this.classes)
-            concerns.addAll(klass.getAllConcerns());
-        for (Element inter : this.interfaces)
-            concerns.addAll(inter.getAllConcerns());
-        for (Interface interfc : getImplementedInterfaces())
-            concerns.addAll(interfc.getAllConcerns());
-
-        return concerns;
+        return Stream.concat(this.classes.stream(),
+                Stream.concat(this.interfaces.stream(), getImplementedInterfaces().stream()))
+                .map(Element::getAllConcerns).flatMap(Collection::stream).collect(Collectors.toSet());
     }
 
     @Override
     public Set<Concern> getOwnConcerns() {
-        Set<Concern> concerns = new HashSet<Concern>();
-
-        for (Element klass : this.classes)
-            concerns.addAll(klass.getOwnConcerns());
-        for (Element inter : this.interfaces)
-            concerns.addAll(inter.getOwnConcerns());
-        for (Interface interfc : getImplementedInterfaces())
-            concerns.addAll(interfc.getOwnConcerns());
-
-        return concerns;
+        return Stream.concat(this.classes.stream(),
+                Stream.concat(this.interfaces.stream(), getImplementedInterfaces().stream()))
+                .map(Element::getOwnConcerns).flatMap(Set::stream).collect(Collectors.toSet());
     }
 
     public void moveClassToPackage(Class klass, Package packageToMove) {
@@ -250,18 +235,7 @@ public class Package extends Element {
      * @return
      */
     public Set<Element> getElements() {
-        Set<Element> elementsPackage = new HashSet<Element>();
-        for (Class k : this.classes)
-            elementsPackage.add(k);
-        for (Interface i : this.interfaces)
-            elementsPackage.add(i);
-
-        return elementsPackage;
-    }
-
-    public void setElements(List<? extends Element> elements) {
-        for (Element element : elements)
-            getElements().add(element);
+        return Stream.concat(this.classes.stream(), this.interfaces.stream()).collect(Collectors.toSet());
     }
 
     @Override
@@ -293,6 +267,7 @@ public class Package extends Element {
         this.relationshipHolder = relationshipHolder;
     }
 
+    @Override
     public Set<Relationship> getRelationships() {
         return RelationshiopCommons.getRelationships(relationshipHolder.getRelationships(), this);
     }

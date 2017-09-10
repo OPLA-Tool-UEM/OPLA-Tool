@@ -1,10 +1,12 @@
 package arquitetura.representation;
 
 
+import java.io.Serializable;
+
 /**
  * @author edipofederle<edipofederle@gmail.com>
  */
-public class Concern {
+public class Concern implements Serializable {
 
     private String name;
 
@@ -50,4 +52,7 @@ public class Concern {
         return true;
     }
 
+    public boolean namesMatch(Concern otherConcern) {
+        return this.getName().equalsIgnoreCase(otherConcern.getName());
+    }
 }

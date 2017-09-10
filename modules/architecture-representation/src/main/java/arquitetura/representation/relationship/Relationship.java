@@ -1,5 +1,8 @@
 package arquitetura.representation.relationship;
 
+import arquitetura.representation.Element;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,7 +14,7 @@ import java.util.List;
  * <p>
  * OBS: Esterótipos somente foram implementamos para o relacionamento do {@link DependencyRelationship}.
  */
-public abstract class Relationship {
+public abstract class Relationship implements Serializable {
 
     private String id;
     private String type;
@@ -81,6 +84,8 @@ public abstract class Relationship {
     public void setStereotype(String name) {
         this.stereotypes.add(name);
     }
+
+    public abstract boolean hasRelationshipWithElement(Element element);
 
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()

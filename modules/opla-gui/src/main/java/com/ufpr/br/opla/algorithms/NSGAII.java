@@ -16,6 +16,7 @@ import jmetal4.experiments.OPLAConfigs;
 
 import javax.swing.*;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author elf
@@ -73,7 +74,7 @@ public class NSGAII {
             List<String> operadores = configs.getMutationOperators();
 
             for (int i = 0; i < operadores.size(); i++) {
-                if (operadores.get(i) == "DesignPatterns") {
+                if (Objects.equals(operadores.get(i), "DesignPatterns")) {
                     operadores.remove(i);
                 }
             }

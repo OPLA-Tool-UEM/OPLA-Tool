@@ -1,6 +1,6 @@
 package jmetal4.experiments;
 
-public class NSGAIIConfig extends ExperimentCommomConfigs {
+public class NSGAIIConfig extends ExperimentCommonConfigs {
 
     private int populationSize;
 

@@ -377,6 +377,7 @@ public class Class extends Element {
         this.relationshipHolder = relationshipHolder;
     }
 
+    @Override
     public Set<Relationship> getRelationships() {
         return RelationshiopCommons.getRelationships(relationshipHolder.getRelationships(), this);
     }

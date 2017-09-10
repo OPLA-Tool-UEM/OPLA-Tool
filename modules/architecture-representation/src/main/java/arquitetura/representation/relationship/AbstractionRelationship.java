@@ -47,6 +47,11 @@ public class AbstractionRelationship extends Relationship {
     }
 
     @Override
+    public boolean hasRelationshipWithElement(Element element) {
+        return client.equals(element) || supplier.equals(element);
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (obj == null) {
             return false;

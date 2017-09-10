@@ -11,7 +11,9 @@ import results.FunResults;
 import results.InfoResult;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Result {
 
@@ -28,7 +30,6 @@ public class Result {
      * Pass null to execution when are ALL results. So results belongs to
      * experiment and not to execution (run).
      * <p>
-     * See {@link ResultTest} for more details
      *
      * @param list
      * @param experiement
@@ -79,7 +80,7 @@ public class Result {
                 ir.setNumberOfDependencies(arch.getRelationshipHolder().getAllDependencies().size());
                 ir.setNumberOfAbstraction(arch.getRelationshipHolder().getAllAbstractions().size());
                 ir.setNumberOfGeneralizations(arch.getRelationshipHolder().getAllGeneralizations().size());
-                ir.setNumberOfAssociations(arch.getRelationshipHolder().getAllAssociationsRelationships().size());
+                ir.setNumberOfAssociations(arch.getRelationshipHolder().getAllAssociationsRelationshipsNotCompOrAgreg().size());
                 ir.setNumberOfassociationsClass(arch.getRelationshipHolder().getAllAssociationsClass().size());
 
                 infoResults.add(ir);
@@ -95,12 +96,8 @@ public class Result {
      * @param allConcerns
      * @return String
      */
-    private String getListOfConcerns(List<Concern> allConcerns) {
-        StringBuilder concernsList = new StringBuilder();
-        for (Concern concern : allConcerns)
-            concernsList.append(concern.getName()).append("|");
-
-        return concernsList.substring(0, concernsList.length() - 1);
+    private String getListOfConcerns(Collection<Concern> allConcerns) {
+        return allConcerns.stream().map(Concern::getName).collect(Collectors.joining("|"));
     }
 
     public AllMetrics getMetrics(List<FunResults> funResults, List<Solution> list, Execution execution,
@@ -178,8 +175,8 @@ public class Result {
         conventional.setCohesion(metrics.evaluateICohesion(conventional.getSumChoesion()));
         conventional.setMeanDepComps(metrics.evaluateMeanDepComps(arch));
         conventional.setMeanNumOps(metrics.evaluateMeanNumOps(arch));
-        conventional.setSumClassesDepIn(metrics.evaluateSumClassesDepIn(arch));
-        conventional.setSumClassesDepOut(metrics.evaluateSumClassesDepOut(arch));
+        conventional.setSumClassesDepIn((int) metrics.evaluateSumClassesDepIn(arch));
+        conventional.setSumClassesDepOut((int) metrics.evaluateSumClassesDepOut(arch));
         conventional.setSumDepIn(metrics.evaluateSumDepIn(arch));
         conventional.setSumDepOut(metrics.evaluateSumDepOut(arch));
 
@@ -222,8 +219,8 @@ public class Result {
 
         Aclass aclass = new Aclass(idSolution, execution, experiement);
 
-        aclass.setSumClassesDepIn(metrics.evaluateSumClassesDepIn(arch));
-        aclass.setSumClassesDepOut(metrics.evaluateSumClassesDepOut(arch));
+        aclass.setSumClassesDepIn((int) metrics.evaluateSumClassesDepIn(arch));
+        aclass.setSumClassesDepOut((int) metrics.evaluateSumClassesDepOut(arch));
 
         return aclass;
     }

@@ -289,7 +289,7 @@ public class SolutionSet implements Serializable {
      */
     public void printVariablesToFile(String path) {
         try {
-			/* Open the file */
+            /* Open the file */
             FileOutputStream fos = new FileOutputStream(path);
             OutputStreamWriter osw = new OutputStreamWriter(fos);
             BufferedWriter bw = new BufferedWriter(osw);
@@ -381,7 +381,7 @@ public class SolutionSet implements Serializable {
                     bw.newLine();
                     bw.newLine();
                     bw.write("Number of AssociationsRelationships: "
-                            + arch.getRelationshipHolder().getAllAssociationsRelationships().size());
+                            + arch.getRelationshipHolder().getAllAssociationsRelationshipsNotCompOrAgreg().size());
                     bw.newLine();
                     bw.write("Number of AssociationClasses: "
                             + arch.getRelationshipHolder().getAllAssociationsClass().size());

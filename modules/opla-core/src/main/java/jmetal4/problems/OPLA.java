@@ -10,7 +10,7 @@ import jmetal4.core.Problem;
 import jmetal4.core.Solution;
 import jmetal4.core.SolutionSet;
 import jmetal4.encodings.solutionType.ArchitectureSolutionType;
-import jmetal4.experiments.ExperimentCommomConfigs;
+import jmetal4.experiments.ExperimentCommonConfigs;
 import jmetal4.metrics.PLAMetrics.extensibility.ExtensPLA;
 import jmetal4.metrics.concernDrivenMetrics.concernCohesion.LCC;
 import jmetal4.metrics.concernDrivenMetrics.concernCohesion.LCCClass;
@@ -39,9 +39,9 @@ public class OPLA extends Problem {
 
     public Architecture architecture_;
     private List<String> selectedMetrics; // Vai vir da GUI
-    private ExperimentCommomConfigs configs;
+    private ExperimentCommonConfigs configs;
 
-    public OPLA(String xmiFilePath, ExperimentCommomConfigs oplaConfig) throws Exception {
+    public OPLA(String xmiFilePath, ExperimentCommonConfigs oplaConfig) throws Exception {
         this.configs = oplaConfig;
         numberOfVariables_ = 1;
         numberOfObjectives_ = oplaConfig.getOplaConfigs().getNumberOfObjectives();

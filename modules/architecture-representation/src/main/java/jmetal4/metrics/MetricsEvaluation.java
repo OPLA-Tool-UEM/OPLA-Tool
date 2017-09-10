@@ -7,35 +7,58 @@ import jmetal4.metrics.concernDrivenMetrics.concernCohesion.LCC;
 import jmetal4.metrics.concernDrivenMetrics.concernCohesion.LCCClass;
 import jmetal4.metrics.concernDrivenMetrics.concernCohesion.LCCClassComponentResult;
 import jmetal4.metrics.concernDrivenMetrics.concernCohesion.LCCComponentResult;
-import jmetal4.metrics.concernDrivenMetrics.concernDiffusion.*;
-import jmetal4.metrics.concernDrivenMetrics.interactionBeteweenConcerns.*;
+import jmetal4.metrics.concernDrivenMetrics.concernDiffusion.CDAC;
+import jmetal4.metrics.concernDrivenMetrics.concernDiffusion.CDAClass;
+import jmetal4.metrics.concernDrivenMetrics.concernDiffusion.CDAI;
+import jmetal4.metrics.concernDrivenMetrics.concernDiffusion.CDAO;
+import jmetal4.metrics.concernDrivenMetrics.interactionBeteweenConcerns.CIBC;
+import jmetal4.metrics.concernDrivenMetrics.interactionBeteweenConcerns.CIBClass;
+import jmetal4.metrics.concernDrivenMetrics.interactionBeteweenConcerns.IIBC;
+import jmetal4.metrics.concernDrivenMetrics.interactionBeteweenConcerns.OOBC;
 import jmetal4.metrics.conventionalMetrics.*;
 
 
 public class MetricsEvaluation {
 
+    //<editor-fold default-state="folded" desc="ELEG(pla)">
+
+    /**
+     * Elegância = NAC + EC + ATMR
+     */
+    public double evaluateElegance(Architecture architecture) {
+        return evaluateATMRElegance(architecture) + evaluateECElegance(architecture) + evaluateNACElegance(architecture);
+    }
+
+    /**
+     * Elegância da Razão de Atributos
+     */
     public double evaluateATMRElegance(Architecture architecture) {
         ATMRElegance ATMR = new ATMRElegance(architecture);
         return ATMR.getResults();
     }
 
+    /**
+     * Elegância de Acoplamentos Externos
+     */
     public double evaluateECElegance(Architecture architecture) {
         ECElegance EC = new ECElegance(architecture);
         return EC.getResults();
     }
 
+    /**
+     * Elegância de Número entre classes
+     */
     public double evaluateNACElegance(Architecture architecture) {
         NACElegance NAC = new NACElegance(architecture);
         return NAC.getResults();
     }
+    //</editor-fold>
 
+    //<editor-fold default-state="folded" desc="Ext(pla)">
 
-    public double evaluateElegance(Architecture architecture) {
-        double EleganceFitness = 0.0;
-        EleganceFitness = evaluateATMRElegance(architecture) + evaluateECElegance(architecture) + evaluateNACElegance(architecture);
-        return EleganceFitness;
-    }
-
+    /**
+     * Capacidade de Extensão de cada Pacote = Extens(pla)
+     */
     public float evaluatePLAExtensibility(Architecture architecture) {
         float ExtensibilityFitness = 0;
         float Extensibility;
@@ -46,279 +69,260 @@ public class MetricsEvaluation {
         else Extensibility = 1 / ExtensibilityFitness;
         return (Extensibility);
     }
+    //</editor-fold>
 
+    //<editor-fold default-state="folded" desc="FM(pla)">
     public double evaluateMSIFitness(Architecture architecture) {
-        double sumCIBC = 0.0;
-        double sumIIBC = 0.0;
-        double sumOOBC = 0.0;
-        double sumCDAC = 0.0;
-        double sumCDAI = 0.0;
-        double sumCDAO = 0.0;
-        double sumLCC = 0.0;
-        double MSIFitness = 0.0;
+        double sumLCC = evaluateLCC(architecture);
 
-        sumLCC = evaluateLCC(architecture);
+        double sumEC = evaluateEC(architecture);
 
+        double sumDC = evaluateDC(architecture);
 
-        CIBC cibc = new CIBC(architecture);
-        for (CIBCResult c : cibc.getResults().values()) {
-            sumCIBC += c.getInterlacedConcerns().size();
-        }
-
-        IIBC iibc = new IIBC(architecture);
-        for (IIBCResult c : iibc.getResults().values()) {
-            sumIIBC += c.getInterlacedConcerns().size();
-        }
-
-        OOBC oobc = new OOBC(architecture);
-        for (OOBCResult c : oobc.getResults().values()) {
-            sumOOBC += c.getInterlacedConcerns().size();
-        }
-
-
-        CDAC cdac = new CDAC(architecture);
-        for (CDACResult c : cdac.getResults()) {
-            sumCDAC += c.getElements().size();
-        }
-
-        CDAI cdai = new CDAI(architecture);
-        for (CDAIResult c : cdai.getResults()) {
-            sumCDAI += c.getElements().size();
-        }
-
-        CDAO cdao = new CDAO(architecture);
-        for (CDAOResult c : cdao.getResults()) {
-            sumCDAO += c.getElements().size();
-        }
-
-        MSIFitness = sumLCC + sumCDAC + sumCDAI + sumCDAO + sumCIBC + sumIIBC + sumOOBC;
-        return MSIFitness;
+        return sumLCC + sumDC + sumEC;
     }
 
-
-    public double evaluateCIBC(Architecture architecture) {
-        double sumCIBC = 0.0;
-
-        CIBC cibc = new CIBC(architecture);
-        for (CIBCResult c : cibc.getResults().values()) {
-            sumCIBC += c.getInterlacedConcerns().size();
-        }
-
-        return sumCIBC;
-    }
-
-
-    public double evaluateIIBC(Architecture architecture) {
-
-        double sumIIBC = 0.0;
-
-        IIBC iibc = new IIBC(architecture);
-        for (IIBCResult c : iibc.getResults().values()) {
-            sumIIBC += c.getInterlacedConcerns().size();
-        }
-
-        return sumIIBC;
-    }
-
-
-    public double evaluateOOBC(Architecture architecture) {
-
-        double sumOOBC = 0.0;
-
-        OOBC oobc = new OOBC(architecture);
-        for (OOBCResult c : oobc.getResults().values()) {
-            sumOOBC += c.getInterlacedConcerns().size();
-        }
-        return sumOOBC;
-    }
-
-
-    public double evaluateCDAC(Architecture architecture) {
-
-        double sumCDAC = 0.0;
-        CDAC cdac = new CDAC(architecture);
-        for (CDACResult c : cdac.getResults()) {
-            sumCDAC += c.getElements().size();
-        }
-        return sumCDAC;
-    }
-
-    public double evaluateCDAI(Architecture architecture) {
-        double sumCDAI = 0.0;
-
-        CDAI cdai = new CDAI(architecture);
-        for (CDAIResult c : cdai.getResults()) {
-            sumCDAI += c.getElements().size();
-        }
-        return sumCDAI;
-    }
-
-
-    public double evaluateCDAO(Architecture architecture) {
-        double sumCDAO = 0.0;
-        CDAO cdao = new CDAO(architecture);
-        for (CDAOResult c : cdao.getResults()) {
-            sumCDAO += c.getElements().size();
-        }
-        return sumCDAO;
-    }
-
+    /**
+     * Lack of Concern-based Cohesion
+     */
     public double evaluateLCC(Architecture architecture) {
-        double sumLCC = 0.0;
         LCC result = new LCC(architecture);
-
-        for (LCCComponentResult component : result.getResults()) {
-            sumLCC += component.numberOfConcerns();
-
-        }
-        return sumLCC;
+        return result.getResults().stream().mapToDouble(LCCComponentResult::numberOfConcerns).sum();
     }
+
+    /**
+     * Concern Diffusion over Architectural Components
+     */
+    public double evaluateCDAC(Architecture architecture) {
+        CDAC cdac = new CDAC(architecture);
+        return cdac.getResults().stream().mapToDouble(c -> c.getElements().size()).sum();
+    }
+
+    /**
+     * Concern Diffusion over Architectural Interfaces
+     */
+    public double evaluateCDAI(Architecture architecture) {
+        CDAI cdai = new CDAI(architecture);
+        return cdai.getResults().stream().mapToDouble(c -> c.getElements().size()).sum();
+    }
+
+    /**
+     * Concern Diffusion over Architectural Operations
+     */
+    public double evaluateCDAO(Architecture architecture) {
+        CDAO cdao = new CDAO(architecture);
+        return cdao.getResults().stream().mapToDouble(c -> c.getElements().size()).sum();
+    }
+
+    /**
+     * Component-level Interlacing Between Concerns
+     */
+    public double evaluateCIBC(Architecture architecture) {
+        CIBC cibc = new CIBC(architecture);
+        return cibc.getResults().values().stream().mapToDouble(c -> c.getInterlacedConcerns().size()).sum();
+
+    }
+
+    /**
+     * Interface-level Interlacing Between Concerns
+     */
+    public double evaluateIIBC(Architecture architecture) {
+        IIBC iibc = new IIBC(architecture);
+        return iibc.getResults().values().stream().mapToDouble(c -> c.getInterlacedConcerns().size()).sum();
+    }
+
+
+    /**
+     * Operation-level Overlapping Between Concerns
+     */
+    public double evaluateOOBC(Architecture architecture) {
+        OOBC oobc = new OOBC(architecture);
+        return oobc.getResults().values().stream().mapToDouble(c -> c.getInterlacedConcerns().size()).sum();
+    }
+    //</editor-fold>
+
+    //<editor-fold default-state="folded" desc="FM+DesignOutset(pla)">
+    public double evaluateMSIFitnessDesignOutset(Architecture architecture) {
+        double sumLCCClass = evaluateLCCClass(architecture);
+
+        double sumCDAClass = evaluateCDAClass(architecture);
+
+        double sumCIBClass = evaluateCIBClass(architecture);
+
+        return evaluateMSIFitness(architecture) + sumLCCClass + sumCDAClass + sumCIBClass;
+    }
+
 
     public double evaluateCDAClass(Architecture architecture) {
-
-        double sumCDAClass = 0.0;
-
         CDAClass cdaclass = new CDAClass(architecture);
-        for (CDAClassResult c : cdaclass.getResults()) {
-            sumCDAClass += c.getElements().size();
-        }
-
-        return sumCDAClass;
+        return cdaclass.getResults().stream().mapToDouble(c -> c.getElements().size()).sum();
     }
 
 
     public double evaluateCIBClass(Architecture architecture) {
-
-        double sumCIBClass = 0.0;
-
         CIBClass cibclass = new CIBClass(architecture);
-        for (CIBClassResult c : cibclass.getResults().values()) {
-            sumCIBClass += c.getInterlacedConcerns().size();
-        }
-
-        return sumCIBClass;
+        return cibclass.getResults().values().stream().mapToDouble(c -> c.getInterlacedConcerns().size()).sum();
     }
-
 
     public double evaluateLCCClass(Architecture architecture) {
-        double sumLCCClass = 0.0;
         LCCClass result = new LCCClass(architecture);
-
-        for (LCCClassComponentResult cls : result.getResults()) {
-            sumLCCClass += cls.numberOfConcerns();
-
-        }
-        return sumLCCClass;
+        return result.getResults().stream().mapToDouble(LCCClassComponentResult::numberOfConcerns).sum();
     }
+    //</editor-fold>
 
-    //----------------------------------------------------------------------------------
+    //<editor-fold default-state="folded" desc="CM(pla)">
     public double evaluateMACFitness(Architecture architecture) {
-        double MACFitness = 0.0;
-        double meanNumOps = 0.0;
-        double meanDepComps = 0.0;
-        double sumCohesion = 0.0;
-        double sumClassesDepIn = 0.0;
-        double sumClassesDepOut = 0.0;
-        double sumDepIn = 0.0;
-        double sumDepOut = 0.0;
-        double iCohesion = 0.0;
+        double meanNumOps = evaluateMeanNumOps(architecture);
 
+        double meanDepComps = evaluateMeanDepComps(architecture);
 
-        MeanNumOpsByInterface numOps = new MeanNumOpsByInterface(architecture);
-        meanNumOps = numOps.getResults();
+        double sumClassesDepOut = evaluateSumClassesDepOut(architecture);
 
-        MeanDepComponents depComps = new MeanDepComponents(architecture);
-        meanDepComps = depComps.getResults();
+        double sumClassesDepIn = evaluateSumClassesDepIn(architecture);
 
-        ClassDependencyOut classesDepOut = new ClassDependencyOut(architecture);
-        sumClassesDepOut = classesDepOut.getResults();
+        double sumDepOut = evaluateSumDepOut(architecture);
 
-        ClassDependencyIn classesDepIn = new ClassDependencyIn(architecture);
-        sumClassesDepIn = classesDepIn.getResults();
+        double sumDepIn = evaluateSumDepIn(architecture);
 
-        DependencyOut DepOut = new DependencyOut(architecture);
-        sumDepOut = DepOut.getResults();
+        double iCohesion = evaluateCohesion(architecture);
 
-        DependencyIn DepIn = new DependencyIn(architecture);
-        sumDepIn = DepIn.getResults();
-
-        RelationalCohesion cohesion = new RelationalCohesion(architecture);
-        sumCohesion = cohesion.getResults();
-        if (sumCohesion == 0) {
-            iCohesion = 1.0;
-        } else iCohesion = 1 / sumCohesion;
-
-
-        MACFitness = meanNumOps + meanDepComps + sumClassesDepIn + sumClassesDepOut + sumDepIn + sumDepOut + (1 / sumCohesion);
-
-
-        return MACFitness;
+        return meanNumOps + meanDepComps + sumClassesDepIn + sumClassesDepOut + sumDepIn + sumDepOut + iCohesion;
     }
 
 
-    public double evaluateMeanNumOps(Architecture architecture) {
-        double meanNumOps = 0.0;
-        MeanNumOpsByInterface numOps = new MeanNumOpsByInterface(architecture);
-        meanNumOps = numOps.getResults();
-        return meanNumOps;
-    }
-
-    public double evaluateMeanDepComps(Architecture architecture) {
-        double meanDepComps = 0.0;
-        MeanDepComponents depComps = new MeanDepComponents(architecture);
-        meanDepComps = depComps.getResults();
-        return meanDepComps;
-    }
-
-
-    public double evaluateSumClassesDepIn(Architecture architecture) {
-
-        double sumClassesDepIn = 0.0;
-        ClassDependencyIn classesDepIn = new ClassDependencyIn(architecture);
-        sumClassesDepIn = classesDepIn.getResults();
-        return sumClassesDepIn;
-    }
-
-
-    public double evaluateSumClassesDepOut(Architecture architecture) {
-        double sumClassesDepOut = 0.0;
-
-        ClassDependencyOut classesDepOut = new ClassDependencyOut(architecture);
-        sumClassesDepOut = classesDepOut.getResults();
-
-        return sumClassesDepOut;
-    }
-
+    /**
+     * Dependências de Entrada
+     */
     public double evaluateSumDepIn(Architecture architecture) {
-
-        double sumDepIn = 0.0;
         DependencyIn DepIn = new DependencyIn(architecture);
-        sumDepIn = DepIn.getResults();
-        return sumDepIn;
+        return DepIn.getResults();
     }
 
-
+    /**
+     * Dependências de Saída
+     */
     public double evaluateSumDepOut(Architecture architecture) {
-
-        double sumDepOut = 0.0;
         DependencyOut DepOut = new DependencyOut(architecture);
-        sumDepOut = DepOut.getResults();
-        return sumDepOut;
+        return DepOut.getResults();
     }
 
-    //---------------------------------------------------------------------------------
+    /**
+     * Dependências de Entrada de uma Classe
+     */
+    public double evaluateSumClassesDepIn(Architecture architecture) {
+        ClassDependencyIn classesDepIn = new ClassDependencyIn(architecture);
+        return classesDepIn.getResults();
+    }
+
+    /**
+     * Dependências de Saída de uma Classe
+     */
+    public double evaluateSumClassesDepOut(Architecture architecture) {
+        ClassDependencyOut classesDepOut = new ClassDependencyOut(architecture);
+        return classesDepOut.getResults();
+    }
+
+    /**
+     * Número de Operações por Interface
+     */
+    public double evaluateMeanNumOps(Architecture architecture) {
+        MeanNumOpsByInterface numOps = new MeanNumOpsByInterface(architecture);
+        return numOps.getResults();
+    }
+
+    /**
+     * Dependência de Pacotes
+     */
+    public double evaluateMeanDepComps(Architecture architecture) {
+        MeanDepComponents depComps = new MeanDepComponents(architecture);
+        return depComps.getResults();
+    }
+
+    /**
+     * Coesão relacional
+     */
     public double evaluateCohesion(Architecture architecture) {
-        double sumCohesion = 0.0;
-        double iCohesion = 0.0;
 
         RelationalCohesion cohesion = new RelationalCohesion(architecture);
-        sumCohesion = cohesion.getResults();
+        double sumCohesion = cohesion.getResults();
         if (sumCohesion == 0) {
-            iCohesion = 1.0;
-        } else iCohesion = 1 / sumCohesion;
-
-        return iCohesion;
+            return 1.0;
+        }
+        return 1 / sumCohesion;
     }
 
+    public double evaluateICohesion(double sumCohesion) {
+        return sumCohesion == 0 ? 1.0 : 1 / sumCohesion;
+    }
+    //</editor-fold>
+
+    //<editor-fold default-state="folded" desc="implementado por marcelo">
+
+    /**
+     * Acoplamento de Componentes
+     */
+    public double evaluateACOMP(Architecture architecture) {
+        return evaluateSumDepIn(architecture) + evaluateSumDepOut(architecture);
+    }
+
+    /**
+     * Acoplamento de Classes
+     */
+    public double evaluateACLASS(Architecture architecture) {
+        return evaluateSumClassesDepIn(architecture) + evaluateSumClassesDepOut(architecture);
+    }
+
+    /**
+     * Tamanho = Número de Operações / Número de Interfaces
+     */
+    public double evaluateTAM(Architecture architecture) {
+        return evaluateMeanNumOps(architecture);
+    }
+
+    /**
+     * Coesão
+     */
+    public double evaluateCOE(Architecture architecture) {
+        RelationalCohesion cohesion = new RelationalCohesion(architecture);
+        double iC = 1.0;
+        if (cohesion.getResults() != 0) {
+            iC = 1 / cohesion.getResults();
+        }
+        return iC + evaluateLCC(architecture);
+    }
+
+    /**
+     * Difusão de Características
+     */
+    public double evaluateDC(Architecture architecture) {
+        CDAI cdai = new CDAI(architecture);
+        double sumCDAI = cdai.getResults().stream().mapToDouble(c -> c.getElements().size()).sum();
+
+        CDAO cdao = new CDAO(architecture);
+        double sumCDAO = cdao.getResults().stream().mapToDouble(c -> c.getElements().size()).sum();
+
+        CDAC cdac = new CDAC(architecture);
+        double sumCDAC = cdac.getResults().stream().mapToDouble(c -> c.getElements().size()).sum();
+
+        return sumCDAI + sumCDAO + sumCDAC;
+    }
+
+    /**
+     * Entrelaçamento de Características
+     */
+    public double evaluateEC(Architecture architecture) {
+
+        CIBC cibc = new CIBC(architecture);
+        double sumCIBC = cibc.getResults().values().stream().mapToDouble(c -> c.getInterlacedConcerns().size()).sum();
+
+        IIBC iibc = new IIBC(architecture);
+        double sumIIBC = iibc.getResults().values().stream().mapToDouble(c -> c.getInterlacedConcerns().size()).sum();
+
+        OOBC oobc = new OOBC(architecture);
+        double sumOOBC = oobc.getResults().values().stream().mapToDouble(c -> c.getInterlacedConcerns().size()).sum();
+
+        return sumCIBC + sumIIBC + sumOOBC;
+    }
+    //</editor-fold>
 
 }

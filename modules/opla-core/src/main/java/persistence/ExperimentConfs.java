@@ -2,7 +2,7 @@ package persistence;
 
 import database.Database;
 import exceptions.MissingConfigurationException;
-import jmetal4.experiments.ExperimentCommomConfigs;
+import jmetal4.experiments.ExperimentCommonConfigs;
 import jmetal4.experiments.NSGAIIConfig;
 import jmetal4.experiments.PaesConfigs;
 
@@ -22,10 +22,10 @@ import java.util.HashMap;
 public class ExperimentConfs {
 
     private String experimentId;
-    private ExperimentCommomConfigs configs;
+    private ExperimentCommonConfigs configs;
     private String algorithm;
 
-    public ExperimentConfs(String experimentId, String algorithm, ExperimentCommomConfigs configs) {
+    public ExperimentConfs(String experimentId, String algorithm, ExperimentCommonConfigs configs) {
         this.experimentId = experimentId;
         this.configs = configs;
         this.algorithm = algorithm;

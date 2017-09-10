@@ -90,7 +90,7 @@ public class ArchitectureBuilder {
      * @return {@link Architecture}
      * @throws Exception
      */
-    public Architecture create(String xmiFilePath) throws Exception {
+    public Architecture create(String xmiFilePath) {
         try {
             model = modelHelper.getModel(xmiFilePath);
             VariationPointFlyweight.getInstance().addModel(model);
@@ -123,8 +123,6 @@ public class ArchitectureBuilder {
             for (Relationship as : loadAssociationClassAssociation())
                 architecture.addRelationship(as);
 
-            Cloner cloner = new Cloner();
-            architecture.setCloner(cloner);
             ArchitectureHolder.setName(architecture.getName());
             return architecture;
 

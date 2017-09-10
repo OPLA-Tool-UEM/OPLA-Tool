@@ -3,6 +3,7 @@ package arquitetura.representation;
 
 import arquitetura.exceptions.VariationPointElementTypeErrorException;
 
+import java.io.Serializable;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * @author edipofederle<edipofederle@gmail.com>
  */
-public class VariationPoint {
+public class VariationPoint implements Serializable {
 
     private Element variationPointElement;
     private List<Variant> variants;

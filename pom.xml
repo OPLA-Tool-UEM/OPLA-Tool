@@ -242,6 +242,21 @@
 				<artifactId>swing-layout</artifactId>
 				<version>1.0.3</version>
 			</dependency>
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.4</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-math3</artifactId>
+				<version>3.3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.knowm.xchart</groupId>
+				<artifactId>xchart</artifactId>
+				<version>3.2.2</version>
+			</dependency>
 			<!-- Logging -->
 			<dependency>
 				<groupId>br.ufpr.dinf.gres</groupId>

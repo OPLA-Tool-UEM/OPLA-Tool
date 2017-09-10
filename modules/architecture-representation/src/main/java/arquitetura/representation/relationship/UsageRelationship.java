@@ -39,6 +39,11 @@ public class UsageRelationship extends Relationship {
         this.name = name;
     }
 
+    @Override
+    public boolean hasRelationshipWithElement(Element element) {
+        return supplier.equals(element) || client.equals(element);
+    }
+
     public Element getSupplier() {
         return supplier;
     }

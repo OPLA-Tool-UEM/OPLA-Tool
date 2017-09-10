@@ -4,12 +4,14 @@ import br.ufpr.dinf.gres.loglog.LogLog;
 import br.ufpr.inf.opla.patterns.strategies.scopeselection.impl.ElementsWithSameDesignPatternSelection;
 import org.apache.commons.lang.WordUtils;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public abstract class ExperimentCommomConfigs {
+public abstract class ExperimentCommonConfigs {
 
 
     private boolean log = false;
@@ -128,9 +130,9 @@ public abstract class ExperimentCommomConfigs {
      * @param patternsList
      */
     public void setPatterns(String... patternsList) {
-        for (int i = 0; i < patternsList.length; i++)
-            patternsList[i] = WordUtils.capitalize(patternsList[i].toLowerCase());
-        this.patterns = patternsList;
+        List<String> patternArrayList = Arrays.stream(patternsList).map(String::toLowerCase).map(WordUtils::capitalize).collect(Collectors.toList());
+
+        this.patterns = (String[]) patternArrayList.toArray();
 
         if (Collections.disjoint(Arrays.asList(this.patterns), Arrays.asList("Strategy", "Bridge", "Mediator"))) {
             throw new IllegalArgumentException("Invalid(s) Design Pattern(s). Valids are: Stragety, Bridge and Mediator");

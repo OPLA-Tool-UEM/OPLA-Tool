@@ -119,7 +119,7 @@ public abstract class PropUtils extends Object {
             value.trim();
 
             if (isLabel(value)) {
-				/*
+                /*
 				 * if (labels.getProperty(value) != null) { res.setProperty
 				 * (key, labels.getProperty (value)); }
 				 */

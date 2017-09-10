@@ -32,6 +32,18 @@ public class AssociationRelationship extends Relationship {
         return participants;
     }
 
+    public boolean isComposition() {
+        return getParticipants().stream().anyMatch(AssociationEnd::isComposite);
+    }
+    public boolean isAggregation() {
+        return getParticipants().stream().anyMatch(AssociationEnd::isAggregation);
+    }
+
+    @Override
+    public boolean hasRelationshipWithElement(Element element) {
+        return participants.stream().anyMatch(associationEnd -> associationEnd.getCLSClass().equals(element));
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;

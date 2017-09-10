@@ -62,6 +62,11 @@ public class RealizationRelationship extends Relationship {
     }
 
     @Override
+    public boolean hasRelationshipWithElement(Element element) {
+        return client.equals(element) || supplier.equals(element);
+    }
+
+    @Override
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();

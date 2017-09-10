@@ -116,7 +116,7 @@ public class Hypervolume {
                     swap(front, j, n);
                 } else if (dominates(front[j], front[i], noObjectives)) {
     /* remove point 'i'; ensure that the point copied to index 'i'
-	   is considered in the next outer loop (thus, decrement i) */
+       is considered in the next outer loop (thus, decrement i) */
                     n--;
                     swap(front, i, n);
                     i--;
