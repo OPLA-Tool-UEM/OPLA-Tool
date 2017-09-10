@@ -1,6 +1,7 @@
-package br.ufpr.dinf.gres.opla.view.model;
+package br.ufpr.dinf.gres.opla.view.model.tablemodel;
 
 import br.ufpr.dinf.gres.opla.entity.Experiment;
+import br.ufpr.dinf.gres.opla.view.model.TableModelBase;
 
 /**
  * @author Fernando

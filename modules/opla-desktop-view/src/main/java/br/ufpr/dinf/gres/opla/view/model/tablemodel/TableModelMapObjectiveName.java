@@ -1,10 +1,11 @@
-package br.ufpr.dinf.gres.opla.view.model;
+package br.ufpr.dinf.gres.opla.view.model.tablemodel;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.ufpr.dinf.gres.opla.entity.MapObjectiveName;
+import br.ufpr.dinf.gres.opla.view.model.TableModelBase;
 
 /**
  * @author Fernando

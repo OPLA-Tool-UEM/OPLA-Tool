@@ -1,8 +1,9 @@
-package br.ufpr.dinf.gres.opla.view.model;
+package br.ufpr.dinf.gres.opla.view.model.tablemodel;
 
 import java.util.List;
 
 import br.ufpr.dinf.gres.opla.entity.Execution;
+import br.ufpr.dinf.gres.opla.view.model.TableModelBase;
 import br.ufpr.dinf.gres.opla.view.util.DateUtil;
 import br.ufpr.dinf.gres.persistence.dao.ObjectiveDAO;
 

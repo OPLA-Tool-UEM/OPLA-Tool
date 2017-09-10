@@ -19,12 +19,12 @@ import br.ufpr.dinf.gres.opla.config.ApplicationFile;
 import br.ufpr.dinf.gres.opla.entity.Execution;
 import br.ufpr.dinf.gres.opla.entity.Experiment;
 import br.ufpr.dinf.gres.opla.view.log.LogListener;
-import br.ufpr.dinf.gres.opla.view.model.AlgorithmComboModel;
-import br.ufpr.dinf.gres.opla.view.model.ObjectiveNameComboModel;
-import br.ufpr.dinf.gres.opla.view.model.SolutionNameComboModel;
-import br.ufpr.dinf.gres.opla.view.model.TableModelExecution;
-import br.ufpr.dinf.gres.opla.view.model.TableModelExperiment;
-import br.ufpr.dinf.gres.opla.view.model.TableModelMapObjectiveName;
+import br.ufpr.dinf.gres.opla.view.model.combomodel.AlgorithmComboModel;
+import br.ufpr.dinf.gres.opla.view.model.combomodel.ObjectiveNameComboModel;
+import br.ufpr.dinf.gres.opla.view.model.combomodel.SolutionNameComboModel;
+import br.ufpr.dinf.gres.opla.view.model.tablemodel.TableModelExecution;
+import br.ufpr.dinf.gres.opla.view.model.tablemodel.TableModelExperiment;
+import br.ufpr.dinf.gres.opla.view.model.tablemodel.TableModelMapObjectiveName;
 import br.ufpr.dinf.gres.opla.view.util.AlertUtil;
 import br.ufpr.dinf.gres.opla.view.util.Constants;
 import br.ufpr.dinf.gres.opla.view.util.OSUtils;
@@ -261,8 +261,7 @@ public class Principal extends AbstractPrincipalJFrame {
 		Utils.createDataBaseIfNotExists();
 	}
 
-	// <editor-fold defaultstate="collapsed" desc="Generated
-	// Code">//GEN-BEGIN:initComponents
+	// <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
 		jTabbedPane1 = new javax.swing.JTabbedPane();

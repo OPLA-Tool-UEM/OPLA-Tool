@@ -1,6 +1,8 @@
-package br.ufpr.dinf.gres.opla.view.model;
+package br.ufpr.dinf.gres.opla.view.model.combomodel;
 
 import java.util.List;
+
+import br.ufpr.dinf.gres.opla.view.model.ComboModelBase;
 
 /**
  *
