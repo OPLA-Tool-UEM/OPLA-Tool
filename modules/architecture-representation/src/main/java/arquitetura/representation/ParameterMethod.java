@@ -1,12 +1,15 @@
 package arquitetura.representation;
 
 
+import java.io.Serializable;
+import java.util.Objects;
+
 /**
  * Representa parametro de um método.
  *
  * @author edipofederle<edipofederle@gmail.com>
  */
-public class ParameterMethod {
+public class ParameterMethod implements Serializable {
 
     private String name;
     private String type;
@@ -65,13 +68,11 @@ public class ParameterMethod {
             return false;
         if (getClass() != obj.getClass())
             return false;
+
         ParameterMethod other = (ParameterMethod) obj;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
-        return true;
+        return Objects.equals(name, other.name) /*&&
+                Objects.equals(type, other.type) &&
+                Objects.equals(direction, other.direction)*/;
     }
 
 

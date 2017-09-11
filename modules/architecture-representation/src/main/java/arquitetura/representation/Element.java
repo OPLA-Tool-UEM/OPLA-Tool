@@ -99,7 +99,7 @@ public abstract class Element implements Serializable {
     }
 
     public boolean containsConcern(Concern concern) {
-        return getOwnConcerns().stream().anyMatch(conc -> conc.getName().equalsIgnoreCase(concern.getName()));
+        return concern != null && getOwnConcerns().stream().anyMatch(conc -> conc.getName().equalsIgnoreCase(concern.getName()));
     }
 
     /**

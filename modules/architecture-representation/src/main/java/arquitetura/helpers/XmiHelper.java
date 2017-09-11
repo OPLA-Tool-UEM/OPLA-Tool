@@ -33,7 +33,7 @@ public class XmiHelper {
     private static Document originalNotation;
 
     /**
-     * Busca por {@link Node} dado um id e um {@link Documnet}.
+     * Busca por {@link Node} dado um id e um {@link Document}.
      *
      * @param docNotaion - Deve ser o arquivo .notation
      * @param id         - Id a ser buscado
@@ -41,7 +41,10 @@ public class XmiHelper {
      */
     public static Node findByIDInNotationFile(Document docNotaion, String id) {
         NodeList node = docNotaion.getElementsByTagName("children");
+
+
         Node nodeFound = null;
+        mainloop:
         for (int i = 0; i < node.getLength(); i++) {
             NodeList nodes = node.item(i).getChildNodes();
             for (int j = 0; j < nodes.getLength(); j++) {
@@ -50,6 +53,7 @@ public class XmiHelper {
                     for (int k = 0; k < attrs.getLength(); k++) {
                         if (attrs.item(k).getNodeValue().contains(id)) {
                             nodeFound = node.item(i);
+                            break mainloop;
                         }
                     }
                 }
@@ -57,7 +61,7 @@ public class XmiHelper {
         }
 
         if (nodeFound == null) {
-            LOGGER.warn("\nNode with id " + id + " cannot be found. Retuns null");
+            LOGGER.warn("\nNode with id " + id + " cannot be found. Returns null");
             return null;
         }
         return nodeFound;
@@ -65,11 +69,7 @@ public class XmiHelper {
 
 
     public static String findIdByName(String name, List<Element> list) {
-        for (Element element : list) {
-            if (element.getName().equalsIgnoreCase(name))
-                return element.getId();
-        }
-        return "";
+        return list.stream().filter(element -> element.getName().equalsIgnoreCase(name)).findFirst().map(Element::getId).orElse("");
     }
 
     public static Node findByID(Document doc, String id, String tagName) {
@@ -176,9 +176,7 @@ public class XmiHelper {
 
         try {
             setOriginalNotation(docBuilderNotation.parse(pathToNotation));
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (SAXException | IOException e) {
             e.printStackTrace();
         }
     }
@@ -226,14 +224,14 @@ public class XmiHelper {
             String elementId = "";
             try {
                 elementId = element.getChildNodes().item(i).getAttributes().getNamedItem("xmi:id").getNodeValue();
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
             if ("packagedElement".equalsIgnoreCase(elementName)) {
                 try {
                     String elementValue = element.getChildNodes().item(i).getAttributes().getNamedItem("xmi:type").getNodeValue();
                     if ("uml:Class".equalsIgnoreCase(elementValue) && (id.equalsIgnoreCase(elementId)))
                         return "class";
-                } catch (NullPointerException e) {
+                } catch (NullPointerException ignored) {
 
                 }
             } else {
@@ -251,8 +249,8 @@ public class XmiHelper {
      */
     public String randomNum() {
         Random rn = new Random();
-        int range = 1000 - 0 + 1;
-        int randomNum = rn.nextInt(range) + 0;
+        int range = 1000 + 1;
+        int randomNum = rn.nextInt(range);
         return Integer.toString(randomNum);
     }
 

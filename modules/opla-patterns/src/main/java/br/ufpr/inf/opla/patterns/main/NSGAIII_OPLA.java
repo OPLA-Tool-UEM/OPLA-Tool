@@ -1,6 +1,7 @@
 package br.ufpr.inf.opla.patterns.main;
 
 import arquitetura.io.ReaderConfig;
+import arquitetura.representation.Architecture;
 import br.ufpr.inf.opla.patterns.indicadores.Hypervolume;
 import br.ufpr.inf.opla.patterns.operator.impl.jmetal5.PLACrossover;
 import br.ufpr.inf.opla.patterns.operator.impl.jmetal5.PLAMutation;
@@ -23,6 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -190,7 +192,7 @@ public class NSGAIII_OPLA {
         int n = Runtime.getRuntime().availableProcessors();
         long initTotal = System.currentTimeMillis();
 
-        ExecutorService executorService = Executors.newFixedThreadPool(n/2);
+        ExecutorService executorService = Executors.newFixedThreadPool(n / 2);
 
         for (int r = 0; r < runsNumber; r++) {
             executorService.execute(buildNSGAIIIWrapperRunnable(nsgaiiiBuilder, r));
@@ -213,6 +215,15 @@ public class NSGAIII_OPLA {
 
         System.out.println("Tamanho da Melhor Subfrente: " + finalfinalSolution.size());
 
+        System.out.println("Salvando 10 soluções aleatorias em [" + ReaderConfig.getDirExportTarget() + "]...");
+        AtomicInteger index = new AtomicInteger(0);
+        SolutionListUtils.selectNRandomDifferentSolutions(10, finalfinalSolution)
+                .forEach(architectureSolution -> {
+                    Architecture arch = architectureSolution.getArchitecture();
+                    int i = index.getAndIncrement();
+                    arch.save(arch, "VAR_ALL_", "-" + i);
+                    System.out.println("\tSolução " + i + " salva.");
+                });
     }
 
     private static String getPlaName(String pla) {

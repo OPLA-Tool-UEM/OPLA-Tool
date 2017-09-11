@@ -67,21 +67,13 @@ public class Adapter extends DesignPattern {
 
                 RelationshipUtil.createNewUsageRelationship("adaptee", adapterClass, adaptee);
 
-                Relationship relationshipToBeExcluded = null;
+                Relationship relationshipToBeExcluded;
                 if (adaptee.getClass().equals(target.getClass())) {
-                    for (Relationship relationship : ElementUtil.getRelationships(adaptee)) {
-                        if (target.equals(RelationshipUtil.getSuperElement(relationship))) {
-                            relationshipToBeExcluded = relationship;
-                            break;
-                        }
-                    }
+                    relationshipToBeExcluded = adaptee.getRelationships().stream().filter(relationship -> target.equals(RelationshipUtil.getSuperElement(relationship)))
+                            .findFirst().orElse(null);
                 } else {
-                    for (Relationship relationship : ElementUtil.getRelationships(adaptee)) {
-                        if (target.equals(RelationshipUtil.getImplementedInterface(relationship))) {
-                            relationshipToBeExcluded = relationship;
-                            break;
-                        }
-                    }
+                    relationshipToBeExcluded = adaptee.getRelationships().stream().filter(relationship -> target.equals(RelationshipUtil.getImplementedInterface(relationship)))
+                            .findFirst().orElse(null);
                 }
 
                 if (relationshipToBeExcluded != null) {

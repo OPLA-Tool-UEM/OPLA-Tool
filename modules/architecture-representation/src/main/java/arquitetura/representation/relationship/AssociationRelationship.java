@@ -33,15 +33,31 @@ public class AssociationRelationship extends Relationship {
     }
 
     public boolean isComposition() {
-        return getParticipants().stream().anyMatch(AssociationEnd::isComposite);
+        for (AssociationEnd associationEnd : getParticipants()) {
+            if (associationEnd.isComposite()) {
+                return true;
+            }
+        }
+        return false;
     }
+
     public boolean isAggregation() {
-        return getParticipants().stream().anyMatch(AssociationEnd::isAggregation);
+        for (AssociationEnd associationEnd : getParticipants()) {
+            if (associationEnd.isAggregation()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean hasRelationshipWithElement(Element element) {
-        return participants.stream().anyMatch(associationEnd -> associationEnd.getCLSClass().equals(element));
+        for (AssociationEnd associationEnd : participants) {
+            if (associationEnd.getCLSClass().equals(element)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

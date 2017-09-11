@@ -29,6 +29,14 @@ public class ArchitectureSolution extends AbstractGenericSolution<Architecture, 
         return architecture_;
     }
 
+    public void setArchitecture(Architecture architecture) {
+        this.architecture_ = architecture;
+    }
+
+    public OPLAProblem getProblem() {
+        return this.problem;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof ArchitectureSolution)) {

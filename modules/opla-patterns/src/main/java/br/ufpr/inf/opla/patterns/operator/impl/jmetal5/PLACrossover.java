@@ -25,7 +25,7 @@ import java.util.stream.Stream;
  */
 public class PLACrossover implements CrossoverOperator<ArchitectureSolution> {
 
-    public double crossoverProbability;
+    private double crossoverProbability;
 
     private CrossoverUtils crossoverUtils;
 
@@ -69,7 +69,7 @@ public class PLACrossover implements CrossoverOperator<ArchitectureSolution> {
 
     private <T> T randomObjectFromCollection(Collection<T> collection) {
         //avoid creating a list if unnecessary
-        assert (!collection.isEmpty());
+        if (collection.isEmpty()) return null;
 
         if (collection.size() == 1) {
             return collection.iterator().next();

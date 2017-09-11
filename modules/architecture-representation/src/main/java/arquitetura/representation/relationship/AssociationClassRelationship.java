@@ -104,7 +104,12 @@ public class AssociationClassRelationship extends Relationship {
 
     @Override
     public boolean hasRelationshipWithElement(Element element) {
-        return memebersEnd.stream().anyMatch(memberEnd -> memberEnd.getType().equals(element));
+        for (MemberEnd memberEnd : memebersEnd) {
+            if (memberEnd.getType().equals(element)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

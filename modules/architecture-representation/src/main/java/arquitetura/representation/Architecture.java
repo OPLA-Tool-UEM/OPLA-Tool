@@ -9,7 +9,6 @@ import arquitetura.main.GenerateArchitecture;
 import arquitetura.representation.relationship.DependencyRelationship;
 import arquitetura.representation.relationship.RealizationRelationship;
 import arquitetura.representation.relationship.Relationship;
-import com.rits.cloning.Cloner;
 import jmetal4.core.Variable;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.log4j.LogManager;
