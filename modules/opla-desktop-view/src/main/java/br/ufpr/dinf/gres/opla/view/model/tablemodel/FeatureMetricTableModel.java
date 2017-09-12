@@ -1,14 +1,13 @@
 package br.ufpr.dinf.gres.opla.view.model.tablemodel;
 
-import br.ufpr.dinf.gres.opla.entity.FeatureDrivenMetric;
-import br.ufpr.dinf.gres.opla.view.model.TableModelBase;
+import br.ufpr.dinf.gres.opla.entity.metric.FeatureDrivenMetric;
 
 /**
  * 
  * @author Fernando
  *
  */
-public class FeatureMetricTableModel extends TableModelBase<FeatureDrivenMetric> {
+public class FeatureMetricTableModel extends AbstractMetricTableModel {
 
 	/**
 	 * 
@@ -29,7 +28,7 @@ public class FeatureMetricTableModel extends TableModelBase<FeatureDrivenMetric>
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		FeatureDrivenMetric obj = lista.get(rowIndex);
+		FeatureDrivenMetric obj = (FeatureDrivenMetric) lista.get(rowIndex);
 
 		switch (columnIndex) {
 		case 0:

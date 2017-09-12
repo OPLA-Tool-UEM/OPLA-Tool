@@ -9,6 +9,10 @@
 		<class>br.ufpr.dinf.gres.opla.entity.Execution</class>
 		<class>br.ufpr.dinf.gres.opla.entity.Objective</class>
 		<class>br.ufpr.dinf.gres.opla.entity.MapObjectiveName</class>
+		<class>br.ufpr.dinf.gres.opla.entity.metric.ConventionalMetric</class>
+		<class>br.ufpr.dinf.gres.opla.entity.metric.EleganceMetric</class>
+		<class>br.ufpr.dinf.gres.opla.entity.metric.PLAExtensibilityMetric</class>
+		<class>br.ufpr.dinf.gres.opla.entity.metric.FeatureDrivenMetric</class>
 
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.SQLiteDialect" />

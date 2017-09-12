@@ -13,10 +13,12 @@ import org.apache.log4j.Logger;
 
 import br.ufpr.dinf.gres.opla.entity.Experiment;
 import br.ufpr.dinf.gres.opla.entity.MapObjectiveName;
-import br.ufpr.dinf.gres.persistence.util.GenericDAO;
+import br.ufpr.dinf.gres.persistence.util.GenericDAOImpl;
 
-public class MapObjectivesDAO extends GenericDAO<MapObjectiveName> {
+public class MapObjectivesDAO extends GenericDAOImpl<MapObjectiveName> {
 
+	private static final long serialVersionUID = 1L;
+	
 	private static final Logger LOGGER = Logger.getLogger(MapObjectivesDAO.class);
 
 	public MapObjectivesDAO() {

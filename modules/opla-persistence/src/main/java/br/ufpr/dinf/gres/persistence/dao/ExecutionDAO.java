@@ -1,13 +1,16 @@
 package br.ufpr.dinf.gres.persistence.dao;
 
-import br.ufpr.dinf.gres.opla.entity.Execution;
-import br.ufpr.dinf.gres.opla.entity.Experiment;
-import br.ufpr.dinf.gres.persistence.util.GenericDAO;
-
-import javax.persistence.TypedQuery;
 import java.util.List;
 
-public class ExecutionDAO extends GenericDAO<Execution> {
+import javax.persistence.TypedQuery;
+
+import br.ufpr.dinf.gres.opla.entity.Execution;
+import br.ufpr.dinf.gres.opla.entity.Experiment;
+import br.ufpr.dinf.gres.persistence.util.GenericDAOImpl;
+
+public class ExecutionDAO extends GenericDAOImpl<Execution> {
+
+	private static final long serialVersionUID = 1L;
 
 	public ExecutionDAO() {
 		super(Execution.class);

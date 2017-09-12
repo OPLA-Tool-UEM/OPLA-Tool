@@ -1,73 +1,30 @@
 package br.ufpr.dinf.gres.persistence.util;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-
-import org.apache.log4j.Logger;
-
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 /**
- * Generic implementation for DAO Pattern
+ * 
+ * @author Fernando
  *
  * @param <T>
- * @author Fernando
  */
-public abstract class GenericDAO<T extends Serializable> {
+public interface GenericDAO<T> extends Serializable {
 
-	private static final Logger LOGGER = Logger.getLogger(GenericDAO.class);
+	public T findById(Long id);
 
-	private final EntityManager em = PersistenceManager.getEntityManager();
+	public List<T> findAll();
 
-	private final Class<T> clazz;
+	public void save(T clazz);
 
-	public GenericDAO(Class<T> clazz) {
-		this.clazz = clazz;
-	}
+	public void udpate(T clazz);
 
-	public T findById(Integer id) {
-		LOGGER.debug("Finding by id: " + id);
-		return em.find(clazz, id);
-	}
+	public void excluir(T clazz);
 
-	public List<T> findAll() {
-		LOGGER.debug("List all" + clazz.getSimpleName());
-		TypedQuery<T> query = em.createQuery(" FROM " + clazz.getSimpleName(), clazz);
-		List<T> resultList = query.getResultList();
-		LOGGER.debug("Listing " + resultList.size() + " results");
-		return resultList;
-	}
+	public void excluir(Long id);
 
-	public void save(T clazz) {
-		LOGGER.debug("Saving: " + clazz.getClass().getSimpleName());
-		em.getTransaction().begin();
-		em.persist(clazz);
-		em.getTransaction().commit();
-		LOGGER.debug("Saved Success");
-	}
+	public EntityManager getEntityManager();
 
-	public void udpate(T clazz) {
-		LOGGER.debug("Updating: " + clazz.getClass().getSimpleName());
-		em.getTransaction().begin();
-		em.merge(clazz);
-		em.getTransaction().commit();
-		LOGGER.debug("Updated Success");
-	}
-
-	public void excluir(T clazz) {
-		LOGGER.debug("Deleting: " + clazz.getClass().getSimpleName());
-		em.getTransaction().begin();
-		em.remove(clazz);
-		em.getTransaction().commit();
-		LOGGER.debug("Deleted Success");
-	}
-
-	public void excluir(Integer id) {
-		excluir(findById(id));
-	}
-
-	public EntityManager getEntityManager() {
-		return em;
-	}
 }

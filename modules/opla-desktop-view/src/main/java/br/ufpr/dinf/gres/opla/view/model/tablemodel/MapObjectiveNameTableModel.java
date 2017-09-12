@@ -10,7 +10,7 @@ import br.ufpr.dinf.gres.opla.view.model.TableModelBase;
 /**
  * @author Fernando
  */
-public class TableModelMapObjectiveName extends TableModelBase<MapObjectiveName> {
+public class MapObjectiveNameTableModel extends TableModelBase<MapObjectiveName> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -19,7 +19,7 @@ public class TableModelMapObjectiveName extends TableModelBase<MapObjectiveName>
 		return 2;
 	}
 
-	public TableModelMapObjectiveName() {
+	public MapObjectiveNameTableModel() {
 		this.lista = new ArrayList<>();
 	}
 

@@ -14,14 +14,16 @@ import org.apache.log4j.Logger;
 import br.ufpr.dinf.gres.opla.entity.Execution;
 import br.ufpr.dinf.gres.opla.entity.Experiment;
 import br.ufpr.dinf.gres.opla.entity.Objective;
-import br.ufpr.dinf.gres.persistence.util.GenericDAO;
+import br.ufpr.dinf.gres.persistence.util.GenericDAOImpl;
 
 /**
  * 
  * @author Fernando
  *
  */
-public class ObjectiveDAO extends GenericDAO<Objective> {
+public class ObjectiveDAO extends GenericDAOImpl<Objective> {
+
+	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = Logger.getLogger(ObjectiveDAO.class);
 

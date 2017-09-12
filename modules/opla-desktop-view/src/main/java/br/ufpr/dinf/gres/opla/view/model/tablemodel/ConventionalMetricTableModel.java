@@ -1,14 +1,13 @@
 package br.ufpr.dinf.gres.opla.view.model.tablemodel;
 
-import br.ufpr.dinf.gres.opla.entity.ConventionalMetric;
-import br.ufpr.dinf.gres.opla.view.model.TableModelBase;
+import br.ufpr.dinf.gres.opla.entity.metric.ConventionalMetric;
 
 /**
  * 
  * @author Fernando
  *
  */
-public class ConventionalMetricTableModel extends TableModelBase<ConventionalMetric> {
+public class ConventionalMetricTableModel extends AbstractMetricTableModel {
 
 	private static final long serialVersionUID = 1L;
 
@@ -26,7 +25,7 @@ public class ConventionalMetricTableModel extends TableModelBase<ConventionalMet
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		ConventionalMetric obj = lista.get(rowIndex);
+		ConventionalMetric obj = (ConventionalMetric) lista.get(rowIndex);
 
 		switch (columnIndex) {
 		case 0:

@@ -1,6 +1,11 @@
 package br.ufpr.dinf.gres.opla.util;
 
 import br.ufpr.dinf.gres.opla.entity.*;
+import br.ufpr.dinf.gres.opla.entity.metric.ConventionalMetric;
+import br.ufpr.dinf.gres.opla.entity.metric.EleganceMetric;
+import br.ufpr.dinf.gres.opla.entity.metric.FeatureDrivenMetric;
+import br.ufpr.dinf.gres.opla.entity.metric.PLAExtensibilityMetric;
+
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.tool.hbm2ddl.SchemaExport;

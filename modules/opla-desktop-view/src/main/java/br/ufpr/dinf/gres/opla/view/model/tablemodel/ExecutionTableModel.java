@@ -10,7 +10,7 @@ import br.ufpr.dinf.gres.persistence.dao.ObjectiveDAO;
 /**
  * @author Fernando
  */
-public class TableModelExecution extends TableModelBase<Execution> {
+public class ExecutionTableModel extends TableModelBase<Execution> {
 
 	private static final long serialVersionUID = 1L;
 

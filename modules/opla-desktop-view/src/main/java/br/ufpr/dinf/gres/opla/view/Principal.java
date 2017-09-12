@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.DefaultCaret;
 
 import org.apache.commons.lang.StringUtils;
@@ -18,13 +19,16 @@ import br.ufpr.dinf.gres.loglog.Logger;
 import br.ufpr.dinf.gres.opla.config.ApplicationFile;
 import br.ufpr.dinf.gres.opla.entity.Execution;
 import br.ufpr.dinf.gres.opla.entity.Experiment;
+import br.ufpr.dinf.gres.opla.entity.metric.GenericMetric;
+import br.ufpr.dinf.gres.opla.view.enumerators.Metric;
 import br.ufpr.dinf.gres.opla.view.log.LogListener;
 import br.ufpr.dinf.gres.opla.view.model.combomodel.AlgorithmComboModel;
 import br.ufpr.dinf.gres.opla.view.model.combomodel.ObjectiveNameComboModel;
 import br.ufpr.dinf.gres.opla.view.model.combomodel.SolutionNameComboModel;
-import br.ufpr.dinf.gres.opla.view.model.tablemodel.TableModelExecution;
-import br.ufpr.dinf.gres.opla.view.model.tablemodel.TableModelExperiment;
-import br.ufpr.dinf.gres.opla.view.model.tablemodel.TableModelMapObjectiveName;
+import br.ufpr.dinf.gres.opla.view.model.tablemodel.AbstractMetricTableModel;
+import br.ufpr.dinf.gres.opla.view.model.tablemodel.ExecutionTableModel;
+import br.ufpr.dinf.gres.opla.view.model.tablemodel.ExperimentTableModel;
+import br.ufpr.dinf.gres.opla.view.model.tablemodel.MapObjectiveNameTableModel;
 import br.ufpr.dinf.gres.opla.view.util.AlertUtil;
 import br.ufpr.dinf.gres.opla.view.util.Constants;
 import br.ufpr.dinf.gres.opla.view.util.OSUtils;
@@ -34,6 +38,7 @@ import br.ufpr.dinf.gres.persistence.dao.ExecutionDAO;
 import br.ufpr.dinf.gres.persistence.dao.ExperimentDAO;
 import br.ufpr.dinf.gres.persistence.dao.MapObjectivesDAO;
 import br.ufpr.dinf.gres.persistence.dao.ObjectiveDAO;
+import br.ufpr.dinf.gres.persistence.util.GenericMetricDAO;
 
 /**
  * @author Fernando
@@ -43,10 +48,10 @@ public class Principal extends AbstractPrincipalJFrame {
 	private static final long serialVersionUID = 1L;
 	private static final LogLog VIEW_LOGGER = Logger.getLogger();
 	private final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(Principal.class);
-	private final TableModelExperiment tmExperiments = new TableModelExperiment();
-	private final TableModelExperiment tmExecExperiments = new TableModelExperiment();
-	private final TableModelExecution tmExecution = new TableModelExecution();
-	private final TableModelMapObjectiveName tmMapObjectiveSolution = new TableModelMapObjectiveName();
+	private final ExperimentTableModel tmExperiments = new ExperimentTableModel();
+	private final ExperimentTableModel tmExecExperiments = new ExperimentTableModel();
+	private final ExecutionTableModel tmExecution = new ExecutionTableModel();
+	private final MapObjectiveNameTableModel tmMapObjectiveSolution = new MapObjectiveNameTableModel();
 
 	private final SolutionNameComboModel solutionNameComboModel = new SolutionNameComboModel(Collections.emptyList());
 	private final ObjectiveNameComboModel objetiveNameComboModel = new ObjectiveNameComboModel(Collections.emptyList());
@@ -261,7 +266,8 @@ public class Principal extends AbstractPrincipalJFrame {
 		Utils.createDataBaseIfNotExists();
 	}
 
-	// <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+	// <editor-fold defaultstate="collapsed" desc="Generated
+	// Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
 		jTabbedPane1 = new javax.swing.JTabbedPane();
@@ -1168,6 +1174,12 @@ public class Principal extends AbstractPrincipalJFrame {
 		panelResultObjetive.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 		panelResultObjetive.setName("Panel Result Objetive"); // NOI18N
 
+		cbObjectiveSoluction.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				cbObjectiveSoluctionActionPerformed(evt);
+			}
+		});
+
 		jLabel16.setText("Objective Solution:");
 
 		tbObjectiveSolution
@@ -1426,8 +1438,13 @@ public class Principal extends AbstractPrincipalJFrame {
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
 
+	private void cbObjectiveSoluctionActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cbObjectiveSoluctionActionPerformed
+		loadMetricValue();
+	}// GEN-LAST:event_cbObjectiveSoluctionActionPerformed
+
 	private void cbSolutionNameActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cbSolutionNameActionPerformed
 		loadObjetiveNames();
+		loadMetricValue();
 	}// GEN-LAST:event_cbSolutionNameActionPerformed
 
 	private void ckMutationActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_ckMutationActionPerformed
@@ -1623,14 +1640,31 @@ public class Principal extends AbstractPrincipalJFrame {
 
 	private void loadObjetiveNames() {
 		String solutionName = solutionNameComboModel.getSelectedItem();
-		if (solutionName != null) {
+		if (StringUtils.isNotBlank(solutionName)) {
 			Experiment experiment = tmExecExperiments.getValue(tbExecutions.getSelectedRow());
 			Execution execution = tmExecution.getValue(tbRuns.getSelectedRow());
 			List<BigDecimal> objectiveValues = objectiveDAO.findObjectiveValues(experiment, execution, solutionName);
 			List<String> listNames = mapObjectivesDAO.findNamesByExperiment(experiment);
 			tmMapObjectiveSolution.setData(objectiveValues, listNames);
 			tbObjectiveSolution.setModel(tmMapObjectiveSolution);
-			tbObjectiveSolution.updateUI();
+			tbObjectiveSolution.updateUI();	
+		}
+	}
+
+	public void loadMetricValue() {
+		String objetiveSolutionName = objetiveNameComboModel.getSelectedItem();
+		if (StringUtils.isNotBlank(objetiveSolutionName)) {
+			Metric metric = Metric.getMetricByName(objetiveSolutionName);
+			if (metric != null) {
+				String solutionName = solutionNameComboModel.getSelectedItem();
+				AbstractMetricTableModel tableModel = metric.getTableModel();
+				GenericMetricDAO<GenericMetric> DAO = metric.getDAO();
+				tableModel.setLista(DAO.findBySolution(solutionName));
+				tbMetrics.setModel(tableModel);
+				tbMetrics.updateUI();
+			} else {
+				tbMetrics.setModel(new DefaultTableModel());
+			}
 		}
 	}
 
@@ -1647,5 +1681,7 @@ public class Principal extends AbstractPrincipalJFrame {
 		tmMapObjectiveSolution.setData(Collections.emptyList(), Collections.emptyList());
 		tbObjectiveSolution.setModel(tmMapObjectiveSolution);
 		tbObjectiveSolution.updateUI();
+		tbMetrics.setModel(new DefaultTableModel());
+		tbMetrics.updateUI();
 	}
 }

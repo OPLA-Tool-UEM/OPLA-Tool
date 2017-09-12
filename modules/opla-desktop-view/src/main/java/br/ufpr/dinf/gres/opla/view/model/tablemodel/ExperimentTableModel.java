@@ -6,7 +6,7 @@ import br.ufpr.dinf.gres.opla.view.model.TableModelBase;
 /**
  * @author Fernando
  */
-public class TableModelExperiment extends TableModelBase<Experiment> {
+public class ExperimentTableModel extends TableModelBase<Experiment> {
 
 	private static final long serialVersionUID = 1L;
 
