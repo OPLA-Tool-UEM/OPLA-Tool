@@ -16,7 +16,7 @@ public class ArchitectureSolution extends AbstractGenericSolution<Architecture, 
     private Architecture architecture_;
 
     public ArchitectureSolution(OPLAProblem problem) {
-        this(problem, problem.getArchitecture());
+        this(problem, problem.getBaseArchitecture());
     }
 
     public ArchitectureSolution(OPLAProblem problem, Architecture copyArch) {

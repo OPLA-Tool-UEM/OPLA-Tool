@@ -15,13 +15,15 @@ public class RelationshiopCommons {
      * @param element       - Elemento que se deseja recuperar relacionamentos
      * @return - set imutavel com os relacionamentos
      */
-    public static Set<Relationship> getRelationships(Set<Relationship> relationships, Element element) {
-        Set<Relationship> relations = new HashSet<>();
+    private static Set<Relationship> getRelationships(Set<Relationship> relationships, Element element) {
+        Set<Relationship> relations1 = new HashSet<>();
         for (Relationship r : relationships) {
             if (r.hasRelationshipWithElement(element))
-                relations.add(r);
+                relations1.add(r);
         }
-        return Collections.unmodifiableSet(relations);
+
+
+        return Collections.unmodifiableSet(relations1);
     }
 
 }

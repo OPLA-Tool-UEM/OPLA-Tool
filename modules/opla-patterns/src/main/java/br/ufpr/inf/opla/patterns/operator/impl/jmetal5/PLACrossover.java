@@ -1,74 +1,28 @@
 package br.ufpr.inf.opla.patterns.operator.impl.jmetal5;
 
-import arquitetura.exceptions.ConcernNotFoundException;
 import arquitetura.helpers.UtilResources;
 import arquitetura.representation.*;
 import arquitetura.representation.Class;
 import arquitetura.representation.Package;
 import arquitetura.representation.relationship.GeneralizationRelationship;
 import br.ufpr.inf.opla.patterns.solution.ArchitectureSolution;
-import jmetal4.operators.crossover.CrossoverRelationship;
-import jmetal4.operators.crossover.CrossoverUtils;
 import org.uma.jmetal.operator.CrossoverOperator;
+import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
-import org.uma.jmetal.util.pseudorandom.PseudoRandomGenerator;
 
 import java.util.*;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
-/**
- * Implementação no jmetal5 do algoritmo de crossover de PLA
- * <p>
- * Este arquivo é uma tentativa de copiar 1-a-1 o código do PLACrossover original
- *
- * @see jmetal4.operators.crossover.PLACrossover2
- */
 public class PLACrossover implements CrossoverOperator<ArchitectureSolution> {
 
-    private double crossoverProbability;
-
-    private CrossoverUtils crossoverUtils;
+    private double probability;
 
     public PLACrossover(double probability) {
-        crossoverProbability = probability;
-        crossoverUtils = new CrossoverUtils();
-    }
-
-    static private Stream<GeneralizationRelationship> getClassGeneralizationRelationshipStream(Class cls) {
-        return cls.getRelationships().stream().filter(GeneralizationRelationship.class::isInstance)
-                .map(rlts -> ((GeneralizationRelationship) rlts));
-    }
-
-    /**
-     * Busca a Classe parente de cls
-     *
-     * @param cls: Classe de quem será buscado o parente
-     * @return o parente de cls em um Optional, ou Optional.empty() se cls nao possuir relações de generalização
-     */
-    private static Optional<Class> getParent(Class cls) {
-        return getClassGeneralizationRelationshipStream(cls)
-                .filter(genRelationship -> genRelationship.getChild().equals(cls))
-                .findFirst().map(genRelationship -> (Class) genRelationship.getParent());
-    }
-
-    /**
-     * Busca a Generalização da classe cls
-     *
-     * @param cls: Classe de quem será buscado a generalização
-     * @return a generalização de cls em um Optional, ou Optional.empty() se cls não possuir relações de generalização
-     */
-    private static Optional<GeneralizationRelationship> getGeneralizationForClass(Element cls) {
-        return getClassGeneralizationRelationshipStream((Class) cls)
-                .filter(genRelationship -> genRelationship.getParent().equals(cls))
-                .findFirst();
-    }
-
-    private PseudoRandomGenerator getRng() {
-        return JMetalRandom.getInstance().getRandomGenerator();
+        this.probability = probability;
     }
 
     private <T> T randomObjectFromCollection(Collection<T> collection) {
-        //avoid creating a list if unnecessary
+        //avoid creating a list if unecessary
         if (collection.isEmpty()) return null;
 
         if (collection.size() == 1) {
@@ -76,427 +30,507 @@ public class PLACrossover implements CrossoverOperator<ArchitectureSolution> {
         }
 
         List<T> tmpList;
-        //avoid creating a NEW list if unnecessary
+        //avoid creating a NEW list if unecessary
         if (collection instanceof List) {
             tmpList = (List<T>) collection;
         } else {
             tmpList = new ArrayList<>(collection);
         }
 
-        return tmpList.get(getRng().nextInt(0, tmpList.size() - 1));
+        return tmpList.get(JMetalRandom.getInstance().getRandomGenerator().nextInt(0, tmpList.size() - 1));
     }
 
-    private void updateVariabilitiesOffspring(Architecture offspring) {
-        offspring.getAllVariabilities().stream().map(Variability::getVariationPoint)
-                .filter(Objects::nonNull).forEach(variationPoint -> {
-            Element elementVP = variationPoint.getVariationPointElement();
-            Element VP = offspring.findElementByName(elementVP.getName());
-            if (VP != null) {
-                if (!VP.equals(elementVP)) {
-                    variationPoint.replaceVariationPointElement(offspring.findElementByName(elementVP.getName(), "class"));
-                }
-            }
-        });
+    public boolean isChild(Class cls) {
+        if (cls == null) return false;
+        GeneralizationRelationship gr = cls.getGeneralizationRelationship();
+        return gr != null && gr.getChild().equals(cls);
     }
 
-    private void addElementsToOffspring(Concern feature, Architecture offspring, Architecture parent) {
-        for (Package pkg : parent.getAllPackages()) {
-            addOrCreatePackageIntoOffspring(feature, offspring, parent, pkg);
+    public Class getGeneralizationParent(Class cls) {
+        if (cls == null) return null;
+        GeneralizationRelationship gr = cls.getGeneralizationRelationship();
+        return gr != null && gr.getChild().equals(cls) ? (Class) gr.getParent() : null;
+    }
+
+    public Set<Element> getChildren(Element cls) {
+        GeneralizationRelationship gr = cls.getGeneralizationRelationship();
+        if (gr == null || !gr.getParent().equals(cls)) {
+            return Collections.emptySet();
         }
-        CrossoverRelationship.cleanRelationships();
+        return gr.getAllChildrenForGeneralClass();
     }
 
-    /**
-     * @see jmetal4.operators.crossover.PLACrossover2#addOrCreatePackageIntoOffspring
-     */
-    private void addOrCreatePackageIntoOffspring(Concern feature, Architecture offspring, Architecture parent, Package parentPackage) {
-        // Caso parentPackage cuide de somente um feature, tenta localizar um pacote em offspring
-        // Se não encontrá-lo, cria-o
-
-        if (parentPackage.getOwnConcerns().size() == 1 && parentPackage.containsConcern(feature)) {
-            Package offspringPackage = offspring.findPackageByName(parentPackage.getName());
-            if (offspringPackage == null) { //não pode encontrar o pacote
-                offspringPackage = offspring.createPackage(parentPackage.getName());
-            }
-
-            addPackageImplementedInterfacesToOffspring(offspring, parentPackage);
-            addPackageRequiredInterfacesToOffspring(offspring, parentPackage);
-
-            addInterfacesToPackageInOffspring(offspring, parentPackage, offspringPackage);
-
-            addClassesToOffspring(parentPackage, offspringPackage, offspring, parent);
-
-        } else {
-            addClassesRealizingFeatureToOffspring(feature, parentPackage, offspring, parent);
-            addInterfacesRealizingFeatureToOffspring(feature, parentPackage, offspring);
-        }
-    }
-
-    /**
-     * @see jmetal4.operators.crossover.PLACrossover2#addClassesRealizingFeatureToOffspring
-     */
-    private void addClassesRealizingFeatureToOffspring(Concern feature, Package parentPackage, Architecture offspring, Architecture parent) {
-        Package newComponent = offspring.findPackageByName(parentPackage.getName());
-        if (newComponent == null) {
-            newComponent = offspring.createPackage(parentPackage.getName());
+    public List<ArchitectureSolution> FeatureCrossover(List<ArchitectureSolution> parents) {
+        if (parents.size() != getNumberOfParents()) {
+            throw new JMetalException("Invalid number of parents");
         }
 
-        for (Class classComp : parentPackage.getAllClasses()) {
-            if (classComp.getOwnConcerns().size() == 1 && classComp.containsConcern(feature)) {
-                if (!classComp.belongsToGeneralization()) {
-                    newComponent.addExternalClass(classComp);
-                    addElementRelationshipsToArchitecture(classComp, offspring);
-                } else {
-                    findRootAndMoveToRelevantComponent(parentPackage, newComponent, offspring, parent, classComp);
-                }
-
-            }
+        if (JMetalRandom.getInstance().nextDouble() > probability) {
+            return parents.stream().map(ArchitectureSolution::copy).collect(Collectors.toList());
         }
 
-    }
+        ArchitectureSolution offspring1 = parents.get(0).copy();
+        ArchitectureSolution offspring2 = parents.get(1).copy();
 
-    /**
-     * @see jmetal4.operators.crossover.PLACrossover2#addInterfacesRealizingFeatureToOffspring
-     */
-    private void addInterfacesRealizingFeatureToOffspring(Concern feature, Package comp, Architecture offspring) {
-        Set<Interface> interfaces = comp.getOnlyInterfacesImplementedByPackage();
-        for (Interface interfaceComp : interfaces) {
-            if (interfaceComp.getOwnConcerns().size() == 1 && interfaceComp.containsConcern(feature)) {
-                Package newComp = offspring.findPackageByName(comp.getName());
-                if (newComp == null) {
-                    newComp = offspring.createPackage(comp.getName());
-                    addElementRelationshipsToArchitecture(newComp, offspring);
-                }
-                addOneInterfaceToOffspring(offspring, interfaceComp);
-            } else {
-                addOperationsRealizingFeatureToOffspring(feature, interfaceComp, comp, offspring);
-            }
-        }
-    }
+        Architecture arch1 = offspring1.getArchitecture();
+        Architecture arch2 = offspring2.getArchitecture();
 
-    /**
-     * @see jmetal4.operators.crossover.PLACrossover2#addOperationsRealizingFeatureToOffspring
-     */
-    private void addOperationsRealizingFeatureToOffspring(Concern feature, Interface interfaceComp, Package comp, Architecture offspring) {
-        Interface targetInterface = offspring.findInterfaceByName(interfaceComp.getName());
+        List<Concern> concernsArch1 = new ArrayList<>(arch1.getAllConcerns());
+        Concern feature = randomObjectFromCollection(concernsArch1);
 
-        for (Method operation : interfaceComp.getOperations()) {
-            if (operation.getOwnConcerns().size() == 1 && operation.containsConcern(feature)) {
-                if (targetInterface == null) {
-                    Package newComp = offspring.findPackageByName(comp.getName());
-                    if (newComp == null) {
-                        newComp = offspring.createPackage(comp.getName());
-                        addElementRelationshipsToArchitecture(newComp, offspring);
-                    }
+        obtainChild(feature, arch2, arch1);
 
-                    if (interfaceComp.getNamespace().equalsIgnoreCase("model")) {
-                        targetInterface = offspring.createInterface(interfaceComp.getName());
-                    } else {
-                        String pkgName = UtilResources.extractPackageName(interfaceComp.getNamespace());
-                        Package pkg = offspring.findPackageByName(pkgName);
-                        if (pkg == null) pkg = offspring.createPackage(pkgName);
-
-                        targetInterface = pkg.createInterface(interfaceComp.getName());
-                    }
-
-                    try {
-                        targetInterface.addConcern(feature.getName());
-                    } catch (ConcernNotFoundException e) {
-                        e.printStackTrace();
-                    }
-
-                    addElementRelationshipsToArchitecture(interfaceComp, offspring);
-                }
-                targetInterface.addExternalOperation(operation);
-            }
-        }
-    }
-
-    /**
-     * @see jmetal4.operators.crossover.PLACrossover2#addInterfacesImplementedByClass
-     */
-    private void addInterfacesImplementedByClass(Architecture offspring, Class klass) {
-        addInterfacesToOffspring(offspring, klass.getImplementedInterfaces());
-    }
-
-    /**
-     * @see jmetal4.operators.crossover.PLACrossover2#addInterfacesRequiredByClass
-     */
-    private void addInterfacesRequiredByClass(Architecture offspring, Class klass) {
-        addInterfacesToOffspring(offspring, klass.getRequiredInterfaces());
-    }
-
-    /**
-     * @see jmetal4.operators.crossover.PLACrossover2#addImplementedInterfacesByPackageInOffspring
-     */
-    private void addPackageImplementedInterfacesToOffspring(Architecture offspring, Package parentPackage) {
-        final Set<Interface> interfaces = parentPackage.getOnlyInterfacesImplementedByPackage();
-        addInterfacesToOffspring(offspring, interfaces);
-    }
-
-    /**
-     * @see jmetal4.operators.crossover.PLACrossover2#addRequiredInterfacesByPackageInOffspring
-     */
-    private void addPackageRequiredInterfacesToOffspring(Architecture offspring, Package parentPackage) {
-        final Set<Interface> interfaces = parentPackage.getOnlyInterfacesRequiredByPackage();
-        addInterfacesToOffspring(offspring, interfaces);
-    }
-
-    /**
-     * @see jmetal4.operators.crossover.PLACrossover2#addInterfacesToPackageInOffSpring
-     */
-    private void addInterfacesToPackageInOffspring(Architecture offspring, Package parentPackage, Package packageInOffspring) {
-        parentPackage.getAllInterfaces().forEach(anInterface -> {
-            packageInOffspring.addExternalInterface(anInterface);
-            addElementRelationshipsToArchitecture(anInterface, offspring);
-        });
-    }
-
-    /**
-     * @see jmetal4.operators.crossover.PLACrossover2#addClassesToOffspring
-     */
-    private void addClassesToOffspring(Package parentPackage, Package packageInOffspring, Architecture offspring, Architecture parent) {
-        parentPackage.getAllClasses().forEach(classComp -> {
-            if (!classComp.belongsToGeneralization()) {
-                addClassToOffspring(classComp, packageInOffspring, offspring);
-            } else {
-                findRootAndMoveToRelevantComponent(parentPackage, packageInOffspring, offspring, parent, classComp);
-            }
-            addInterfacesImplementedByClass(offspring, classComp);
-            addInterfacesRequiredByClass(offspring, classComp);
-        });
-    }
-
-    private void findRootAndMoveToRelevantComponent(Package parentPackage, Package packageInOffspring, Architecture offspring, Architecture parent, Class classComp) {
-        //buscar a raíz da classe atual
-        Class classRoot = getComponentRoot(classComp);
-        Package classCompPackage = parent.findPackageOfClass(classComp);
-        Package rootPackage = parent.findPackageOfClass(classRoot);
-        if (classCompPackage.equals(rootPackage)) {
-            //mesmo componente
-            moveHierarchyRootToSameComponent(classRoot, packageInOffspring, parentPackage, offspring, parent);
-        } else {
-            //componentes diferentes
-            packageInOffspring.addExternalClass(classComp);
-            moveHierarchyRootToDifferentPackage(classRoot, parentPackage, offspring, parent);
-        }
-        addElementRelationshipsToArchitecture(classComp, offspring);
-    }
-
-
-    /**
-     * @see jmetal4.operators.crossover.PLACrossover2#addClassToOffspring
-     */
-    private void addClassToOffspring(Class klass, Package targetComponent, Architecture offspring) {
-        targetComponent.addExternalClass(klass);
-        addElementRelationshipsToArchitecture(klass, offspring);
-    }
-
-    private void addInterfacesToOffspring(Architecture offspring, Set<Interface> interfaces) {
-        interfaces.forEach(interfaceComp -> addOneInterfaceToOffspring(offspring, interfaceComp));
-    }
-
-    private void addOneInterfaceToOffspring(Architecture offspring, Interface interfaceComp) {
-        if (interfaceComp.getNamespace().equalsIgnoreCase("model")) {
-            offspring.addExternalInterface(interfaceComp);
-        } else {
-            String packageName = UtilResources.extractPackageName(interfaceComp.getNamespace());
-
-            Package pkg = offspring.findPackageByName(packageName);
-            if (pkg == null) {
-                pkg = offspring.createPackage(packageName);
-            }
-
-            pkg.addExternalInterface(interfaceComp);
-        }
-        addElementRelationshipsToArchitecture(interfaceComp, offspring);
-    }
-
-    private Class getComponentRoot(Class klass) {
-        Class root = klass;
-        Optional<Class> maybeParent = getParent(root);
-        while (maybeParent.isPresent()) {
-            root = maybeParent.get();
-            maybeParent = getParent(root);
-        }
-        return root;
-    }
-
-    /**
-     * Move a hierarquia para um mesmo componente a partir de uma raíz
-     * Assume que "root" já tenha sido recebido de {@link PLACrossover#getComponentRoot(Class)}
-     *
-     * @see jmetal4.operators.crossover.PLACrossover2#moveHierarchyToSameComponent(Class, Package, Package, Architecture, Architecture, Concern)
-     */
-    private void moveHierarchyRootToSameComponent(Class root, Package targetComp, Package sourceComp, Architecture offspring, Architecture parent) {
-        if (sourceComp.getAllClasses().contains(root)) {
-            moveChildrenToSameComponent(root, sourceComp, targetComp, offspring, parent);
-        }
-    }
-
-    /**
-     * Move a hierarquia para um mesmo componente a partir de uma raíz
-     * Assume que "root" já tenha sido recebido de {@link PLACrossover#getComponentRoot(Class)}
-     *
-     * @see jmetal4.operators.crossover.PLACrossover2#moveHierarchyToSameComponent(Class, Package, Package, Architecture, Architecture, Concern)
-     */
-    private void moveHierarchyRootToDifferentPackage(Class root, Package sourceComp, Architecture offspring, Architecture parent) {
-        if (sourceComp.getAllClasses().contains(root)) {
-            moveChildrenToDifferentComponent(root, offspring, parent);
-        }
-    }
-
-
-    /**
-     * @see jmetal4.operators.crossover.PLACrossover2#moveChildrenToSameComponent
-     */
-    private void moveChildrenToSameComponent(Class parent, Package sourceComponent, Package targetComponent, Architecture offspring, Architecture parentArch) {
-        // mover cada subclasse
-        getElementChildren(parent).forEach(child ->
-                moveChildrenToSameComponent((Class) child,
-                        sourceComponent, targetComponent, offspring, parentArch));
-
-        // mover a super classe
-        if (sourceComponent.getAllClasses().contains(parent)) {
-            addClassToOffspring(parent, targetComponent, offspring);
-            return;
+        if (!isValidSolution(offspring1)) {
+            offspring1 = parents.get(0).copy();
         }
 
-        try {
-            Package component;
-            Package toComponent = targetComponent;
-
-            // implementacao original tem um "break" dentro do for sem nenhuma condição
-            // que é o equivalente de dar um "findFirst"
-            Optional<Package> maybeParentComp = parentArch.getAllPackages().stream().findFirst();
-            if (maybeParentComp.isPresent()) {
-                Package parentComponent = maybeParentComp.get();
-
-                if (parentComponent.getAllClasses().contains(parent)) {
-                    component = parentComponent;
-
-                    if (!component.getName().equals(toComponent.getName())) {
-                        toComponent = offspring.findPackageByName(component.getName());
-                        if (toComponent == null) {
-                            toComponent = offspring.createPackage(component.getName());
-                            for (Concern feature : component.getOwnConcerns()) {
-                                toComponent.addConcern(feature.getName());
-                            }
-                        }
-                    }
-                }
-                addClassToOffspring(parent, toComponent, offspring);
-            }
-        } catch (ConcernNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * @see jmetal4.operators.crossover.PLACrossover2#moveChildrenToDifferentComponent
-     */
-    private void moveChildrenToDifferentComponent(Class root, Architecture offspring, Architecture parentArch) {
-
-        String rootPackageName = UtilResources.extractPackageName(root.getNamespace());
-        Package rootTargetPackage = offspring.findPackageByName(rootPackageName);
-        if (rootTargetPackage == null) {
-            rootTargetPackage = offspring.createPackage(rootPackageName);
+        obtainChild(feature, arch1, arch2);
+        if (!isValidSolution(offspring2)) {
+            offspring2 = parents.get(1).copy();
         }
 
-        addClassToOffspring(root, rootTargetPackage, offspring);
-
-        addElementRelationshipsToArchitecture(parentArch.findPackageByName(rootPackageName), offspring);
-
-        for (Element child : getElementChildren(root)) {
-            String packageName = UtilResources.extractPackageName(child.getNamespace());
-            Package targetPackage = parentArch.findPackageByName(packageName);
-            if (targetPackage != null) {
-                moveChildrenToDifferentComponent((Class) child, offspring, parentArch);
-            }
-        }
+        return Arrays.asList(offspring1, offspring2);
     }
 
-    /**
-     * @see jmetal4.operators.crossover.PLACrossover2#getChildren(Element)
-     */
-    private Set<Element> getElementChildren(Element element) {
-        return getGeneralizationForClass(element)
-                .map(GeneralizationRelationship::getAllChildrenForGeneralClass)
-                .orElse(Collections.emptySet());
+    private boolean isValidSolution(ArchitectureSolution mutatedSolution) {
+        Architecture arch = mutatedSolution.getArchitecture();
+        return arch.getAllInterfaces().stream().noneMatch(itf ->
+                (itf.getImplementors().isEmpty())
+                        && (itf.getDependents().isEmpty())
+                        && (!itf.getOperations().isEmpty()));
     }
 
-
-    /**
-     * Verifica que a arquitetura contém designs de PLA válidos, ou seja,
-     * se as interfaces da arquitetura possuem relacionamentos com a mesma
-     *
-     * @param architecture: Arquitetura a ser verificada
-     * @return true se a arquitetura for válida
-     * @see jmetal4.operators.crossover.PLACrossover2#isValidSolution(Architecture)
-     */
-    private boolean isArchitectureValid(Architecture architecture) {
-        return architecture.getAllInterfaces().stream()
-                .anyMatch(interf ->
-                        interf.getImplementors().isEmpty()
-                                && interf.getDependents().isEmpty()
-                                && !interf.getOperations().isEmpty());
-    }
-
-    /**
-     * @see jmetal4.operators.crossover.PLACrossover2#saveAllRelationshiopForElement
-     */
-    private void addElementRelationshipsToArchitecture(Element element, Architecture offspring) {
-        element.getRelationships().forEach(relationship -> offspring.getRelationshipHolder().addRelationship(relationship));
-    }
-
-    /**
-     * @see jmetal4.operators.crossover.PLACrossover2#obtainChild
-     */
     private void obtainChild(Concern feature, Architecture parent, Architecture offspring) {
-        crossoverUtils.removeArchitecturalElementsRealizingFeature(feature, offspring, "allLevels");
+        //crossoverutils.removeArchitecturalElementsRealizingFeature
+        removeArchitecturalElementsRealizingFeature(feature, offspring);
+
         addElementsToOffspring(feature, offspring, parent);
         updateVariabilitiesOffspring(offspring);
     }
 
-    /**
-     * @see jmetal4.operators.crossover.PLACrossover2#doCrossover
-     */
-    private ArchitectureSolution[] doCrossover(ArchitectureSolution parent1, ArchitectureSolution parent2) {
-        return crossoverFeatures(crossoverProbability, parent1, parent2);
+    private void updateVariabilitiesOffspring(Architecture offspring) {
+        for (Variability variability : offspring.getAllVariabilities()) {
+            VariationPoint variationPoint = variability.getVariationPoint();
+            if (variationPoint != null) {
+                Element elementVP = variationPoint.getVariationPointElement();
+                Element VP = offspring.findElementByName(elementVP.getName());
+                if (VP != null && !VP.equals(elementVP)) {
+                    variationPoint.replaceVariationPointElement(offspring.findElementByName(elementVP.getName(), "class"));
+                }
+            }
+        }
     }
 
-    /**
-     * @see jmetal4.operators.crossover.PLACrossover2#crossoverFeatures
-     */
-    private ArchitectureSolution[] crossoverFeatures(double probability, ArchitectureSolution parent1, ArchitectureSolution parent2) {
+    private void addElementsToOffspring(Concern feature, Architecture offspring, Architecture parent) {
+        List<Package> packages = new ArrayList<>(parent.getAllPackages());
+        for (Package pkg : packages) {
+            addOrCreatePackageIntoOffspring(feature, offspring, parent, pkg);
+        }
+    }
 
-        //STEP 0: Create offspring
-        ArchitectureSolution offspring[] = {parent1.copy(), parent2.copy()};
-
-        if (getRng().nextDouble(0.0, 1.0) < probability) {
-            //STEP 1: Get Feature Crossover
-            Architecture offspringArch = offspring[0].getArchitecture();
-            Collection<Concern> concerns = offspringArch.getAllConcerns();
-            Concern feature = randomObjectFromCollection(concerns);
-
-
-            obtainChild(feature, parent2.getArchitecture(), offspringArch);
-            if (!isArchitectureValid(offspringArch)) {
-                offspring[0] = parent1;
-//                OPLAProblem.discardedSolutions.set(OPLAProblem.discardedSolutions.get() + 1);
+    private void addOrCreatePackageIntoOffspring(Concern feature, Architecture offspring, Architecture parent, Package parentPkg) {
+        if (parentPkg.hasOnlyOneConcern(feature)) {
+            Package pkgInOffspring = offspring.findPackageByName(parentPkg.getName());
+            if (pkgInOffspring == null) {
+                pkgInOffspring = offspring.createPackage(parentPkg.getName());
             }
 
-            Architecture offspringArch2 = offspring[1].getArchitecture();
-            obtainChild(feature, parent1.getArchitecture(), offspringArch2);
-            if (!isArchitectureValid(offspringArch2)) {
-                offspring[1] = parent2;
-//                OPLAProblem.discardedSolutions.set(OPLAProblem.discardedSolutions.get() + 1);
+            addInterfacesImplementedByPackageInOffspring(parentPkg, offspring);
+            addInterfacesRequiredByPackageInOffspring(parentPkg, offspring);
+            addInterfacesToPackageInOffspring(parentPkg, pkgInOffspring, offspring, parent);
+            addClassesToOffspring(feature, parentPkg, pkgInOffspring, offspring, parent);
+        } else {
+            addClassesRealizingFeatureToOffspring(feature, parentPkg, offspring, parent);
+            addInterfacesRealizingFeatureToOffspring(feature, parentPkg, offspring, parent);
+        }
+        saveAllRelationshipsForElement(parentPkg, offspring);
+    }
+
+    private void addInterfacesRealizingFeatureToOffspring(Concern feature, Package parentPkg, Architecture offspring, Architecture parent) {
+        Package newPkg = offspring.findPackageByName(parentPkg.getName());
+        if (newPkg == null) {
+            newPkg = offspring.createPackage(parentPkg.getName());
+            saveAllRelationshipsForElement(newPkg, offspring);
+        }
+
+        List<Interface> interfacesRealizingFeatureImplByPackage = parentPkg
+                .getOnlyInterfacesImplementedByPackage()
+                .stream().filter(feature::isOnlyConcernOfElement)
+                .collect(Collectors.toList());
+
+        addInterfacesInOffspring(offspring, interfacesRealizingFeatureImplByPackage);
+    }
+
+    private void addClassesRealizingFeatureToOffspring(Concern feature, Package parentPkg, Architecture offspring, Architecture parent) {
+        List<Class> allClasses = new ArrayList<>(parentPkg.getAllClasses());
+        Package newPkg = offspring.findPackageByName(parentPkg.getName());
+
+        for (Class classComp : allClasses) {
+            if (classComp.hasOnlyOneConcern(feature)) {
+                if (newPkg == null) {
+                    newPkg = offspring.createPackage(parentPkg.getName());
+                }
+
+                GeneralizationRelationship gr = classComp.getGeneralizationRelationship();
+                if (gr == null) {
+                    newPkg.addExternalClass(classComp);
+                    saveAllRelationshipsForElement(classComp, offspring);
+                } else {
+                    if (isHierarchyInASameComponent(classComp, parent)) {
+                        moveHierarchyToSameComponent(classComp, newPkg, parentPkg, offspring, parent, feature);
+                        saveAllRelationshipsForElement(classComp, offspring);
+                    } else {
+                        newPkg.addExternalClass(classComp);
+                        moveHierarchyToSameComponent(classComp, newPkg, parentPkg, offspring, parent, feature);
+                        saveAllRelationshipsForElement(classComp, offspring);
+                    }
+                }
+            } else {
+                GeneralizationRelationship gr = classComp.getGeneralizationRelationship();
+                //allLevels
+                if (gr == null) {
+                    addAttributesRealizingFeatureToOffspring(feature, classComp, parentPkg, offspring, parent);
+                    addMethodsRealizingFeatureToOffspring(feature, classComp, parentPkg, offspring, parent);
+                }
+            }
+            addInterfacesImplementedByClass(classComp, offspring);
+            addInterfacesRequiredByClass(classComp, offspring);
+        }
+    }
+
+    private void addMethodsRealizingFeatureToOffspring(Concern feature, Class classComp, Package parentPkg, Architecture offspring, Architecture parent) {
+        List<Class> offspringClasses = offspring.findClassByName(classComp.getName());
+        Class targetClass = null;
+        if (offspringClasses != null) {
+            targetClass = offspringClasses.get(0);
+        }
+
+        List<Method> classMethods = new ArrayList<>(classComp.getAllMethods());
+        for (Method method : classMethods) {
+            if (method.hasOnlyOneConcern(feature)) {
+                if (targetClass == null) {
+                    Package newPkg = offspring.findPackageByName(parentPkg.getName());
+                    if (newPkg == null) {
+                        newPkg = offspring.createPackage(parentPkg.getName());
+                    }
+
+                    targetClass = newPkg.createClass(classComp.getName(), false);
+                    targetClass.addConcern(feature);
+                }
+                saveAllRelationshipsForElement(classComp, offspring);
+                targetClass.addExternalMethod(method);
             }
         }
 
-        return offspring;
+    }
+
+    private void addAttributesRealizingFeatureToOffspring(Concern feature, Class classComp, Package parentPkg, Architecture offspring, Architecture parent) {
+        List<Class> offspringClasses = offspring.findClassByName(classComp.getName());
+        Class targetClass = null;
+        if (offspringClasses != null) {
+            targetClass = offspringClasses.get(0);
+        }
+
+        List<Attribute> classAttrs = new ArrayList<>(classComp.getAllAttributes());
+        for (Attribute attr : classAttrs) {
+            if (attr.hasOnlyOneConcern(feature)) {
+                if (targetClass == null) {
+                    Package newPkg = offspring.findPackageByName(parentPkg.getName());
+                    if (newPkg == null) {
+                        newPkg = offspring.createPackage(parentPkg.getName());
+                    }
+
+                    targetClass = newPkg.createClass(classComp.getName(), false);
+                    targetClass.addConcern(feature);
+                }
+                saveAllRelationshipsForElement(classComp, offspring);
+                targetClass.addExternalAttribute(attr);
+            }
+        }
+    }
+
+    private void addClassesToOffspring(Concern feature, Package parentPkg, Package pkgInOffspring, Architecture offspring, Architecture parent) {
+        List<Class> allClasses = new ArrayList<>(parentPkg.getAllClasses());
+        for (Class classComp : allClasses) {
+            GeneralizationRelationship gr = classComp.getGeneralizationRelationship();
+            if (gr == null) {
+                addClassToOffspring(classComp, pkgInOffspring, offspring);
+            } else {
+                if (isHierarchyInASameComponent(classComp, parent)) {
+                    moveHierarchyToSameComponent(classComp, pkgInOffspring, parentPkg, offspring, parent, feature);
+                } else {
+                    pkgInOffspring.addExternalClass(classComp);
+                    moveHierarchyToDifferentPackage(classComp, offspring, parent);
+                }
+                saveAllRelationshipsForElement(classComp, offspring);
+            }
+            addInterfacesImplementedByClass(classComp, offspring);
+            addInterfacesRequiredByClass(classComp, offspring);
+        }
+    }
+
+    private void addInterfacesRequiredByClass(Class classComp, Architecture offspring) {
+        List<Interface> classImplIntf = new ArrayList<>(classComp.getRequiredInterfaces());
+        addInterfacesInOffspring(offspring, classImplIntf);
+    }
+
+    private void addInterfacesImplementedByClass(Class classComp, Architecture offspring) {
+        List<Interface> classImplIntf = new ArrayList<>(classComp.getImplementedInterfaces());
+        addInterfacesInOffspring(offspring, classImplIntf);
+    }
+
+    private void moveHierarchyToDifferentPackage(Class cls, Architecture offspring, Architecture architecture) {
+        Class root = cls;
+        while (isChild(root)) {
+            root = getGeneralizationParent(root);
+        }
+        moveChildrenToDifferentComponent(root, offspring, architecture);
+    }
+
+    private void moveChildrenToDifferentComponent(Class root, Architecture offspring, Architecture architecture) {
+        String rootPkgName = UtilResources.extractPackageName(root.getNamespace());
+        Package rootPkg = offspring.findPackageByName(rootPkgName);
+        if (rootPkg == null) {
+            rootPkg = offspring.createPackage(rootPkgName);
+        }
+
+        addClassToOffspring(root, rootPkg, offspring);
+        saveAllRelationshipsForElement(architecture.findPackageByName(rootPkgName), offspring);
+        for (Element child : getChildren(root)) {
+            String pkgName = UtilResources.extractPackageName(child.getNamespace());
+            Package targetPkg = architecture.findPackageByName(pkgName);
+            if (targetPkg != null) {
+                moveChildrenToDifferentComponent((Class) child, offspring, architecture);
+            }
+        }
+    }
+
+    private void moveHierarchyToSameComponent(Class cls, Package targetPkg, Package sourcePkg, Architecture offspring, Architecture parent, Concern feature) {
+        Class root = cls;
+        while (isChild(root)) {
+            root = getGeneralizationParent(root);
+        }
+
+        if (sourcePkg.getAllClasses().contains(root)) {
+            moveChildrenToSameComponent(root, sourcePkg, targetPkg, offspring, parent);
+        }
+    }
+
+    private void moveChildrenToSameComponent(Class parent, Package sourcePkg, Package targetPkg, Architecture offspring, Architecture architecture) {
+        Collection<Element> children = getChildren(parent);
+        for (Element child : children) {
+            moveChildrenToSameComponent((Class) child, sourcePkg, targetPkg, offspring, architecture);
+        }
+
+        if (sourcePkg.getAllClasses().contains(parent)) {
+            addClassToOffspring(parent, targetPkg, offspring);
+        } else {
+            Package realTarget = targetPkg;
+            //WARN um pouco diferente da versao original
+            // a versao original parece mal-implementada
+            for (Package parentArchPkg : architecture.getAllPackages()) {
+                if (parentArchPkg.getAllClasses().contains(parent)) {
+                    if (!parentArchPkg.nameEquals(targetPkg.getName())) {
+                        Package newTarget = offspring.findPackageByName(parentArchPkg.getName());
+                        if (newTarget == null) {
+                            newTarget = offspring.createPackage(parentArchPkg.getName());
+                            newTarget.addConcerns(parentArchPkg.getOwnConcerns());
+                        }
+
+                        realTarget = newTarget;
+                        break;
+                    }
+                }
+            }
+
+            addClassToOffspring(parent, realTarget, offspring);
+        }
+    }
+
+    private boolean isHierarchyInASameComponent(Class classComp, Architecture architecture) {
+        Package componentOfClass = architecture.findPackageOfClass(classComp);
+
+        Class parent = classComp;
+        Package componentOfParent;
+        while (isChild(parent)) {
+            parent = getGeneralizationParent(parent);
+            componentOfParent = architecture.findPackageOfClass(parent);
+            if (!componentOfClass.equals(componentOfParent))
+                return false;
+        }
+        return true;
+    }
+
+    private void addClassToOffspring(Class classComp, Package pkgInOffspring, Architecture offspring) {
+        pkgInOffspring.addExternalClass(classComp);
+        saveAllRelationshipsForElement(classComp, offspring);
+    }
+
+    private void addInterfacesToPackageInOffspring(Package parentPkg, Package pkgInOffspring, Architecture offspring, Architecture parent) {
+        List<Interface> allInterfaces = new ArrayList<>(parentPkg.getAllInterfaces());
+        for (Interface intf : allInterfaces) {
+            pkgInOffspring.addExternalInterface(intf);
+            saveAllRelationshipsForElement(intf, offspring);
+        }
+    }
+
+    private void addInterfacesRequiredByPackageInOffspring(Package parentPkg, Architecture offspring) {
+        List<Interface> interfacesRequiredByPackage = new ArrayList<>(parentPkg.getOnlyInterfacesRequiredByPackage());
+        addInterfacesInOffspring(offspring, interfacesRequiredByPackage);
 
     }
+
+    private void addInterfacesImplementedByPackageInOffspring(Package parentPkg, Architecture offspring) {
+        List<Interface> interfacesImplByPkg = new ArrayList<>(parentPkg.getOnlyInterfacesImplementedByPackage());
+        addInterfacesInOffspring(offspring, interfacesImplByPkg);
+    }
+
+    private void addInterfacesInOffspring(Architecture offspring, List<Interface> interfacesRequiredByPackage) {
+        for (Interface interfacePkg : interfacesRequiredByPackage) {
+            if (interfacePkg.getNamespace().equalsIgnoreCase("model")) {
+                offspring.addExternalInterface(interfacePkg);
+            } else {
+                String packageName = UtilResources.extractPackageName(interfacePkg.getNamespace());
+
+                Package pkg = offspring.findPackageByName(packageName);
+                if (pkg == null) {
+                    pkg = offspring.createPackage(packageName);
+                }
+
+                pkg.addExternalInterface(interfacePkg);
+            }
+            saveAllRelationshipsForElement(interfacePkg, offspring);
+        }
+    }
+
+    private void saveAllRelationshipsForElement(Element element, Architecture offspring) {
+        element.getRelationships().forEach(offspring.getRelationshipHolder()::addRelationship);
+    }
+
+    private void removeArchitecturalElementsRealizingFeature(Concern feature, Architecture offspring) {
+        List<Package> allPackages = new ArrayList<>(offspring.getAllPackages());
+        for (Package comp : allPackages) {
+            if (comp.hasOnlyOneConcern(feature)) {
+                List<Interface> allInterfacesComp = new ArrayList<>(comp.getImplementedInterfaces());
+                if (!allInterfacesComp.isEmpty()) {
+                    for (Interface interfaceComp : allInterfacesComp) {
+                        offspring.removeInterface(interfaceComp);
+                    }
+                }
+                removeClassesFromComponent(comp, offspring);
+                offspring.removePackage(comp);
+            } else {
+                removeInterfacesRealizingFeatureFromComponent(comp, feature, offspring);
+                removeClassesRealizingFeatureFromComponent(comp, feature, offspring);
+            }
+        }
+    }
+
+    private void removeClassesRealizingFeatureFromComponent(Package comp, Concern feature, Architecture offspring) {
+        List<Class> allClasses = new ArrayList<>(comp.getAllClasses());
+        for (Class classComp : allClasses) {
+            if (classComp.hasOnlyOneConcern(feature)) {
+                GeneralizationRelationship gr = classComp.getGeneralizationRelationship();
+                if (gr == null) {
+                    comp.removeClass(classComp);
+                } else {
+                    removeHierarchyOfComponent(classComp, comp, offspring);
+                }
+            } else {
+                //scope == "allLevels"?
+                removeAttributesRealizingFeatureOfClass(classComp, feature);
+                removeMethodsRealizingFeatureOfClass(classComp, feature);
+            }
+        }
+    }
+
+    private void removeAttributesRealizingFeatureOfClass(Class cls, Concern feature) {
+        List<Attribute> attrsCls = new ArrayList<>(cls.getAllAttributes());
+        for (Attribute attribute : attrsCls) {
+            if (attribute.hasOnlyOneConcern(feature)) {
+                if (cls.getGeneralizationRelationship() == null) {
+                    cls.removeAttribute(attribute);
+                }
+            }
+        }
+    }
+
+    private void removeMethodsRealizingFeatureOfClass(Class cls, Concern feature) {
+        List<Method> clsMethods = new ArrayList<>(cls.getAllMethods());
+        for (Method method : clsMethods) {
+            if (method.hasOnlyOneConcern(feature)) {
+                if (cls.getGeneralizationRelationship() == null) {
+                    cls.removeMethod(method);
+                }
+            }
+        }
+
+    }
+
+    private void removeInterfacesRealizingFeatureFromComponent(Package comp, Concern feature, Architecture offspring) {
+        List<Interface> allInterface = new ArrayList<>(comp.getImplementedInterfaces());
+        for (Interface interfaceComp : allInterface) {
+            if (interfaceComp.hasOnlyOneConcern(feature)) {
+                offspring.removeInterface(interfaceComp);
+            } else {
+                removeOperationsRealizingFeatureOfInterface(interfaceComp, feature);
+            }
+        }
+    }
+
+    private void removeOperationsRealizingFeatureOfInterface(Interface interfaceComp, Concern feature) {
+        List<Method> methodsIntfComp = new ArrayList<>(interfaceComp.getOperations());
+        for (Method method : methodsIntfComp) {
+            if (method.hasOnlyOneConcern(feature)) {
+                interfaceComp.removeOperation(method);
+            }
+        }
+    }
+
+    private void removeClassesFromComponent(Package comp, Architecture offspring) {
+        List<Class> allClasses = new ArrayList<>(comp.getAllClasses());
+        for (Class classComp : allClasses) {
+            if (comp.getAllClasses().contains(classComp)) {
+                GeneralizationRelationship gr = classComp.getGeneralizationRelationship();
+                if (gr == null) {
+                    comp.removeClass(classComp);
+                } else {
+                    removeHierarchyOfComponent(classComp, comp, offspring);
+                }
+            }
+        }
+
+    }
+
+    private void removeHierarchyOfComponent(Class cls, Package comp, Architecture architecture) {
+        Class parent = cls;
+        while (isChild(cls)) {
+            parent = getGeneralizationParent(cls);
+        }
+
+        removeChildrenOfComponent(parent, comp, architecture);
+    }
+
+    private void removeChildrenOfComponent(Element cls, Package comp, Architecture architecture) {
+        Set<Element> children = getChildren(cls);
+        for (Element child : children) {
+            removeChildrenOfComponent(child, comp, architecture);
+        }
+
+        if (cls instanceof Class) {
+            if (comp.getAllClasses().contains(cls)) {
+                comp.removeClass(cls);
+            } else {
+                for (Package archPkg : architecture.getAllPackages()) {
+                    if (archPkg.getAllClasses().contains(cls)) {
+                        archPkg.removeClass(cls);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
 
     @Override
     public int getNumberOfParents() {
@@ -505,12 +539,6 @@ public class PLACrossover implements CrossoverOperator<ArchitectureSolution> {
 
     @Override
     public List<ArchitectureSolution> execute(List<ArchitectureSolution> architectureSolutions) {
-        assert architectureSolutions.size() == getNumberOfParents();
-
-        ArchitectureSolution parent1 = architectureSolutions.get(0);
-        ArchitectureSolution parent2 = architectureSolutions.get(1);
-
-        return Arrays.asList(doCrossover(parent1, parent2));
+        return FeatureCrossover(architectureSolutions);
     }
 }
-

@@ -6,7 +6,6 @@ import arquitetura.flyweights.VariantFlyweight;
 import arquitetura.helpers.UtilResources;
 import arquitetura.representation.relationship.AssociationClassRelationship;
 import arquitetura.representation.relationship.MemberEnd;
-import arquitetura.representation.relationship.RelationshiopCommons;
 import arquitetura.representation.relationship.Relationship;
 import arquitetura.touml.Types.Type;
 import arquitetura.touml.VisibilityKind;
@@ -15,6 +14,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author edipofederle<edipofederle@gmail.com>
@@ -364,7 +364,7 @@ public class Class extends Element {
 
     public Class deepClone() throws CloneNotSupportedException {
         Cloner cloner = new Cloner();
-        Class klass = (Class) cloner.deepClone(this);
+        Class klass = cloner.deepClone(this);
         cloner = null;
         return klass;
     }
@@ -379,7 +379,7 @@ public class Class extends Element {
 
     @Override
     public Set<Relationship> getRelationships() {
-        return RelationshiopCommons.getRelationships(relationshipHolder.getRelationships(), this);
+        return relationshipHolder.getRelationships().stream().filter(r -> r.hasRelationshipWithElement(this)).collect(Collectors.toSet());
     }
 
     public void setPatternOperations(PatternsOperations patternOperations) {
@@ -388,6 +388,102 @@ public class Class extends Element {
 
     public PatternsOperations getPatternsOperations() {
         return this.patternsOperations;
+    }
+
+    /**
+     * @return true se esta Classe é um ponto de variabilidade de uma arquitetura relativa a um concern
+     * @see jmetal4.operators.mutation.PLAFeatureMutation#isVarPointOfConcern(Architecture, Class, Concern)
+     */
+    public boolean isVariabilityPointOfConcern(Architecture referenceArch, Concern concern) {
+        Collection<Variability> refVariabilities = referenceArch.getAllVariabilities();
+        for (Variability var : refVariabilities) {
+            if (var.getName().equals(concern.getName())) {
+                VariationPoint variationPoint = var.getVariationPoint();
+                if (variationPoint != null) {
+                    Element variationPointElement = variationPoint.getVariationPointElement();
+                    if (variationPointElement instanceof Class) {
+                        Class classVP = (Class) variationPointElement;
+                        if (equals(classVP)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @return true se esta Classe é uma Variante de uma Variabilidade de uma arquitetura, relativa a um Concern
+     * @see jmetal4.operators.mutation.PLAFeatureMutation#isVariantOfConcern(Architecture, Class, Concern)
+     */
+    public boolean isVariantOfConcern(Architecture referenceArch, Concern concern) {
+        Collection<Variability> refVariabilities = referenceArch.getAllVariabilities();
+        for (Variability var : refVariabilities) {
+            VariationPoint varPoint = var.getVariationPoint();
+            if (varPoint == null) {
+                if (getVariantType() != null && getVariantType().equalsIgnoreCase("optional")) {
+                    return true;
+                }
+            } else if (var.getName().equals(getName())) {
+                for (Variant variant : varPoint.getVariants()) {
+                    if (equals(variant.getVariantElement())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isVariationPoint(Architecture referenceArch) {
+        Collection<Variability> variabilities = referenceArch.getAllVariabilities();
+        for (Variability variability : variabilities) {
+            VariationPoint varPoint = variability.getVariationPoint();
+            if (varPoint != null) {
+                Class classVP = (Class) varPoint.getVariationPointElement();
+                if (equals(classVP)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isVariant(Architecture referenceArch) {
+        Collection<Variability> variabilities = referenceArch.getAllVariabilities();
+        for (Variability variability : variabilities) {
+            VariationPoint varPoint = variability.getVariationPoint();
+            if (varPoint != null) {
+                for (Variant variant : varPoint.getVariants()) {
+                    if (this.equals(variant.getVariantElement())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isVariationPointOrVariant(Architecture architecture) {
+        for (Variability variability : architecture.getAllVariabilities()) {
+            VariationPoint varPoint = variability.getVariationPoint();
+            if (varPoint != null) {
+                if (equals(varPoint.getVariationPointElement())) {
+                    return true;
+                }
+                for (Variant v : varPoint.getVariants()) {
+                    if (equals(v.getVariantElement())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isOptional() {
+        return getVariantType() != null && getVariantType().equalsIgnoreCase("optional");
     }
 
 }

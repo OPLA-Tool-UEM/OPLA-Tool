@@ -287,74 +287,67 @@ public class GenerateArchitecture extends ArchitectureBase {
             if (!packages.isEmpty())
                 buildPackages(op, packages);
 
+            for (AssociationRelationship r : a.getRelationshipHolder().getAllAssociationsRelationshipsNotCompOrAgreg())
+                generateSimpleAssociation(op, r);
 
-            a.getRelationshipHolder().getAllAssociationsRelationshipsStream().forEach(r -> {
-                if(!r.isAggregation() && !r.isComposition()) {
-                    generateSimpleAssociation(op, r);
-                } else {
-                    if (r.isComposition()) {
-                        generateComposition(op, r);
-                    }
-                    if (r.isAggregation()) {
-                        generateAggregation(op, r);
-                    }
-                }
+            for (AssociationRelationship r : a.getRelationshipHolder().getAllCompositions())
+                generateComposition(op, r);
 
-            });
+            for (AssociationRelationship r : a.getRelationshipHolder().getAllAggregations())
+                generateAggregation(op, r);
 
-
-            a.getRelationshipHolder().getAllGeneralizations().forEach(g -> {
+            for (GeneralizationRelationship g : a.getRelationshipHolder().getAllGeneralizations()) {
                 try {
                     op.forGeneralization().createRelation().between(g.getChild().getId()).and(g.getParent().getId())
                             .build();
                 } catch (Exception e) {
                     LOGGER.info("Generalizacao nao criada");
                 }
-            });
+            }
 
-            a.getRelationshipHolder().getAllDependencies().forEach(d -> {
+            for (DependencyRelationship d : a.getRelationshipHolder().getAllDependencies()) {
                 try {
                     op.forDependency().createRelation().withName(d.getName()).withStereotypes(d.getStereotypes())
                             .between(d.getClient().getId()).and(d.getSupplier().getId()).build();
                 } catch (Exception e) {
                     LOGGER.info("Dependencia nao criada");
                 }
-            });
-            a.getRelationshipHolder().getAllRealizations().forEach(r -> {
+            }
+            for (RealizationRelationship r : a.getRelationshipHolder().getAllRealizations()) {
                 try {
                     op.forRealization().createRelation().withName(r.getName()).between(r.getClient().getId())
                             .and(r.getSupplier().getId()).build();
                 } catch (Exception e) {
                     LOGGER.info("Realizacao nao criada");
                 }
-            });
+            }
 
-            a.getRelationshipHolder().getAllAbstractions().forEach(r -> {
+            for (AbstractionRelationship r : a.getRelationshipHolder().getAllAbstractions()) {
                 try {
                     op.forAbstraction().createRelation().withName(r.getName()).between(r.getClient().getId())
                             .and(r.getSupplier().getId()).build();
                 } catch (Exception e) {
                     LOGGER.info("Abstracao nao criada");
                 }
-            });
+            }
 
-            a.getRelationshipHolder().getAllUsage().forEach(u -> {
+            for (UsageRelationship u : a.getRelationshipHolder().getAllUsage()) {
                 try {
                     op.forUsage().createRelation("").between(u.getClient().getId()).and(u.getSupplier().getId())
                             .build();
                 } catch (Exception e) {
                     LOGGER.info("Usage nao criada");
                 }
-            });
+            }
 
-            a.getRelationshipHolder().getAllAssociationsClass().forEach(asr -> {
+            for (AssociationClassRelationship asr : a.getRelationshipHolder().getAllAssociationsClass()) {
                 try {
                     op.forAssociationClass().createAssociationClass(asr).build();
                     op.forPackage().withId(asr.getPackageOwner()).add(asr.getId());
                 } catch (Exception e) {
                     LOGGER.info("AssociationClass nao criada");
                 }
-            });
+            }
 
             // Variabilidades - Notes
             List<Variability> variabilities = a.getAllVariabilities();
@@ -362,13 +355,13 @@ public class GenerateArchitecture extends ArchitectureBase {
             for (Variability variability : variabilities) {
                 try {
                     VariationPoint variationPointForVariability = variability.getVariationPoint();
-                    /*
-                     * Um Variabilidade pode estar ligada a uma classe que não
-                     * seja um ponto de variação, neste caso a chama do método
-                     * acima vai retornar null. Quando isso acontecer é usado o
-                     * método getOwnerClass() que retorna a classe que é dona da
-                     * variabilidade.
-                     */
+            /*
+             * Um Variabilidade pode estar ligada a uma classe que não
+		     * seja um ponto de variação, neste caso a chama do método
+		     * acima vai retornar null. Quando isso acontecer é usado o
+		     * método getOwnerClass() que retorna a classe que é dona da
+		     * variabilidade.
+		     */
                     if (variationPointForVariability == null) {
                         idOwner = a.findClassByName(variability.getOwnerClass()).get(0).getId();
                     } else {

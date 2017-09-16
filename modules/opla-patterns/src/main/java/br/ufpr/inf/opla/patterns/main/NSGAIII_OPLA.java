@@ -4,7 +4,7 @@ import arquitetura.io.ReaderConfig;
 import arquitetura.representation.Architecture;
 import br.ufpr.inf.opla.patterns.indicadores.Hypervolume;
 import br.ufpr.inf.opla.patterns.operator.impl.jmetal5.PLACrossover;
-import br.ufpr.inf.opla.patterns.operator.impl.jmetal5.PLAMutation;
+import br.ufpr.inf.opla.patterns.operator.impl.jmetal5.PLAFeatureMutation;
 import br.ufpr.inf.opla.patterns.problem.multiobjective.OPLAProblem;
 import br.ufpr.inf.opla.patterns.solution.ArchitectureSolution;
 import org.uma.jmetal.algorithm.multiobjective.nsgaiii.NSGAIII;
@@ -26,6 +26,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Experimentos com NSGAIII
@@ -161,13 +162,13 @@ public class NSGAIII_OPLA {
         String[] objectives = {"coe", "aclass", "featureDriven"};
         OPLAProblem oplaProblem = new OPLAProblem(pla, objectives);
 
-        CrossoverOperator<ArchitectureSolution> plaOperator = new PLACrossover(crossoverProbability_);
-        MutationOperator<ArchitectureSolution> mutationOperator = new PLAMutation(mutationProbability_);
+        CrossoverOperator<ArchitectureSolution> crossoverOperator = new PLACrossover(crossoverProbability_);
+        MutationOperator<ArchitectureSolution> mutationOperator = new PLAFeatureMutation(mutationProbability_);
         BinaryTournamentSelection<ArchitectureSolution> selectionOperator = new BinaryTournamentSelection<>();
 
 
-        NSGAIIIBuilder<ArchitectureSolution> nsgaiiiBuilder = new NSGAIIIBuilder<>(oplaProblem).setCrossoverOperator(plaOperator)
-                .setMutationOperator(mutationOperator).setMaxIterations(60).setSelectionOperator(selectionOperator);
+        NSGAIIIBuilder<ArchitectureSolution> nsgaiiiBuilder = new NSGAIIIBuilder<>(oplaProblem).setCrossoverOperator(crossoverOperator)
+                .setMutationOperator(mutationOperator).setMaxIterations(30).setSelectionOperator(selectionOperator);
 
 
         System.out.println("\n================ NSGAIII ================");
@@ -178,6 +179,12 @@ public class NSGAIII_OPLA {
         System.out.println("\tMuta -> " + mutationProbability_);
         System.out.println("\tRuns -> " + runsNumber);
         System.out.println("\tThreads -> " + Runtime.getRuntime().availableProcessors());
+
+        ArchitectureSolution base = oplaProblem.createSolution();
+        oplaProblem.evaluate(base);
+        int k = base.getNumberOfObjectives();
+        String obs = IntStream.range(0, k).mapToObj(j -> "" + base.getObjective(j)).collect(Collectors.joining(","));
+        System.out.println("[" + obs + "]");
 
 
         Hypervolume.clearFile(rootDir.toString() + "/HYPERVOLUME.txt");
@@ -192,7 +199,7 @@ public class NSGAIII_OPLA {
         int n = Runtime.getRuntime().availableProcessors();
         long initTotal = System.currentTimeMillis();
 
-        ExecutorService executorService = Executors.newFixedThreadPool(n / 2);
+        ExecutorService executorService = Executors.newFixedThreadPool(n);
 
         for (int r = 0; r < runsNumber; r++) {
             executorService.execute(buildNSGAIIIWrapperRunnable(nsgaiiiBuilder, r));
@@ -215,15 +222,23 @@ public class NSGAIII_OPLA {
 
         System.out.println("Tamanho da Melhor Subfrente: " + finalfinalSolution.size());
 
+        finalfinalSolution.forEach(architectureSolution -> {
+            int i = architectureSolution.getNumberOfObjectives();
+            String objs = IntStream.range(0, i).mapToObj(j -> "" + architectureSolution.getObjective(j)).collect(Collectors.joining(","));
+            System.out.println("[" + objs + "]");
+        });
+
         System.out.println("Salvando 10 soluções aleatorias em [" + ReaderConfig.getDirExportTarget() + "]...");
         AtomicInteger index = new AtomicInteger(0);
-        SolutionListUtils.selectNRandomDifferentSolutions(10, finalfinalSolution)
+        SolutionListUtils.selectNRandomDifferentSolutions(Math.min(10, finalfinalSolution.size()), finalfinalSolution)
                 .forEach(architectureSolution -> {
                     Architecture arch = architectureSolution.getArchitecture();
                     int i = index.getAndIncrement();
                     arch.save(arch, "VAR_ALL_", "-" + i);
                     System.out.println("\tSolução " + i + " salva.");
                 });
+
+
     }
 
     private static String getPlaName(String pla) {

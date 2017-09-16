@@ -48,9 +48,12 @@ public class Architecture extends Variable {
     }
 
     public List<Element> getElements() {
-        return Stream.concat(getAllPackages().stream().map(Package::getElements).flatMap(Set::stream),
-                Stream.concat(this.classes.stream(), this.interfaces.stream()))
-                .collect(Collectors.toList());
+        final List<Element> elts = new ArrayList<>();
+        for (Package p : getAllPackages())
+            elts.addAll(p.getElements());
+        elts.addAll(this.classes);
+        elts.addAll(this.interfaces);
+        return elts;
     }
 
 
@@ -89,9 +92,12 @@ public class Architecture extends Variable {
      * @return
      */
     public Set<Interface> getAllInterfaces() {
-        return Stream.concat(this.packages.stream().map(Package::getAllInterfaces).flatMap(Set::stream),
-                             this.interfaces.stream())
-                .collect(Collectors.toSet());
+        Set<Interface> allInterfaces = new HashSet<>();
+        for (Package p : this.packages)
+            allInterfaces.addAll(p.getAllInterfaces());
+
+        allInterfaces.addAll(this.interfaces);
+        return Collections.unmodifiableSet(allInterfaces);
     }
 
     /**
@@ -113,9 +119,12 @@ public class Architecture extends Variable {
      * @return
      */
     public Set<Class> getAllClasses() {
-        return Stream.concat(this.packages.stream().map(Package::getAllClasses).flatMap(Set::stream),
-                             this.classes.stream())
-                .collect(Collectors.toSet());
+        Set<Class> allClasses = new HashSet<>();
+        for (Package p : this.packages)
+            allClasses.addAll(p.getAllClasses());
+
+        allClasses.addAll(this.classes);
+        return Collections.unmodifiableSet(allClasses);
     }
 
     /**
@@ -138,23 +147,29 @@ public class Architecture extends Variable {
         Optional<Element> maybeElement = Optional.empty();
 
         if (type.equalsIgnoreCase("class")) {
-
-            maybeElement = getClasses().stream().map(Element.class::cast)
-                    .filter(element -> element.nameEquals(name)).findAny();
-
+            for (Element element : getClasses()) {
+                if (element.nameEquals(name))
+                    return element;
+            }
+            for (Package p : getAllPackages()) {
+                for (Element element : p.getElements()) {
+                    if (element.nameEquals(name))
+                        return element;
+                }
+            }
         } else if (type.equalsIgnoreCase("interface")) {
-
-            maybeElement = getInterfaces().stream().map(Element.class::cast)
-                    .filter(element -> element.nameEquals(name)).findAny();
-
+            for (Element element : getInterfaces()) {
+                if (element.nameEquals(name))
+                    return element;
+            }
+        } else if (type.equalsIgnoreCase("package")) {
+            for (Element element : getAllPackages()) {
+                if (element.getName().equalsIgnoreCase(name))
+                    return element;
+            }
         }
 
-        if (!maybeElement.isPresent()) {
-            maybeElement = getAllPackages().stream().map(Package::getElements).flatMap(Set::stream)
-                    .filter(element -> element.nameEquals(name)).findAny();
-        }
-
-        return maybeElement.orElse(null);
+        return null;
     }
 
 
@@ -165,10 +180,15 @@ public class Architecture extends Variable {
      * @return {@link Class}
      */
     public List<Class> findClassByName(String className) {
-        List<Class> classesFound =
-                Stream.concat(getClasses().stream(), this.packages.stream().flatMap(p -> p.getAllClasses().stream()))
-                        .filter(klass -> className.trim().equalsIgnoreCase(klass.getName().trim()))
-                        .collect(Collectors.toList());
+        String trimClassName = className.trim();
+        List<Class> classesFound = getClasses().stream()
+                .filter(klass -> trimClassName.equalsIgnoreCase(klass.getName().trim()))
+                .collect(Collectors.toList());
+
+        for (Package p : this.packages)
+            for (Class klass : p.getAllClasses())
+                if (trimClassName.equalsIgnoreCase(klass.getName().trim()))
+                    classesFound.add(klass);
 
         if (classesFound.isEmpty())
             return null;
@@ -182,15 +202,33 @@ public class Architecture extends Variable {
      * @return - null se nao encontrar
      */
     public Element findElementByName(String elementName) {
-        Element element = deepPackageSearch(this.packages, elementName);
+        Element element = searchRecursivellyInPackage(this.packages, elementName);
         if (element == null) {
-            Optional<Element> maybeElement = Stream.concat(this.classes.stream(), this.interfaces.stream())
-                    .filter(elm -> elm.getName().equals(elementName)).findFirst();
-            if(maybeElement.isPresent()) return maybeElement.get();
-
-            LOGGER.info("No element called: " + elementName + " found");
+            for (Class klass : this.classes)
+                if (klass.nameEquals(elementName))
+                    return klass;
+            for (Interface inter : this.interfaces)
+                if (inter.nameEquals(elementName))
+                    return inter;
+            LOGGER.error("No element called: " + elementName + " found");
         }
         return element;
+    }
+
+    private Element searchRecursivellyInPackage(Set<Package> packages, String elementName) {
+        for (Package p : packages) {
+            for (Element element : p.getElements()) {
+                if (element.nameEquals(elementName))
+                    return element;
+                //FIXME nao esta fazendo nada aqui
+                searchRecursivellyInPackage(p.getNestedPackages(), elementName);
+
+                if (p.nameEquals(elementName))
+                    return p;
+                searchRecursivellyInPackage(p.getNestedPackages(), elementName);
+            }
+        }
+        return null;
     }
 
     private Element deepPackageSearch(Set<Package> packages, String elementName) {
@@ -223,7 +261,7 @@ public class Architecture extends Variable {
      * @return Package
      */
     public Package findPackageByName(String packageName) {
-        return getAllPackages().stream().filter(pkg -> packageName.equalsIgnoreCase(pkg.getName())).findFirst().orElse(null);
+        return getAllPackages().stream().filter(pkg -> pkg.nameEquals(packageName)).findFirst().orElse(null);
 
     }
 
@@ -436,11 +474,11 @@ public class Architecture extends Variable {
         return relationshipHolder.getAllRelationships().stream().anyMatch(r -> {
             if (r instanceof RealizationRelationship) {
                 RealizationRelationship rR = (RealizationRelationship) r;
-                if (rR.getClient().equals(client) && rR.getSupplier().equals(supplier))
+                if (rR.getSupplier().equals(supplier) && rR.getClient().equals(client))
                     return true;
             } else if (r instanceof DependencyRelationship) {
                 DependencyRelationship dR = (DependencyRelationship) r;
-                if (dR.getClient().equals(client) && dR.getSupplier().equals(supplier))
+                if (dR.getSupplier().equals(supplier) && dR.getClient().equals(client))
                     return true;
             }
             return false;

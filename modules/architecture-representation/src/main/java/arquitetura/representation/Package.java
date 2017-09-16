@@ -1,16 +1,14 @@
 package arquitetura.representation;
 
 import arquitetura.helpers.UtilResources;
-import arquitetura.representation.relationship.RelationshiopCommons;
+import arquitetura.representation.relationship.RealizationRelationship;
 import arquitetura.representation.relationship.Relationship;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -160,16 +158,30 @@ public class Package extends Element {
 
     @Override
     public Set<Concern> getAllConcerns() {
-        return Stream.concat(this.classes.stream(),
-                Stream.concat(this.interfaces.stream(), getImplementedInterfaces().stream()))
-                .map(Element::getAllConcerns).flatMap(Collection::stream).collect(Collectors.toSet());
+        Set<Concern> concerns = new HashSet<Concern>();
+
+        for (Class klass : this.classes)
+            concerns.addAll(klass.getAllConcerns());
+        for (Interface inter : this.interfaces)
+            concerns.addAll(inter.getAllConcerns());
+        for (Interface implInter : getImplementedInterfaces())
+            concerns.addAll(implInter.getAllConcerns());
+
+        return concerns;
     }
 
     @Override
     public Set<Concern> getOwnConcerns() {
-        return Stream.concat(this.classes.stream(),
-                Stream.concat(this.interfaces.stream(), getImplementedInterfaces().stream()))
-                .map(Element::getOwnConcerns).flatMap(Set::stream).collect(Collectors.toSet());
+        Set<Concern> concerns = new HashSet<>();
+
+        for (Class klass : this.classes)
+            concerns.addAll(klass.getOwnConcerns());
+        for (Interface inter : this.interfaces)
+            concerns.addAll(inter.getOwnConcerns());
+        for (Interface implInter : getImplementedInterfaces())
+            concerns.addAll(implInter.getOwnConcerns());
+
+        return concerns;
     }
 
     public void moveClassToPackage(Class klass, Package packageToMove) {
@@ -230,12 +242,31 @@ public class Package extends Element {
     }
 
     /**
+     * @see jmetal4.operators.mutation.PLAFeatureMutation#searchForInterfaceWithConcern(Concern, Package)
+     */
+    public Optional<Interface> getInterfaceWithConcern(Concern concern) {
+        Stream<Interface> intfStream = Stream.concat(getImplementedInterfaces().stream(), getAllInterfaces().stream());
+        return intfStream.filter(concern::isContainedByElement).findFirst();
+    }
+
+    public boolean isModelPackage() {
+        return UtilResources.extractPackageName(this.getNamespace().trim()).equalsIgnoreCase("model");
+    }
+
+    public boolean hasRealizationWithSupplier(Interface supplierInterface) {
+        return getRelationships().stream().filter(RealizationRelationship.class::isInstance)
+                .map(RealizationRelationship.class::cast).anyMatch(r -> r.getSupplier().equals(supplierInterface));
+    }
+
+    /**
      * Retorna um Set contendo as classes e as interfaces do pacote
      *
      * @return
      */
     public Set<Element> getElements() {
-        return Stream.concat(this.classes.stream(), this.interfaces.stream()).collect(Collectors.toSet());
+        Set<Element> elements = new HashSet<>(this.classes);
+        elements.addAll(this.interfaces);
+        return elements;
     }
 
     @Override
@@ -269,7 +300,7 @@ public class Package extends Element {
 
     @Override
     public Set<Relationship> getRelationships() {
-        return RelationshiopCommons.getRelationships(relationshipHolder.getRelationships(), this);
+        return relationshipHolder.getRelationships().stream().filter(r -> r.hasRelationshipWithElement(this)).collect(Collectors.toSet());
     }
 
 }

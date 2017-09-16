@@ -53,7 +53,9 @@ public class XmiHelper {
                     for (int k = 0; k < attrs.getLength(); k++) {
                         if (attrs.item(k).getNodeValue().contains(id)) {
                             nodeFound = node.item(i);
-                            break mainloop;
+                            if (nodeFound != null) {
+                                break mainloop;
+                            }
                         }
                     }
                 }

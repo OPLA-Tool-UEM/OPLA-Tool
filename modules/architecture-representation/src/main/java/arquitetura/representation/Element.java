@@ -1,6 +1,7 @@
 package arquitetura.representation;
 
 import arquitetura.exceptions.ConcernNotFoundException;
+import arquitetura.representation.relationship.GeneralizationRelationship;
 import arquitetura.representation.relationship.Relationship;
 
 import java.io.Serializable;
@@ -99,7 +100,13 @@ public abstract class Element implements Serializable {
     }
 
     public boolean containsConcern(Concern concern) {
-        return concern != null && getOwnConcerns().stream().anyMatch(conc -> conc.getName().equalsIgnoreCase(concern.getName()));
+        return concern != null && getOwnConcerns().stream().anyMatch(concern::namesMatch);
+    }
+
+    public boolean hasOnlyOneConcern(Concern concern) {
+        return concern != null &&
+                getOwnConcerns().size() == 1 &&
+                getOwnConcerns().iterator().next().equals(concern);
     }
 
     /**
@@ -197,6 +204,19 @@ public abstract class Element implements Serializable {
         this.belongsToGeneralization = belongsToGeneralization;
     }
 
+    /**
+     * Dado um {@link Element} retorna a {@link GeneralizationRelationship} no qual o mesmo pertence.
+     *
+     * @return {@link GeneralizationRelationship}
+     * @see jmetal4.operators.mutation.PLAFeatureMutation#getGeneralizationRelationshipForClass(Element)
+     */
+    public GeneralizationRelationship getGeneralizationRelationship() {
+        return getRelationships().stream()
+                .filter(GeneralizationRelationship.class::isInstance)
+                .map(GeneralizationRelationship.class::cast).findAny().orElse(null);
+    }
+
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -209,14 +229,26 @@ public abstract class Element implements Serializable {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-
-        if (!(obj instanceof Element))
-            return false;
+        if (getClass() != obj.getClass()) return false;
 
         Element other = (Element) obj;
-        return other.getClass() == this.getClass() &&
-                Objects.equals(name, other.name) &&
-                Objects.equals(namespace, other.namespace);
+        if (name == null) {
+            if (other.name != null) {
+                return false;
+            }
+        } else if (!name.equals(other.name)) {
+            return false;
+        }
+
+        if (namespace == null) {
+            if (other.namespace != null) {
+                return false;
+            }
+        } else if (!namespace.equals(other.namespace)) {
+            return false;
+        }
+
+        return true;
     }
 
 }

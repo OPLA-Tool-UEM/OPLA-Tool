@@ -4,7 +4,7 @@ import arquitetura.io.ReaderConfig;
 import arquitetura.representation.Architecture;
 import br.ufpr.inf.opla.patterns.indicadores.Hypervolume;
 import br.ufpr.inf.opla.patterns.operator.impl.jmetal5.PLACrossover;
-import br.ufpr.inf.opla.patterns.operator.impl.jmetal5.PLAMutation;
+import br.ufpr.inf.opla.patterns.operator.impl.jmetal5.PLAFeatureMutation;
 import br.ufpr.inf.opla.patterns.problem.multiobjective.OPLAProblem;
 import br.ufpr.inf.opla.patterns.solution.ArchitectureSolution;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
@@ -23,8 +23,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * Usando os pacotes do JMetal5, tenta imitar o funcionamento da classe NSGAII_OPLA
@@ -83,7 +83,7 @@ public class NSGAII_Jmetal5_Multithreaded {
 
         String[] myArgs = {
                 /*population size*/"30",
-                /*max evaluations*/"100",
+                /*max evaluations*/"3000",
                 /*Mutation probability*/"0.9",
                 /*PLA path*/"/home/barbiero/TCC/PLAs/banking/banking.uml",
                 /*Context*/"teste1",
@@ -201,7 +201,7 @@ public class NSGAII_Jmetal5_Multithreaded {
         OPLAProblem oplaProblem = new OPLAProblem(pla, objectives);
 
         CrossoverOperator<ArchitectureSolution> plaOperator = new PLACrossover(crossoverProbability_);
-        MutationOperator<ArchitectureSolution> mutationOperator = new PLAMutation(mutationProbability_);
+        MutationOperator<ArchitectureSolution> mutationOperator = new PLAFeatureMutation(mutationProbability_);
 
         NSGAIIBuilder<ArchitectureSolution> nsgaiiBuilder = new NSGAIIBuilder<>(oplaProblem, plaOperator, mutationOperator)
                 .setMaxEvaluations(maxEvaluations_).setPopulationSize(populationSize_);
@@ -253,12 +253,14 @@ public class NSGAII_Jmetal5_Multithreaded {
         System.out.println("Tamanho final => " + condensedList.size());
 
         System.out.println("Salvando em " + ReaderConfig.getDirExportTarget() + "...");
-        IntStream.range(0, condensedList.size()).forEach(i -> {
-            Architecture architecture = condensedList.get(i).getArchitecture();
-            architecture.save(architecture, "VAR_ALL_", "-" + i);
-            System.out.println("VAR_ALL_" + i + " salvo.");
-        });
-
+        AtomicInteger index = new AtomicInteger(0);
+        SolutionListUtils.selectNRandomDifferentSolutions(Math.min(10, condensedList.size()), condensedList)
+                .forEach(architectureSolution -> {
+                    Architecture arch = architectureSolution.getArchitecture();
+                    int i = index.getAndIncrement();
+                    arch.save(arch, "VAR_ALL_", "-" + i);
+                    System.out.println("\tSolução " + i + " salva.");
+                });
     }
 
     private static String getPlaName(String pla) {

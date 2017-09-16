@@ -86,7 +86,7 @@ public class NSGAIII<S extends Solution<?>> extends AbstractGeneticAlgorithm<S, 
         return Stream.generate(() -> selectionOperator.execute(population)).limit(getMaxPopulationSize()).collect(Collectors.toList());
     }
 
-    @Override
+    /*@Override
     protected List<S> reproduction(List<S> population) {
         List<S> offspringPopulation = new ArrayList<>(getMaxPopulationSize());
         for (int i = 0; i < getMaxPopulationSize(); i += 2) {
@@ -96,14 +96,14 @@ public class NSGAIII<S extends Solution<?>> extends AbstractGeneticAlgorithm<S, 
 
             List<S> offspring = crossoverOperator.execute(parents);
 
-            mutationOperator.execute(offspring.get(0));
-            mutationOperator.execute(offspring.get(1));
+            offspring.set(0, mutationOperator.execute(offspring.get(0)));
+            offspring.set(1, mutationOperator.execute(offspring.get(1)));
 
             offspringPopulation.add(offspring.get(0));
             offspringPopulation.add(offspring.get(1));
         }
         return offspringPopulation;
-    }
+    }*/
 
 
     private List<ReferencePoint<S>> getReferencePointsCopy() {

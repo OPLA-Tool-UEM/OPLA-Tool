@@ -55,4 +55,12 @@ public class Concern implements Serializable {
     public boolean namesMatch(Concern otherConcern) {
         return this.getName().equalsIgnoreCase(otherConcern.getName());
     }
+
+    public boolean isContainedByElement(Element element) {
+        return element.containsConcern(this);
+    }
+
+    public boolean isOnlyConcernOfElement(Element element) {
+        return element.hasOnlyOneConcern(this);
+    }
 }

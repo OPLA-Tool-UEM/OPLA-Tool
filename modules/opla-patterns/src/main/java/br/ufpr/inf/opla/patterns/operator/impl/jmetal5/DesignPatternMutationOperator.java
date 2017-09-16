@@ -26,7 +26,7 @@ import java.util.List;
  */
 public class DesignPatternMutationOperator implements MutationOperator<ArchitectureSolution> {
 
-    private static final Logger LOGGER = LogManager.getLogger(PLAMutation.class);
+    private static final Logger LOGGER = LogManager.getLogger(DesignPatternMutationOperator.class);
     private final double probability;
     private final ScopeSelectionStrategy scopeSelectionStrategy;
     private final DesignPatternSelectionStrategy designPatternSelectionStrategy;

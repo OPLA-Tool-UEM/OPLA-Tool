@@ -3,12 +3,12 @@ package arquitetura.representation;
 import arquitetura.helpers.UtilResources;
 import arquitetura.representation.relationship.DependencyRelationship;
 import arquitetura.representation.relationship.RealizationRelationship;
-import arquitetura.representation.relationship.RelationshiopCommons;
 import arquitetura.representation.relationship.Relationship;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author edipofederle<edipofederle@gmail.com>
@@ -178,7 +178,8 @@ public class Interface extends Element {
      * @param interfacee
      */
     public void removeInterfaceFromRequiredOrImplemented() {
-        for (Iterator<Relationship> i = getRelationshipHolder().getRelationships().iterator(); i.hasNext(); ) {
+        Iterator<Relationship> i = getRelationshipHolder().getRelationships().iterator();
+        while (i.hasNext()) {
             Relationship r = i.next();
 
             if (r instanceof RealizationRelationship) {
@@ -219,7 +220,7 @@ public class Interface extends Element {
 
     @Override
     public Set<Relationship> getRelationships() {
-        return Collections.unmodifiableSet(RelationshiopCommons.getRelationships(relationshipHolder.getRelationships(), this));
+        return relationshipHolder.getRelationships().stream().filter(r -> r.hasRelationshipWithElement(this)).collect(Collectors.toSet());
     }
 
     public void setPatternOperations(PatternsOperations patternOperations) {
@@ -231,14 +232,9 @@ public class Interface extends Element {
     }
 
     public List<RealizationRelationship> getRealizationImplementors() {
-        List<RealizationRelationship> realization = new ArrayList<RealizationRelationship>();
 
-        for (RealizationRelationship r : getRelationshipHolder().getAllRealizations()) {
-            if (r.getSupplier().equals(this))
-                realization.add(r);
-        }
-
-        return realization;
+        return getRelationshipHolder().getAllRealizations().stream()
+                .filter(r -> r.getSupplier().equals(this)).collect(Collectors.toList());
     }
 
     //Modificado Thais

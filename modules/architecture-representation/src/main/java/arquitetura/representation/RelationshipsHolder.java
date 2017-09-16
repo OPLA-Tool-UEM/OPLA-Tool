@@ -53,6 +53,15 @@ public class RelationshipsHolder implements Serializable {
         return getAllAssociationsRelationshipsStream().filter(r -> !r.isAggregation() && !r.isComposition()).collect(Collectors.toList());
     }
 
+    public List<AssociationRelationship> getAllAggregations() {
+        return getAllAssociationsRelationshipsStream().filter(AssociationRelationship::isAggregation).collect(Collectors.toList());
+    }
+
+
+    public List<AssociationRelationship> getAllCompositions() {
+        return getAllAssociationsRelationshipsStream().filter(AssociationRelationship::isComposition).collect(Collectors.toList());
+    }
+
     public List<UsageRelationship> getAllUsage() {
         return UtilResources.getFilteredList(getRelationships(), UsageRelationship.class);
     }
@@ -80,7 +89,8 @@ public class RelationshipsHolder implements Serializable {
     public boolean haveRelationship(Relationship relationship) {
         if(relationship instanceof AssociationRelationship) {
             AssociationRelationship associationRelationship = (AssociationRelationship) relationship;
-            if(getAllAssociationsRelationshipsStream().anyMatch(ar -> ar.getParticipants().equals(associationRelationship.getParticipants())))
+            if (getAllAssociationsRelationshipsStream().map(AssociationRelationship::getParticipants)
+                    .anyMatch(associationRelationship.getParticipants()::equals))
                 return true;
         }
 

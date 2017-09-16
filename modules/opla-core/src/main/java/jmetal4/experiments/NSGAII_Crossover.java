@@ -92,7 +92,7 @@
 //
 //         parameters = new HashMap() ;
 //         parameters.put("probability", mutationProbability_) ;
-//         mutation = MutationFactory.getMutationOperator("PLAFeatureMutation", parameters);                        
+//         mutation = MutationFactory.getMutationOperator("PLAMutation", parameters);
 //
 //         // Selection Operator 
 //         parameters = null ;
