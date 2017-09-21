@@ -15,6 +15,7 @@ import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
 import org.uma.jmetal.util.SolutionListUtils;
 
 import java.io.IOException;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -44,11 +45,13 @@ public class NSGAIII_OPLA {
     public static void main(String... args) throws ClassNotFoundException, IOException {
         //versao com args próprios
 
+        Path PLAPath = Paths.get("D:", "pedro", "OpenSource", "PLAs", "banking", "banking.uml");
+
         String[] myArgs = {
                 /*population size*/"30",
                 /*max evaluations*/"1000",
                 /*Mutation probability*/"0.9",
-                /*PLA path*/"/home/barbiero/TCC/PLAs/banking/banking.uml",
+                /*PLA path*/PLAPath.toString(),
                 /*Context*/"teste1",
                 /*Mutation operator*/"PLAMutation",
                 /*print variables?*/"true"
@@ -139,6 +142,8 @@ public class NSGAIII_OPLA {
             System.exit(1);
         }
 
+        String fileSep = FileSystems.getDefault().getSeparator();
+
         String plaName = getPlaName(pla);
 
         Path rootDir = Paths.get("experiment", plaName, context);
@@ -148,10 +153,10 @@ public class NSGAIII_OPLA {
         Files.createDirectories(manipulationDir);
         Files.createDirectories(outputDir);
 
-        ReaderConfig.setDirTarget(manipulationDir.toString() + "/");
-        ReaderConfig.setDirExportTarget(outputDir.toString() + "/");
+        ReaderConfig.setDirTarget(manipulationDir.toString() + fileSep);
+        ReaderConfig.setDirExportTarget(outputDir.toString() + fileSep);
 
-        String plaDirectory = Paths.get(pla).getParent().toString() + "/";
+        String plaDirectory = Paths.get(pla).getParent().toString() + fileSep;
 
         ReaderConfig.setPathToTemplateModelsDirectory(plaDirectory);
         ReaderConfig.setPathToProfileSMarty(plaDirectory + "smarty.profile.uml");
@@ -187,19 +192,21 @@ public class NSGAIII_OPLA {
         System.out.println("[" + obs + "]");
 
 
-        Hypervolume.clearFile(rootDir.toString() + "/HYPERVOLUME.txt");
+        Hypervolume.clearFile(rootDir.toString() + fileSep + "HYPERVOLUME.txt");
 
         System.out.println("Execução paralela do NSGAIII");
 
+/*
         System.out.print("dummy run pra quebrar quaisquer biases de cache...");
         long init = System.currentTimeMillis();
         buildNSGAIIIWrapperRunnable(nsgaiiiBuilder, -1).run();
         System.out.println(" tempo: " + (System.currentTimeMillis() - init) / 1000.0 + " segundos.");
+*/
 
         int n = Runtime.getRuntime().availableProcessors();
         long initTotal = System.currentTimeMillis();
 
-        ExecutorService executorService = Executors.newFixedThreadPool(n);
+        ExecutorService executorService = Executors.newFixedThreadPool(n - 1);
 
         for (int r = 0; r < runsNumber; r++) {
             executorService.execute(buildNSGAIIIWrapperRunnable(nsgaiiiBuilder, r));
@@ -241,9 +248,11 @@ public class NSGAIII_OPLA {
 
     }
 
-    private static String getPlaName(String pla) {
-        int beginIndex = pla.lastIndexOf('/') + 1;
-        int endIndex = pla.length() - 4;
-        return pla.substring(beginIndex, endIndex);
+    private static String getPlaName(String plaPath) {
+        /*int beginIndex = pla.lastIndexOf(FileSystems.getDefault().getSeparator()) + 1;
+        int endIndex = pla.length() - 4;*/
+
+        String filename = Paths.get(plaPath).getFileName().toString();
+        return filename.substring(0, filename.length() - 4); //remover '.uml'
     }
 }

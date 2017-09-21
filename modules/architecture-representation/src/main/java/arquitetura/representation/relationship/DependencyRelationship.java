@@ -19,6 +19,7 @@ public class DependencyRelationship extends Relationship {
     private Element supplier;
 
     public DependencyRelationship() {
+        setType(ElementsTypes.DEPENDENCY);
     }
 
     /**

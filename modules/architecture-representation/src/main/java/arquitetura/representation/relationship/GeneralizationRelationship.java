@@ -19,6 +19,10 @@ public class GeneralizationRelationship extends Relationship {
     private Element child;
     private RelationshipsHolder relationshipHolder;
 
+    public GeneralizationRelationship() {
+        setType(ElementsTypes.GENERALIZATION);
+    }
+
     public GeneralizationRelationship(Element parentClass, Element childClass, RelationshipsHolder relationshipHolder, String id) {
         setParent(parentClass);
         setChild(childClass);

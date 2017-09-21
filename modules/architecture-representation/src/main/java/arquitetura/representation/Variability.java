@@ -25,6 +25,10 @@ public class Variability implements Serializable {
     private VariationPoint variationPoint;
     private List<Variant> variants = new ArrayList<Variant>();
 
+
+    public Variability() {
+    }
+
     public Variability(String name, String minSelection, String maxSelection, String bindingTime, boolean allowsAddingVar, String ownerClass, String idPackageOwner) {
         setName(name);
         setMinSelection(minSelection);

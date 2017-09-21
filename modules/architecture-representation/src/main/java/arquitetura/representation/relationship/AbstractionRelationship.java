@@ -11,6 +11,10 @@ public class AbstractionRelationship extends Relationship {
     private Element client;
     private Element supplier;
 
+    public AbstractionRelationship() {
+        setType(ElementsTypes.ABSTRACTION);
+    }
+
     public AbstractionRelationship(Element client, Element supplier, String id) {
         setClient(client);
         setSupplier(supplier);

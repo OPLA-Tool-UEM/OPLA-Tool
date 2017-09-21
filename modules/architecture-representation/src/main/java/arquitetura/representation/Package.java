@@ -31,6 +31,12 @@ public class Package extends Element {
     private Set<Interface> requiredInterfaces = new HashSet<Interface>();
     private RelationshipsHolder relationshipHolder;
 
+
+    public Package() {
+        super();
+        setTypeElement("package");
+    }
+
     /**
      * Construtor Para um Elemento do Tipo Pacote
      *

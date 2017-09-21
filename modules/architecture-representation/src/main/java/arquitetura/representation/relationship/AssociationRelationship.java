@@ -15,6 +15,10 @@ public class AssociationRelationship extends Relationship {
 
     private final List<AssociationEnd> participants = new ArrayList<AssociationEnd>();
 
+    public AssociationRelationship() {
+        setType(ElementsTypes.ASSOCIATION);
+    }
+
     public AssociationRelationship(String id) {
         setId(id);
     }

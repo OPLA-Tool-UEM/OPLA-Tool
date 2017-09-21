@@ -14,6 +14,10 @@ public class UsageRelationship extends Relationship {
     private Element supplier;
     private Element client;
 
+    public UsageRelationship() {
+        setType(ElementsTypes.USAGE);
+    }
+
     public UsageRelationship(String name, Element supplier, Element client, String id) {
         super();
         this.name = name;

@@ -9,8 +9,8 @@ import arquitetura.main.GenerateArchitecture;
 import arquitetura.representation.relationship.DependencyRelationship;
 import arquitetura.representation.relationship.RealizationRelationship;
 import arquitetura.representation.relationship.Relationship;
+import com.esotericsoftware.kryo.Kryo;
 import jmetal4.core.Variable;
-import org.apache.commons.lang3.SerializationUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -34,6 +34,8 @@ public class Architecture extends Variable {
 
     private RelationshipsHolder relationshipHolder = new RelationshipsHolder();
 
+    public Architecture() {
+    }
 
     public Architecture(String name) {
         setName(name);
@@ -444,7 +446,8 @@ public class Architecture extends Variable {
     }
 
     public Architecture deepClone() {
-        return SerializationUtils.clone(this);
+        Kryo kryo = new Kryo();
+        return kryo.copy(this);
     }
 
     public boolean addImplementedInterface(Interface supplier, Element genericElement) {

@@ -10,6 +10,9 @@ public class Concern implements Serializable {
 
     private String name;
 
+    public Concern() {
+    }
+
     public Concern(String name) {
         this.name = name;
     }

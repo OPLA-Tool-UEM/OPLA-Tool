@@ -18,11 +18,16 @@ public class Interface extends Element {
 
     private static final long serialVersionUID = -1779316062511432020L;
 
-    static Logger LOGGER = LogManager.getLogger(Interface.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(Interface.class.getName());
     private final Set<Method> operations = new HashSet<Method>();
     private RelationshipsHolder relationshipHolder;
     private PatternsOperations patternsOperations;
 
+
+    public Interface() {
+        super();
+        setTypeElement("interface");
+    }
 
     public Interface(RelationshipsHolder relationshipHolder, String name, Variant variantType, String namespace, String id) {
         super(name, variantType, "interface", namespace, id);

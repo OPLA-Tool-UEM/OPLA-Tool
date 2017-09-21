@@ -23,12 +23,28 @@ public abstract class Element implements Serializable {
     private String namespace;
     private boolean belongsToGeneralization;
 
+    public Element() {
+        id = "";
+        name = "";
+        variant = null;
+        variationPoint = null;
+        typeElement = "";
+        namespace = "";
+    }
     public Element(String name, Variant variant, String typeElement, String namespace, String id) {
         setId(id);
         setName(name);
         setVariant(variant);
         setTypeElement(typeElement);
         setNamespace(namespace);
+    }
+
+    public Set<Concern> getConcerns() {
+        return concerns;
+    }
+
+    public void setConcerns(Set<Concern> concerns) {
+        this.concerns = concerns;
     }
 
     public abstract Collection<Concern> getAllConcerns();
@@ -55,7 +71,7 @@ public abstract class Element implements Serializable {
         return this.typeElement;
     }
 
-    private void setTypeElement(String typeElement) {
+    protected void setTypeElement(String typeElement) {
         this.typeElement = typeElement;
     }
 

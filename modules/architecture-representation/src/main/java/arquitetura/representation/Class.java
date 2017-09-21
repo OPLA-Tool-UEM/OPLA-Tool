@@ -33,16 +33,12 @@ public class Class extends Element {
     private PatternsOperations patternsOperations;
     private RelationshipsHolder relationshipHolder;
 
-    /**
-     * @param architecture
-     * @param name
-     * @param isVariationPoint
-     * @param variantType
-     * @param isAbstract
-     * @param parent
-     * @param interfacee
-     * @param packageName
-     */
+
+    public Class() {
+        super();
+        setTypeElement("klass");
+    }
+
     public Class(RelationshipsHolder relationshipHolder, String name, Variant variantType, boolean isAbstract,
                  String namespace, String id) {
         super(name, variantType, "klass", namespace, id);

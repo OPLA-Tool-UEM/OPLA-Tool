@@ -20,15 +20,10 @@ public class AssociationClassRelationship extends Relationship {
     private Class associationClass;
     private String idOwner;
 
-    /**
-     * @param architecture
-     * @param name
-     * @param ends
-     * @param ownedEnd
-     * @param id               - associationEnd
-     * @param idOwner          - ex: pacote
-     * @param associationClass
-     */
+    public AssociationClassRelationship() {
+        setType(ElementsTypes.ASSOCIATION);
+    }
+
     public AssociationClassRelationship(String name, List<MemberEnd> ends, Element ownedEnd, String id, String idOwner, Class associationClass) {
         super.setName(name);
         this.memebersEnd = ends;

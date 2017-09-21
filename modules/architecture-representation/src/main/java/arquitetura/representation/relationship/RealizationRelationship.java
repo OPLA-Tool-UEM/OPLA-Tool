@@ -14,6 +14,9 @@ public class RealizationRelationship extends Relationship {
     private Element client;
     private Element supplier;
 
+    public RealizationRelationship() {
+        setType(ElementsTypes.REALIZATION);
+    }
 
     public RealizationRelationship(Element client, Element supplier, String name, String id) {
         setClient(client);

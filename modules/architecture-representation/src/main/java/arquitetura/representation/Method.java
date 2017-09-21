@@ -17,6 +17,11 @@ public class Method extends Element {
     private String returnType;
     private boolean isAbstract;
 
+    public Method() {
+        super();
+        setTypeElement("method");
+    }
+
     public Method(String name, Variant variantType, String returnType, boolean isAbstract, List<ParameterMethod> paramsMethod, String namespace, String id) {
         super(name, variantType, "method", namespace, id);
         setReturnType(returnType);

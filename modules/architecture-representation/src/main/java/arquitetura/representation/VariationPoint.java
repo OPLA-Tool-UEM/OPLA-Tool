@@ -18,6 +18,9 @@ public class VariationPoint implements Serializable {
     private List<Variability> variabilities = new ArrayList<Variability>();
     private String bindingTime;
 
+    public VariationPoint() {
+    }
+
     /**
      * @param variationPointElement {@link Element}
      * @param variants              {@link List}<{@link Element}>

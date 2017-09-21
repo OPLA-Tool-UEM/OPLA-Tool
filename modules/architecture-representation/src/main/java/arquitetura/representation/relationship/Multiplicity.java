@@ -14,6 +14,9 @@ public class Multiplicity implements Serializable {
     private String lowerValue;
     private String upperValue;
 
+    public Multiplicity() {
+    }
+
     /**
      * @param lowerValue
      * @param upperValue

@@ -22,6 +22,9 @@ public class MemberEnd implements Serializable {
     private String visibility;
     private Element type;
 
+    public MemberEnd() {
+    }
+
     public MemberEnd(String aggregation, Multiplicity multiplicity, String visibility, Element type) {
         super();
         this.aggregation = aggregation;
