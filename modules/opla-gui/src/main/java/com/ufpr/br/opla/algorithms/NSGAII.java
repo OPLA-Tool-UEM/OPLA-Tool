@@ -104,6 +104,7 @@ public class NSGAII {
 
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
         }
 
     }

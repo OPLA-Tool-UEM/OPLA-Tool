@@ -21,33 +21,37 @@
 
 package jmetal4.operators.crossover;
 
+import java.util.HashMap;
+import java.util.Map;
 
+import jmetal4.experiments.ExperimentCommomConfigs;
 import jmetal4.util.Configuration;
 import jmetal4.util.JMException;
-
-import java.util.HashMap;
-
 
 /**
  * Class implementing a factory for crossover operators.
  */
 public class CrossoverFactory {
 
-    /**
-     * Gets a crossover operator through its name.
-     *
-     * @param name Name of the operator
-     * @return The operator
-     */
+	/**
+	 * Gets a crossover operator through its name.
+	 *
+	 * @param name
+	 *            Name of the operator
+	 * @param configs
+	 * @return The operator
+	 */
 
-
-    public static Crossover getCrossoverOperator(String name, HashMap parameters) throws JMException {
-        if (name.equalsIgnoreCase("PLACrossover"))
-            return new PLACrossover2(parameters);
-        else {
-            Configuration.logger_.severe("CrossoverFactory.getCrossoverOperator. " +
-                    "Operator '" + name + "' not found ");
-            throw new JMException("Exception in " + name + ".getCrossoverOperator()");
-        }
-    }
+	public static Crossover getCrossoverOperator(String name, Map<String, Object> parameters,
+			ExperimentCommomConfigs configs) throws JMException {
+		if (name.equalsIgnoreCase("PLACrossover")) {
+			return new PLACrossover2(parameters);
+		} else if (name.equals("PLAComplementaryCrossover")) {
+			return new PLAComplementaryCrossover(parameters, configs);
+		} else {
+			Configuration.logger_
+					.severe("CrossoverFactory.getCrossoverOperator. " + "Operator '" + name + "' not found ");
+			throw new JMException("Exception in " + name + ".getCrossoverOperator()");
+		}
+	}
 }

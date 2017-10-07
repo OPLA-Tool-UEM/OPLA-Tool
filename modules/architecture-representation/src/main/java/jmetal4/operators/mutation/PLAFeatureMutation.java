@@ -332,8 +332,7 @@ public class PLAFeatureMutation extends Mutation {
                     ClassesComp.clear();
 
                 } else {
-                    Configuration.logger_.log(Level.SEVERE, "AddClassMutation.doMutation: invalid type. "
-                            + "{0}", solution.getDecisionVariables()[0].getVariableType());
+                    Configuration.logger_.log(Level.SEVERE, "AddClassMutation.doMutation: invalid type. {0}", solution.getDecisionVariables()[0].getVariableType());
                     java.lang.Class<String> cls = java.lang.String.class;
                     String name = cls.getName();
                     throw new JMException("Exception in " + name + ".doMutation()");

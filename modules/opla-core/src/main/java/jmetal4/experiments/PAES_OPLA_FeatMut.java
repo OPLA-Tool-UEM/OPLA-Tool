@@ -103,7 +103,8 @@ public class PAES_OPLA_FeatMut {
             // Mutation and Crossover
             parameters = new HashMap<String, Object>();
             parameters.put("probability", crossoverProbability);
-            crossover = CrossoverFactory.getCrossoverOperator("PLACrossover", parameters);
+            //TODO avaliar configurações na execução do algoritmo
+            crossover = CrossoverFactory.getCrossoverOperator("PLACrossover", parameters, this.configs);
 
             parameters = new HashMap<String, Object>();
             parameters.put("probability", mutationProbability);

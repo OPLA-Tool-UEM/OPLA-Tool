@@ -103,8 +103,7 @@ public class Result {
         return concernsList.substring(0, concernsList.length() - 1);
     }
 
-    public AllMetrics getMetrics(List<FunResults> funResults, List<Solution> list, Execution execution,
-                                 Experiment experiement, List<String> objectiveFuncs) {
+    public AllMetrics getMetrics(List<FunResults> funResults, List<Solution> list, Execution execution, Experiment experiement, List<String> objectiveFuncs) {
 
         MetricsEvaluation metrics = new MetricsEvaluation();
         AllMetrics allMetrics = new AllMetrics();
@@ -115,35 +114,25 @@ public class Result {
                 Architecture arch = (Architecture) list.get(i).getDecisionVariables()[j];
                 String idSolution = funResults.get(i).getId();
                 if (objectiveFuncs.contains("elegance"))
-                    allMetrics.getElegance()
-                            .add(buildEleganceMetrics(idSolution, execution, experiement, metrics, arch));
+                    allMetrics.getElegance().add(buildEleganceMetrics(idSolution, execution, experiement, metrics, arch));
                 if (objectiveFuncs.contains("PLAExtensibility"))
-                    allMetrics.getPlaExtensibility()
-                            .add(buildPLAExtensibilityMetrics(idSolution, execution, experiement, metrics, arch));
+                    allMetrics.getPlaExtensibility().add(buildPLAExtensibilityMetrics(idSolution, execution, experiement, metrics, arch));
                 if (objectiveFuncs.contains("conventional"))
-                    allMetrics.getConventional()
-                            .add(buildConventionalMetrics(idSolution, execution, experiement, metrics, arch));
+                    allMetrics.getConventional().add(buildConventionalMetrics(idSolution, execution, experiement, metrics, arch));
                 if (objectiveFuncs.contains("featureDriven"))
-                    allMetrics.getFeatureDriven()
-                            .add(buildFeatureDrivenMetrics(idSolution, execution, experiement, metrics, arch));
+                    allMetrics.getFeatureDriven().add(buildFeatureDrivenMetrics(idSolution, execution, experiement, metrics, arch));
                 if (objectiveFuncs.contains("acomp"))
-                    allMetrics.getAcomp()
-                            .add(buildAcompMetrics(idSolution, execution, experiement, metrics, arch));
+                    allMetrics.getAcomp().add(buildAcompMetrics(idSolution, execution, experiement, metrics, arch));
                 if (objectiveFuncs.contains("aclass"))
-                    allMetrics.getAclass()
-                            .add(buildAclassMetrics(idSolution, execution, experiement, metrics, arch));
+                    allMetrics.getAclass().add(buildAclassMetrics(idSolution, execution, experiement, metrics, arch));
                 if (objectiveFuncs.contains("tam"))
-                    allMetrics.getTam()
-                            .add(buildTamMetrics(idSolution, execution, experiement, metrics, arch));
+                    allMetrics.getTam().add(buildTamMetrics(idSolution, execution, experiement, metrics, arch));
                 if (objectiveFuncs.contains("coe"))
-                    allMetrics.getCoe()
-                            .add(buildCoeMetrics(idSolution, execution, experiement, metrics, arch));
+                    allMetrics.getCoe().add(buildCoeMetrics(idSolution, execution, experiement, metrics, arch));
                 if (objectiveFuncs.contains("dc"))
-                    allMetrics.getDc()
-                            .add(buildDcMetrics(idSolution, execution, experiement, metrics, arch));
+                    allMetrics.getDc().add(buildDcMetrics(idSolution, execution, experiement, metrics, arch));
                 if (objectiveFuncs.contains("ec"))
-                    allMetrics.getEc()
-                            .add(buildEcMetrics(idSolution, execution, experiement, metrics, arch));
+                    allMetrics.getEc().add(buildEcMetrics(idSolution, execution, experiement, metrics, arch));
             }
         }
 

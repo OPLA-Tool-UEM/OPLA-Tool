@@ -5,20 +5,66 @@
  */
 package com.ufpr.br.opla.gui;
 
-import arquitetura.io.FileUtils;
-import br.ufpr.dinf.gres.loglog.Level;
-import br.ufpr.dinf.gres.loglog.LogLog;
-import br.ufpr.dinf.gres.loglog.Logger;
-import br.ufpr.inf.opla.patterns.strategies.scopeselection.impl.ElementsWithSameDesignPatternSelection;
+import java.awt.Component;
+import java.awt.HeadlessException;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.ResourceBundle;
+
+import javax.swing.GroupLayout;
+import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingWorker;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.text.DefaultCaret;
+import javax.swing.text.JTextComponent;
+
 import com.ufpr.br.opla.algorithms.NSGAII;
 import com.ufpr.br.opla.algorithms.PAES;
 import com.ufpr.br.opla.algorithms.Solution;
 import com.ufpr.br.opla.charts.ChartGenerate;
 import com.ufpr.br.opla.charts.EdBar;
 import com.ufpr.br.opla.charts.EdLine;
-import com.ufpr.br.opla.configuration.*;
+import com.ufpr.br.opla.configuration.ApplicationFile;
+import com.ufpr.br.opla.configuration.GuiFile;
+import com.ufpr.br.opla.configuration.ManagerApplicationConfig;
+import com.ufpr.br.opla.configuration.UserHome;
+import com.ufpr.br.opla.configuration.VolatileConfs;
 import com.ufpr.br.opla.logs.LogListener;
-import com.ufpr.br.opla.utils.*;
+import com.ufpr.br.opla.utils.GuiUtils;
+import com.ufpr.br.opla.utils.MutationOperatorsSelected;
+import com.ufpr.br.opla.utils.OsUtils;
+import com.ufpr.br.opla.utils.Time;
+import com.ufpr.br.opla.utils.Utils;
+import com.ufpr.br.opla.utils.Validators;
+
+import arquitetura.io.FileUtils;
+import br.ufpr.dinf.gres.loglog.Level;
+import br.ufpr.dinf.gres.loglog.LogLog;
+import br.ufpr.dinf.gres.loglog.Logger;
+import br.ufpr.inf.opla.patterns.strategies.scopeselection.impl.ElementsWithSameDesignPatternSelection;
 import jmetal4.experiments.FeatureMutationOperators;
 import jmetal4.experiments.Metrics;
 import metrics.Conventional;
@@ -27,24 +73,6 @@ import metrics.FeatureDriven;
 import metrics.PLAExtensibility;
 import net.miginfocom.swing.MigLayout;
 import results.Execution;
-
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.text.DefaultCaret;
-import javax.swing.text.JTextComponent;
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.sql.SQLException;
-import java.util.*;
-import java.util.List;
-import java.util.Map.Entry;
 
 /**
  * @author elf
@@ -399,6 +427,10 @@ public class StartUp extends javax.swing.JFrame {
             nsgaii.execute(comboAlgorithms, checkMutation, fieldMutationProb, fieldArchitectureInput, fieldNumberOfRuns,
                     fieldPopulationSize, fieldMaxEvaluations, checkCrossover, fieldCrossoverProbability,
                     executionDescription.getText());
+            JOptionPane.showMessageDialog(null, "Success execution NSGA-II, Finalizing....");
+            Logger.getLogger().putLog(
+                    String.format("Success execution NSGA-II, Finalizing...", Level.INFO, StartUp.class.getName()));
+            System.exit(1);
 
 
         } catch (Exception e) {

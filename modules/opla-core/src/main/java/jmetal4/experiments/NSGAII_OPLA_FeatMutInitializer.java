@@ -16,7 +16,9 @@ public class NSGAII_OPLA_FeatMutInitializer implements AlgorithmBase {
 
             nsgaiiFeatMut.execute();
         } catch (Exception e) {
-            e.printStackTrace();
+        	e.printStackTrace();
+        	throw new RuntimeException(e.getMessage());
+            
         }
     }
 

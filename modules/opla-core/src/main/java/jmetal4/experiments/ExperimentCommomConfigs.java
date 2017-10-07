@@ -1,13 +1,14 @@
 package jmetal4.experiments;
 
-import br.ufpr.dinf.gres.loglog.LogLog;
-import br.ufpr.inf.opla.patterns.strategies.scopeselection.impl.ElementsWithSameDesignPatternSelection;
-import org.apache.commons.lang.WordUtils;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import org.apache.commons.lang.WordUtils;
+
+import br.ufpr.dinf.gres.loglog.LogLog;
+import br.ufpr.inf.opla.patterns.strategies.scopeselection.impl.ElementsWithSameDesignPatternSelection;
 
 public abstract class ExperimentCommomConfigs {
 
@@ -26,7 +27,7 @@ public abstract class ExperimentCommomConfigs {
 
     private List<String> mutationOperators = new ArrayList<String>();
     private ElementsWithSameDesignPatternSelection applyStrategy;
-
+    
     public void activeLogs() {
         log = true;
     }
@@ -198,5 +199,9 @@ public abstract class ExperimentCommomConfigs {
         this.description = description;
     }
 
+    
+    public List<String> getObjectiveFuncions() {
+		return oplaConfigs.getSelectedObjectiveFunctions();
+	}
 
 }

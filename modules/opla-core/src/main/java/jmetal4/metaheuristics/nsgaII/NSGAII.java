@@ -21,6 +21,8 @@
 
 package jmetal4.metaheuristics.nsgaII;
 
+import org.apache.log4j.Logger;
+
 import jmetal4.core.*;
 import jmetal4.qualityIndicator.QualityIndicator;
 import jmetal4.util.Distance;
@@ -34,6 +36,7 @@ import jmetal4.util.comparators.CrowdingComparator;
 public class NSGAII extends Algorithm {
 
     private static final long serialVersionUID = 5815971727148859507L;
+    private static final Logger LOGGER = Logger.getLogger(NSGAII.class);
 
     /**
      * Constructor
@@ -50,9 +53,11 @@ public class NSGAII extends Algorithm {
      *
      * @return a <code>SolutionSet</code> that is a set of non dominated
      * solutions as a result of the algorithm execution
-     * @throws JMException
+     * @throws JMException 
+     * @throws Exception 
      */
-    public SolutionSet execute() throws JMException, ClassNotFoundException {
+    public SolutionSet execute() throws JMException {
+    	LOGGER.info("Inficiando Execução");
         int populationSize;
         int maxEvaluations;
         int evaluations;
@@ -88,6 +93,7 @@ public class NSGAII extends Algorithm {
         selectionOperator = operators_.get("selection");
 
         try {
+        	LOGGER.info("Criando População");
             // Create the initial solutionSet
             Solution newSolution;
             for (int i = 0; i < populationSize; i++) {
@@ -101,10 +107,12 @@ public class NSGAII extends Algorithm {
                 population.add(newSolution);
             }
         } catch (Exception e) {
-            System.err.println(e);
+        	LOGGER.error(e);
+        	throw new JMException(e.getMessage());
         }
 
         try {
+        	LOGGER.info("Iniciando evoluções");
             // Generations
             while (evaluations < maxEvaluations) {
                 // Create the offSpring solutionSet
@@ -114,15 +122,18 @@ public class NSGAII extends Algorithm {
                 for (int i = 0; i < (populationSize / 2); i++) {
                     if (evaluations < maxEvaluations) {
                         // obtain parents
+                    	LOGGER.info("Executando operadores de seleção");
                         parents[0] = (Solution) selectionOperator.execute(population);
                         parents[1] = (Solution) selectionOperator.execute(population);
 
+                        LOGGER.info("Executando crossover");
                         Solution[] offSpring = (Solution[]) crossoverOperator.execute(parents);
                         problem_.evaluateConstraints(offSpring[0]);
                         problem_.evaluateConstraints(offSpring[1]);
 
                         mutationOperator.execute(offSpring[0]);
                         mutationOperator.execute(offSpring[1]);
+                        
                         problem_.evaluateConstraints(offSpring[0]);
                         problem_.evaluateConstraints(offSpring[1]);
 
@@ -193,7 +204,8 @@ public class NSGAII extends Algorithm {
                 }
             }
         } catch (Exception e) {
-
+        	e.printStackTrace();
+        	throw new JMException(e.getMessage());
         }
 
         // Return as output parameter the required evaluations

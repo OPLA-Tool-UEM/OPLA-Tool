@@ -6,7 +6,7 @@
 
 	<artifactId>opla-core</artifactId>
 	<packaging>jar</packaging>
-	
+
 	<name>..:: OPLA - Core ::..</name>
 
 	<parent>
@@ -38,6 +38,11 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-io</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<build>

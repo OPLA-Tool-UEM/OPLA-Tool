@@ -15,6 +15,7 @@ import jmetal4.operators.mutation.MutationFactory;
 import jmetal4.operators.selection.Selection;
 import jmetal4.operators.selection.SelectionFactory;
 import jmetal4.problems.OPLA;
+import jmetal4.util.JMException;
 import metrics.AllMetrics;
 import persistence.*;
 import results.Execution;
@@ -28,7 +29,11 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 public class NSGAII_OPLA_FeatMut {
+	
+	private static final Logger LOGGER = Logger.getLogger(NSGAII_OPLA_FeatMut.class);
 
     public static int populationSize;
     public static int maxEvaluations;
@@ -76,6 +81,7 @@ public class NSGAII_OPLA_FeatMut {
         String xmiFilePath;
 
         for (String pla : plas) {
+        	LOGGER.info("Criando uma PLA: " + pla);
             xmiFilePath = pla;
             OPLA problem = null;
             String plaName = getPlaName(pla);
@@ -83,13 +89,16 @@ public class NSGAII_OPLA_FeatMut {
             try {
                 problem = new OPLA(xmiFilePath, this.configs);
             } catch (Exception e) {
+            	LOGGER.error(e);
                 this.configs.getLogger()
                         .putLog(String.format("Error when try read architecture %s. %s", xmiFilePath, e.getMessage()));
+                throw new JMException("Ocorreu um erro durante geração de PLAs");
             }
 
             Experiment experiement = mp.createExperimentOnDb(plaName, "NSGAII", configs.getDescription());
             ExperimentConfs conf = new ExperimentConfs(experiement.getId(), "NSGAII", configs);
             conf.save();
+            LOGGER.info("Salvou configurações do experimento");
 
             Algorithm algorithm;
             SolutionSet todasRuns = new SolutionSet();
@@ -109,7 +118,9 @@ public class NSGAII_OPLA_FeatMut {
             // Mutation and Crossover
             parameters = new HashMap<String, Object>();
             parameters.put("probability", crossoverProbability);
-            crossover = CrossoverFactory.getCrossoverOperator("PLACrossover", parameters);
+            parameters.put("numberOfObjectives", numberObjectives);
+//            crossover = CrossoverFactory.getCrossoverOperator("PLACrossover", parameters, this.configs);
+            crossover = CrossoverFactory.getCrossoverOperator("PLAComplementaryCrossover", parameters, this.configs);
 
             parameters = new HashMap<String, Object>();
             parameters.put("probability", mutationProbability);
@@ -129,15 +140,16 @@ public class NSGAII_OPLA_FeatMut {
 
             List<String> selectedObjectiveFunctions = this.configs.getOplaConfigs().getSelectedObjectiveFunctions();
             mp.saveObjectivesNames(selectedObjectiveFunctions, experiement.getId());
-
+            LOGGER.info("Salvou funcções objetivo selecionadas");
+            
             result.setPlaName(plaName);
 
             long time[] = new long[runsNumber];
 
             for (int runs = 0; runs < runsNumber; runs++) {
+            	LOGGER.info("Criando execução");
 
-                // Cria uma execução. Cada execução está ligada a um
-                // experiemento.
+                // Cria uma execução. Cada execução está ligada a um  experiemento.
                 Execution execution = new Execution(experiement);
                 setDirToSaveOutput(experiement.getId(), execution.getId());
 
@@ -152,12 +164,9 @@ public class NSGAII_OPLA_FeatMut {
 
                 execution.setTime(estimatedTime);
 
-                List<FunResults> funResults = result.getObjectives(resultFront.getSolutionSet(), execution,
-                        experiement);
-                List<InfoResult> infoResults = result.getInformations(resultFront.getSolutionSet(), execution,
-                        experiement);
-                AllMetrics allMetrics = result.getMetrics(funResults, resultFront.getSolutionSet(), execution,
-                        experiement, selectedObjectiveFunctions);
+                List<FunResults> funResults = result.getObjectives(resultFront.getSolutionSet(), execution, experiement);
+                List<InfoResult> infoResults = result.getInformations(resultFront.getSolutionSet(), execution, experiement);
+                AllMetrics allMetrics = result.getMetrics(funResults, resultFront.getSolutionSet(), execution, experiement, selectedObjectiveFunctions);
 
                 resultFront.saveVariablesToFile("VAR_" + runs + "_", funResults, this.configs.getLogger(), true);
 
@@ -233,6 +242,7 @@ public class NSGAII_OPLA_FeatMut {
     }
 
     private void intializeDependencies() throws Exception {
+    	LOGGER.info("Inicializando dependências");
         result = new Result();
         Database.setPathToDB(this.configs.getPathToDb());
 

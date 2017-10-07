@@ -685,4 +685,14 @@ public class Architecture extends Variable {
         this.appliedPatterns = b;
     }
 
+	public void addAllClasses(Set<Class> classes) {
+		this.classes.clear();
+		this.classes.addAll(classes);
+	}
+
+	public void addAllInterfaces(Set<Interface> interfaces) {
+		this.interfaces.clear();
+		this.interfaces.addAll(interfaces);
+	}
+
 }
