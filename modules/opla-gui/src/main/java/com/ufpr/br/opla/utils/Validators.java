@@ -19,8 +19,7 @@ public class Validators {
 
     public static boolean validateEntries(String archsInput) {
         if (archsInput.isEmpty()) {
-            JOptionPane.showMessageDialog(null,
-                    "You need enter at least one architecture");
+            JOptionPane.showMessageDialog(null, "You need enter at least one architecture");
             return true;
         }
         String archs[] = archsInput.trim().split(",");

@@ -57,7 +57,7 @@ public class NSGAII extends Algorithm {
      * @throws Exception 
      */
     public SolutionSet execute() throws JMException {
-    	LOGGER.info("Inficiando Execução");
+    	LOGGER.info("Iniciando Execução");
         int populationSize;
         int maxEvaluations;
         int evaluations;
@@ -131,12 +131,15 @@ public class NSGAII extends Algorithm {
                         problem_.evaluateConstraints(offSpring[0]);
                         problem_.evaluateConstraints(offSpring[1]);
 
+                        LOGGER.info("Executando operadores de mutação");
                         mutationOperator.execute(offSpring[0]);
                         mutationOperator.execute(offSpring[1]);
                         
+                        LOGGER.info("Executando avaliação de restrições");
                         problem_.evaluateConstraints(offSpring[0]);
                         problem_.evaluateConstraints(offSpring[1]);
 
+                        LOGGER.info("Executando avaliação");
                         problem_.evaluate(offSpring[0]);
                         problem_.evaluate(offSpring[1]);
 
@@ -147,9 +150,11 @@ public class NSGAII extends Algorithm {
                 }
 
                 // Create the solutionSet union of solutionSet and offSpring
+                LOGGER.info("Union solutions");
                 union = ((SolutionSet) population).union(offspringPopulation);
 
                 // Ranking the union
+                LOGGER.info("Ranking the union");
                 Ranking ranking = new Ranking(union);
 
                 int remain = populationSize;
@@ -158,10 +163,12 @@ public class NSGAII extends Algorithm {
                 population.clear();
 
                 // Obtain the next front
+                LOGGER.info("getSubfront()");
                 front = ranking.getSubfront(index);
 
                 while ((remain > 0) && (remain >= front.size())) {
                     // Assign crowding distance to individuals
+                	 LOGGER.info("crowdingDistanceAssignment()");
                     distance.crowdingDistanceAssignment(front, problem_.getNumberOfObjectives());
                     // Add the individuals of this front
                     for (int k = 0; k < front.size(); k++) {
@@ -174,6 +181,7 @@ public class NSGAII extends Algorithm {
                     // Obtain the next front
                     index++;
                     if (remain > 0) {
+                    	LOGGER.info("getSubfront()");
                         front = ranking.getSubfront(index);
                     }
                 }
@@ -181,6 +189,7 @@ public class NSGAII extends Algorithm {
                 // Remain is less than front(index).size, insert only the best
                 // one
                 if (remain > 0) { // front contains individuals to insert
+                	LOGGER.info("crowdingDistanceAssignment()");
                     distance.crowdingDistanceAssignment(front, problem_.getNumberOfObjectives());
                     front.sort(new CrowdingComparator());
                     for (int k = 0; k < remain; k++) {
@@ -193,7 +202,7 @@ public class NSGAII extends Algorithm {
                 // the code
                 // of NSGA-II. In particular, it finds the number of evaluations
                 // required
-                // by the algorithm to obtain a Pareto front with a hypervolume
+                // by the algorithm to obtain a Pareto front with a hypervolNSGAume
                 // higher
                 // than the hypervolume of the true Pareto front.
                 if ((indicators != null) && (requiredEvaluations == 0)) {
@@ -204,14 +213,16 @@ public class NSGAII extends Algorithm {
                 }
             }
         } catch (Exception e) {
-        	e.printStackTrace();
+        	LOGGER.error(e);
         	throw new JMException(e.getMessage());
         }
 
         // Return as output parameter the required evaluations
+        LOGGER.info("setOutputParameter()");
         setOutputParameter("evaluations", requiredEvaluations);
 
         // Return the first non-dominated front
+        LOGGER.info("Ranking()");
         Ranking ranking = new Ranking(population);
         return ranking.getSubfront(0);
         // return population;

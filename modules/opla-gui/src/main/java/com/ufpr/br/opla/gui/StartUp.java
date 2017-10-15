@@ -10,6 +10,7 @@ import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -288,8 +289,7 @@ public class StartUp extends javax.swing.JFrame {
         guiservices.configureSmartyProfile(fieldSmartyProfile, checkSmarty, btnSmartyProfile);
         guiservices.configureConcernsProfile(fieldConcernProfile, checkConcerns, btnConcernProfile);
         guiservices.configurePatternsProfile(fieldPatternsProfile, checkPatterns, btnPatternProfile);
-        guiservices.configureRelationshipsProfile(fieldRelationshipsProfile, checkRelationships,
-                btnRelationshipProfile);
+        guiservices.configureRelationshipsProfile(fieldRelationshipsProfile, checkRelationships, btnRelationshipProfile);
         guiservices.configureTemplates(fieldTemplate);
         guiservices.configureLocaleToSaveModels(fieldManipulationDir);
         guiservices.configureLocaleToExportModels(fieldOutput);
@@ -436,7 +436,7 @@ public class StartUp extends javax.swing.JFrame {
         } catch (Exception e) {
             //jcn
             //System.out.println("erro na main - chamada nsgaii");
-            e.printStackTrace();
+            LOGGER.error(e);
             JOptionPane.showMessageDialog(null, "Error when try execute NSGA-II, Finalizing...." + e.getMessage());
             Logger.getLogger().putLog(
                     String.format("Error when try execute NSGA-II, Finalizing...", Level.FATAL, StartUp.class.getName()));
@@ -2519,8 +2519,7 @@ public class StartUp extends javax.swing.JFrame {
             // Pede confirmacao para o usuario para de fato executar o
             // experimento.
             int dialogButton = JOptionPane.YES_NO_OPTION;
-            int dialogResult = JOptionPane.showConfirmDialog(this,
-                    "This will take a time." + " Meanwhile the UI will be blocked", "You have sure?", dialogButton);
+            int dialogResult = JOptionPane.showConfirmDialog(this, "This will take a time." + " Meanwhile the UI will be blocked", "You have sure?", dialogButton);
             // Caso usuário aceite, verifica qual algoritmo executar
             // E invoca a classe responsável.
             if (dialogResult == 0) {
@@ -2542,8 +2541,7 @@ public class StartUp extends javax.swing.JFrame {
                         protected void done() {
                             jLabel12.setText("Done");
                             progressBar.setIndeterminate(false);
-                            Logger.getLogger()
-                                    .putLog(String.format("Done NSGAII Execution at: %s", Time.timeNow().toString()));
+                            Logger.getLogger().putLog(String.format("Done NSGAII Execution at: %s", Time.timeNow().toString()));
                             db.Database.reloadContent();
                         }
                     };
@@ -3129,7 +3127,7 @@ public class StartUp extends javax.swing.JFrame {
                                 + ext + " file");
                 return "";
             } else {
-                final String path = c.getCurrentDirectory() + "/" + c.getSelectedFile().getName();
+                final String path = c.getCurrentDirectory() + File.separator + c.getSelectedFile().getName();
                 fieldToSet.setText(path);
                 fieldToSet.updateUI();
                 return path;

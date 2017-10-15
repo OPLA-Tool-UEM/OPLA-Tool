@@ -1,5 +1,17 @@
 package arquitetura.representation;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.log4j.Logger;
+
+import com.rits.cloning.Cloner;
+
 import arquitetura.exceptions.ClassNotFound;
 import arquitetura.flyweights.VariabilityFlyweight;
 import arquitetura.flyweights.VariantFlyweight;
@@ -9,20 +21,16 @@ import arquitetura.main.GenerateArchitecture;
 import arquitetura.representation.relationship.DependencyRelationship;
 import arquitetura.representation.relationship.RealizationRelationship;
 import arquitetura.representation.relationship.Relationship;
-import com.rits.cloning.Cloner;
 import jmetal4.core.Variable;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
-import java.util.*;
 
 /**
  * @author edipofederle<edipofederle@gmail.com>
  */
 public class Architecture extends Variable {
+	
+	private static Logger LOGGER = Logger.getLogger(Architecture.class);
     private static final long serialVersionUID = -7764906574709840088L;
     public static String ARCHITECTURE_TYPE = "arquitetura.representation.Architecture";
-    static Logger LOGGER = LogManager.getLogger(Architecture.class.getName());
     private Cloner cloner;
     private Set<Package> packages = new HashSet<Package>();
     private Set<Class> classes = new HashSet<Class>();
@@ -454,6 +462,7 @@ public class Architecture extends Variable {
     }
 
     public boolean removeRelationship(Relationship as) {
+    	LOGGER.info("removeRelationship()");
         if (as == null) return false;
         if (relationshipHolder.removeRelationship(as)) {
             LOGGER.info("Relacionamento : " + as.getType() + " removido da arquitetura");

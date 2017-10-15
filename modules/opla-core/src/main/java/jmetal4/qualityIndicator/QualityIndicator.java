@@ -21,6 +21,8 @@
 
 package jmetal4.qualityIndicator;
 
+import org.apache.log4j.Logger;
+
 import jmetal4.core.Problem;
 import jmetal4.core.SolutionSet;
 
@@ -28,6 +30,9 @@ import jmetal4.core.SolutionSet;
  * QualityIndicator class
  */
 public class QualityIndicator {
+	
+	private static final Logger LOGGER = Logger.getLogger(QualityIndicator.class);
+	
     SolutionSet trueParetoFront_;
     double trueParetoFrontHypervolume_;
     Problem problem_;
@@ -55,6 +60,7 @@ public class QualityIndicator {
      * @return The value of the hypervolume indicator
      */
     public double getHypervolume(SolutionSet solutionSet) {
+    	LOGGER.info("getHypervolume()");
         return new Hypervolume().hypervolume(solutionSet.writeObjectivesToMatrix(),
                 trueParetoFront_.writeObjectivesToMatrix(),
                 problem_.getNumberOfObjectives());

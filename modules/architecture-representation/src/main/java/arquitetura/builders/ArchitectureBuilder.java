@@ -18,6 +18,8 @@ import arquitetura.representation.Interface;
 import arquitetura.representation.relationship.AssociationClassRelationship;
 import arquitetura.representation.relationship.Relationship;
 import com.rits.cloning.Cloner;
+
+import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.uml2.uml.*;
 import org.eclipse.uml2.uml.Package;
@@ -32,6 +34,8 @@ import java.util.List;
  * @author edipofederle<edipofederle@gmail.com>
  */
 public class ArchitectureBuilder {
+	
+	private static final Logger LOGGER = Logger.getLogger(ArchitectureBuilder.class);
 
     private Package model;
     private PackageBuilder packageBuilder;
@@ -53,11 +57,14 @@ public class ArchitectureBuilder {
      */
     public ArchitectureBuilder() {
         // RelationshipHolder.clearLists();
+    	LOGGER.info("Clean Relationships");
         ConcernHolder.INSTANCE.clear();
 
         // Load configure file. Call this method only once
+        LOGGER.info("Load Configs");
         ReaderConfig.load();
 
+        LOGGER.info("Model Helper");
         modelHelper = ModelHelperFactory.getModelHelper();
     }
 
@@ -92,45 +99,55 @@ public class ArchitectureBuilder {
      */
     public Architecture create(String xmiFilePath) throws Exception {
         try {
+        	LOGGER.info("Criando Architecture");
             model = modelHelper.getModel(xmiFilePath);
             VariationPointFlyweight.getInstance().addModel(model);
             VariabilityFlyweight.getInstance().addModel(model);
 
             Architecture architecture = new Architecture(modelHelper.getName(xmiFilePath));
 
+            LOGGER.info("Inicializando");
             initialize(architecture);
 
             if (ReaderConfig.hasConcernsProfile()) {
+            	LOGGER.info("Config Concerns");
                 Package concerns = modelHelper.loadConcernProfile();
                 EList<Stereotype> concernsAllowed = concerns.getOwnedStereotypes();
                 for (Stereotype stereotype : concernsAllowed)
                     ConcernHolder.INSTANCE.allowedConcerns().add(new Concern(stereotype.getName()));
             }
 
+            LOGGER.info("Loading Packages");
             for (arquitetura.representation.Package p : loadPackages())
                 architecture.addPackage(p); // Classes que possuem pacotes são
             // carregadas juntamente com seus
             // pacotes
 
+            LOGGER.info("Classes");
             for (Class klass : loadClasses())
                 architecture.addExternalClass(klass); // Classes que nao possuem
             // pacotes
+            LOGGER.info("Load Interfaces");
             for (Interface inter : loadInterfaces())
                 architecture.addExternalInterface(inter);
+            LOGGER.info("get Variabilities");
             architecture.getAllVariabilities().addAll(loadVariability());
+            LOGGER.info("Load Inter Clases Relationship");
             for (Relationship r : loadInterClassRelationships())
                 architecture.addRelationship(r);
+            LOGGER.info("Load Associations");
             for (Relationship as : loadAssociationClassAssociation())
                 architecture.addRelationship(as);
 
             Cloner cloner = new Cloner();
             architecture.setCloner(cloner);
+            LOGGER.info("Set name");
             ArchitectureHolder.setName(architecture.getName());
             return architecture;
 
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            LOGGER.error(e);
+            throw new RuntimeException();
         }
     }
 

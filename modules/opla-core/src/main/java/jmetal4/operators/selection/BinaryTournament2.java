@@ -21,19 +21,23 @@
 
 package jmetal4.operators.selection;
 
+import java.util.Comparator;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+
 import jmetal4.core.Solution;
 import jmetal4.core.SolutionSet;
 import jmetal4.util.PseudoRandom;
 import jmetal4.util.comparators.DominanceComparator;
-
-import java.util.Comparator;
-import java.util.HashMap;
 
 /**
  * This class implements an operator for binary selections using the same code
  * in Deb's NSGA-II implementation
  */
 public class BinaryTournament2 extends Selection {
+	
+	private static final Logger LOGGER = Logger.getLogger(BinaryTournament2.class);
 
     /**
      * dominance_ store the <code>Comparator</code> for check dominance_
@@ -55,7 +59,7 @@ public class BinaryTournament2 extends Selection {
      * Creates a new instance of the Binary tournament operator (Deb's
      * NSGA-II implementation version)
      */
-    public BinaryTournament2(HashMap<String, Object> parameters) {
+    public BinaryTournament2(Map<String, Object> parameters) {
         super(parameters);
         dominance_ = new DominanceComparator();
     } // BinaryTournament2
@@ -80,8 +84,9 @@ public class BinaryTournament2 extends Selection {
         solution2 = population.get(a_[index_ + 1]);
 
         index_ = (index_ + 2) % population.size();
-        System.out.println("Index: " + index_);
+        LOGGER.info("Index: " + index_);
         int flag = dominance_.compare(solution1, solution2);
+        LOGGER.info("Flag: " + flag);
         if (flag == -1)
             return solution1;
         else if (flag == 1)

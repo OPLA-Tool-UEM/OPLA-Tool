@@ -1,5 +1,7 @@
 package arquitetura.helpers;
 
+import org.apache.log4j.Logger;
+
 import arquitetura.exceptions.ModelIncompleteException;
 import arquitetura.exceptions.ModelNotFoundException;
 
@@ -7,6 +9,7 @@ import arquitetura.exceptions.ModelNotFoundException;
  * @author edipofederle<edipofederle@gmail.com>
  */
 public class ModelHelperFactory {
+	private static final Logger LOGGER = Logger.getLogger(ModelHelperFactory.class);
 
     private static ModelHelper instance;
 
@@ -15,9 +18,11 @@ public class ModelHelperFactory {
             try {
                 instance = new ModelHelper();
             } catch (ModelNotFoundException e) {
-                e.printStackTrace();
+            	LOGGER.error(e);
+            	throw new RuntimeException();
             } catch (ModelIncompleteException e) {
-                e.printStackTrace();
+            	LOGGER.error(e);
+            	throw new RuntimeException();
             }
 
         return instance;

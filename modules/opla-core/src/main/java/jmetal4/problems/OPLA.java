@@ -26,9 +26,12 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 //criado por Thelma em agosto/2012
 public class OPLA extends Problem {
 
+	private static final Logger LOGGER = Logger.getLogger(OPLA.class);
     private static final long serialVersionUID = 884633138619836573L;
 
     // variaveis para controlar os contadores de componentes e interfaces
@@ -42,22 +45,30 @@ public class OPLA extends Problem {
     private ExperimentCommomConfigs configs;
 
     public OPLA(String xmiFilePath, ExperimentCommomConfigs oplaConfig) throws Exception {
+    	LOGGER.info("Setando configurações");
         this.configs = oplaConfig;
         numberOfVariables_ = 1;
+        LOGGER.info("Recuperando Numero de funcoes objetivo");
         numberOfObjectives_ = oplaConfig.getOplaConfigs().getNumberOfObjectives();
         numberOfConstraints_ = 0;
         problemName_ = "OPLA";
+        LOGGER.info("Criando Architecture Solution Type");
         solutionType_ = new ArchitectureSolutionType(this);
         variableType_ = new java.lang.Class[numberOfVariables_];
         length_ = new int[numberOfVariables_];
+        LOGGER.info("Criando ARCHITECTURE_TYPE");
         variableType_[0] = java.lang.Class.forName(Architecture.ARCHITECTURE_TYPE);
-        architecture_ = new ArchitectureBuilder().create(xmiFilePath);
-
+        LOGGER.info("Instanciando Builder");
+        ArchitectureBuilder architectureBuilder = new ArchitectureBuilder();
+        LOGGER.info("Construindo arquitetura by XML: " + xmiFilePath);
+        architecture_ = architectureBuilder.create(xmiFilePath);
+        LOGGER.info("Recuperando Metricas");
         selectedMetrics = oplaConfig.getOplaConfigs().getSelectedObjectiveFunctions();
     }
 
     @Override
     public void evaluate(Solution solution) {
+    	LOGGER.info("evaluate()");
         List<jmetal4.experiments.Fitness> fitnesses = new ArrayList<jmetal4.experiments.Fitness>();
 
         for (int i = 0; i < this.selectedMetrics.size(); i++) {
@@ -65,45 +76,35 @@ public class OPLA extends Problem {
 
             switch (metric) {
                 case "elegance":
-                    fitnesses.add(new jmetal4.experiments.Fitness(evaluateElegance((Architecture) solution
-                            .getDecisionVariables()[0])));
+                    fitnesses.add(new jmetal4.experiments.Fitness(evaluateElegance((Architecture) solution.getDecisionVariables()[0])));
                     break;
                 case "conventional":
-                    fitnesses.add(new jmetal4.experiments.Fitness(evaluateMACFitness((Architecture) solution
-                            .getDecisionVariables()[0])));
+                    fitnesses.add(new jmetal4.experiments.Fitness(evaluateMACFitness((Architecture) solution.getDecisionVariables()[0])));
                     break;
                 case "featureDriven":
-                    fitnesses.add(new jmetal4.experiments.Fitness(evaluateMSIFitness((Architecture) solution
-                            .getDecisionVariables()[0])));
+                    fitnesses.add(new jmetal4.experiments.Fitness(evaluateMSIFitness((Architecture) solution.getDecisionVariables()[0])));
                     break;
                 case "PLAExtensibility":
-                    fitnesses.add(new jmetal4.experiments.Fitness(evaluatePLAExtensibility((Architecture) solution
-                            .getDecisionVariables()[0])));
+                    fitnesses.add(new jmetal4.experiments.Fitness(evaluatePLAExtensibility((Architecture) solution.getDecisionVariables()[0])));
                     break;
                 //implementado por marcelo
                 case "acomp":
-                    fitnesses.add(new jmetal4.experiments.Fitness(evaluateACOMP((Architecture) solution
-                            .getDecisionVariables()[0])));
+                    fitnesses.add(new jmetal4.experiments.Fitness(evaluateACOMP((Architecture) solution.getDecisionVariables()[0])));
                     break;
                 case "aclass":
-                    fitnesses.add(new jmetal4.experiments.Fitness(evaluateACLASS((Architecture) solution
-                            .getDecisionVariables()[0])));
+                    fitnesses.add(new jmetal4.experiments.Fitness(evaluateACLASS((Architecture) solution.getDecisionVariables()[0])));
                     break;
                 case "tam":
-                    fitnesses.add(new jmetal4.experiments.Fitness(evaluateTAM((Architecture) solution
-                            .getDecisionVariables()[0])));
+                    fitnesses.add(new jmetal4.experiments.Fitness(evaluateTAM((Architecture) solution.getDecisionVariables()[0])));
                     break;
                 case "coe":
-                    fitnesses.add(new jmetal4.experiments.Fitness(evaluateCOE((Architecture) solution
-                            .getDecisionVariables()[0])));
+                    fitnesses.add(new jmetal4.experiments.Fitness(evaluateCOE((Architecture) solution.getDecisionVariables()[0])));
                     break;
                 case "dc":
-                    fitnesses.add(new jmetal4.experiments.Fitness(evaluateDC((Architecture) solution
-                            .getDecisionVariables()[0])));
+                    fitnesses.add(new jmetal4.experiments.Fitness(evaluateDC((Architecture) solution.getDecisionVariables()[0])));
                     break;
                 case "ec":
-                    fitnesses.add(new jmetal4.experiments.Fitness(evaluateEC((Architecture) solution
-                            .getDecisionVariables()[0])));
+                    fitnesses.add(new jmetal4.experiments.Fitness(evaluateEC((Architecture) solution.getDecisionVariables()[0])));
                 default:
             }
         }
@@ -115,11 +116,13 @@ public class OPLA extends Problem {
     }
 
     private double evaluateDepIN(Architecture architecture) {
+    	LOGGER.info("evaluateDepIN()");
         ClassDependencyIn depIn = new ClassDependencyIn(architecture);
         return depIn.getResults();
     }
 
     private double evaluateElegance(Architecture architecture) {
+    	LOGGER.info("evaluateElegance()");
         double EleganceFitness = 0.0;
         ECElegance EC = new ECElegance(architecture);
         ATMRElegance ATMR = new ATMRElegance(architecture);
@@ -130,6 +133,7 @@ public class OPLA extends Problem {
     }
 
     private double evaluateMSIFitness(Architecture architecture) {
+    	LOGGER.info("evaluateMSIFitness()");
         double sumCIBC = 0.0;
         double sumIIBC = 0.0;
         double sumOOBC = 0.0;
@@ -192,6 +196,7 @@ public class OPLA extends Problem {
     }
 
     private double evaluateLCC(Architecture architecture) {
+    	LOGGER.info("evaluateLCC()");
         double sumLCC = 0.0;
         LCC result = new LCC(architecture);
 
@@ -204,6 +209,7 @@ public class OPLA extends Problem {
 
     // ----------------------------------------------------------------------------------
     private double evaluateMACFitness(Architecture architecture) {
+    	LOGGER.info("evaluateMACFitness()");
         double MACFitness = 0.0;
         double meanNumOps = 0.0;
         double meanDepComps = 0.0;
@@ -258,6 +264,7 @@ public class OPLA extends Problem {
 
     // ---------------------------------------------------------------------------------
     private double evaluateCohesionFitness(Architecture architecture) {
+    	LOGGER.info("evaluateCohesionFitness()");
         double sumCohesion = 0.0;
         double Cohesion = 0.0;
 
@@ -269,6 +276,7 @@ public class OPLA extends Problem {
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     public SolutionSet removeDominadas(SolutionSet result) {
+    	LOGGER.info("removeDominadas()");
         boolean dominador, dominado;
         double valor1 = 0;
         double valor2 = 0;
@@ -328,6 +336,7 @@ public class OPLA extends Problem {
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     public SolutionSet removeRepetidas(SolutionSet result) {
+    	LOGGER.info("removeRepetidas()");
         String solucao;
 
         for (int i = 0; i < result.size() - 1; i++) {
@@ -346,6 +355,7 @@ public class OPLA extends Problem {
     // m��todo para verificar se algum dos relacionamentos recebidos ���
     // generaliza������o
     private boolean searchForGeneralizations(Class cls) { // ok
+    	LOGGER.info("searchForGeneralizations()");
         Collection<Relationship> Relationships = cls.getRelationships();
         for (Relationship relationship : Relationships) {
             if (relationship instanceof GeneralizationRelationship) {
@@ -358,6 +368,7 @@ public class OPLA extends Problem {
     }
 
     private double evaluateMSIFitnessDesignOutset(Architecture architecture) {
+    	LOGGER.info("evaluateMSIFitnessDesignOutset()");
         double sumCIBC = 0.0;
         double sumIIBC = 0.0;
         double sumOOBC = 0.0;
@@ -420,6 +431,7 @@ public class OPLA extends Problem {
     }
 
     private double evaluateLCCClass(Architecture architecture) {
+    	LOGGER.info("evaluateLCCClass()");
         double sumLCCClass = 0.0;
         LCCClass result = new LCCClass(architecture);
 
@@ -431,6 +443,7 @@ public class OPLA extends Problem {
     }
 
     private float evaluatePLAExtensibility(Architecture architecture) {
+    	LOGGER.info("evaluatePLAExtensibility()");
         float ExtensibilityFitness = 0;
         float Extensibility;
         ExtensPLA PLAExtens = new ExtensPLA(architecture);
@@ -443,7 +456,7 @@ public class OPLA extends Problem {
     }
 
     private void removeComponentRelationships(Package comp, Architecture architecture) {
-        //
+    	LOGGER.info("removeComponentRelationships()");
         Relationship[] allInterElementRelationships = architecture.getRelationshipHolder().getAllRelationships()
                 .toArray(new Relationship[0]);
         for (Relationship relationship : allInterElementRelationships) {
@@ -463,6 +476,7 @@ public class OPLA extends Problem {
     }
 
     private void removeClassRelationships(Class cls, Architecture architecture) {
+    	LOGGER.info("removeClassRelationships()");
         List<Relationship> relationshipsCls = new ArrayList<Relationship>(cls.getRelationships());
         if (!relationshipsCls.isEmpty()) {
             Iterator<Relationship> iteratorRelationships = relationshipsCls.iterator();
@@ -498,8 +512,8 @@ public class OPLA extends Problem {
     }
 
     public void evaluateConstraints(Solution solution) throws JMException {
-        List<Package> allComponents = new ArrayList<Package>(
-                ((Architecture) solution.getDecisionVariables()[0]).getAllPackages());
+    	LOGGER.info("evaluateConstraints()");
+        List<Package> allComponents = new ArrayList<Package>(((Architecture) solution.getDecisionVariables()[0]).getAllPackages());
         for (Package comp : allComponents) {
             List<Class> allClasses = new ArrayList<Class>(comp.getAllClasses());
             if (!(allClasses.isEmpty())) {
@@ -526,8 +540,6 @@ public class OPLA extends Problem {
                         ultimaInterface = true;
                     if (itf.getOperations().isEmpty() && !ultimaInterface) {
                         ((Architecture) solution.getDecisionVariables()[0]).removeInterface(itf);
-                        // this.removeInterfaceRelationships(itf, (Architecture)
-                        // solution.getDecisionVariables()[0]);
                     }
                     if (itf.getOperations().isEmpty() && ultimaInterface && comp.getAllClasses().size() < 1) {
                         ((Architecture) solution.getDecisionVariables()[0]).removeInterface(itf);
@@ -536,8 +548,7 @@ public class OPLA extends Problem {
             }
             allItfsComp.clear();
 
-            Iterator<Interface> iteratorInterfaces = ((Architecture) solution.getDecisionVariables()[0])
-                    .getAllInterfaces().iterator();
+            Iterator<Interface> iteratorInterfaces = ((Architecture) solution.getDecisionVariables()[0]).getAllInterfaces().iterator();
             while (iteratorInterfaces.hasNext()) {
                 Interface itf = iteratorInterfaces.next();
                 boolean ultimaInterface = false;
@@ -545,16 +556,13 @@ public class OPLA extends Problem {
                     ultimaInterface = true;
                 if (itf.getOperations().isEmpty() && !ultimaInterface) {
                     ((Architecture) solution.getDecisionVariables()[0]).removeInterface(itf);
-                    // this.removeInterfaceRelationships(itf, (Architecture)
-                    // solution.getDecisionVariables()[0]);
                 }
                 if (itf.getOperations().isEmpty() && ultimaInterface && comp.getAllClasses().size() < 1) {
                     ((Architecture) solution.getDecisionVariables()[0]).removeInterface(itf);
                 }
             }
 
-            if (comp.getAllClasses().isEmpty() && comp.getImplementedInterfaces().isEmpty()
-                    && comp.getAllInterfaces().isEmpty()) {
+            if (comp.getAllClasses().isEmpty() && comp.getImplementedInterfaces().isEmpty() && comp.getAllInterfaces().isEmpty()) {
                 this.removeComponentRelationships(comp, (Architecture) solution.getDecisionVariables()[0]);
                 ((Architecture) solution.getDecisionVariables()[0]).removePackage(comp);
             }
@@ -565,6 +573,7 @@ public class OPLA extends Problem {
 
     //implementado por marcelo
     public double evaluateACOMP(Architecture architecture) {
+    	LOGGER.info("evaluateACOMP()");
         double acompFitness = 0.0;
         DependencyIn depIN = new DependencyIn(architecture);
         DependencyOut depOUT = new DependencyOut(architecture);
@@ -573,6 +582,7 @@ public class OPLA extends Problem {
     }
 
     public double evaluateACLASS(Architecture architecture) {
+    	LOGGER.info("evaluateACLASS()");
         double aclassFitness = 0.0;
         ClassDependencyIn CDepIN = new ClassDependencyIn(architecture);
         ClassDependencyOut CDepOUT = new ClassDependencyOut(architecture);
@@ -581,6 +591,7 @@ public class OPLA extends Problem {
     }
 
     public double evaluateTAM(Architecture architecture) {
+    	LOGGER.info("evaluateTAM()");
         double tamFitness = 0.0;
         MeanNumOpsByInterface NumOps = new MeanNumOpsByInterface(architecture);
 
@@ -589,6 +600,7 @@ public class OPLA extends Problem {
     }
 
     public double evaluateCOE(Architecture architecture) {
+    	LOGGER.info("evaluateCOE()");
         double coeFitness = 0.0;
         double sumLCC = 0.0;
 
@@ -605,6 +617,7 @@ public class OPLA extends Problem {
     }
 
     public double evaluateDC(Architecture architecture) {
+    	LOGGER.info("evaluateDC()");
         double dcFitness = 0.0;
         double sumCDAC = 0.0;
         double sumCDAI = 0.0;
@@ -630,6 +643,7 @@ public class OPLA extends Problem {
     }
 
     public double evaluateEC(Architecture architecture) {
+    	LOGGER.info("evaluateEC()");
         double ecFitness = 0.0;
         double sumCIBC = 0.0;
         double sumIIBC = 0.0;

@@ -21,13 +21,13 @@
 
 package jmetal4.operators.mutation;
 
+import java.util.Map;
+
 import br.ufpr.inf.opla.patterns.operator.impl.DesignPatternMutationOperator;
 import br.ufpr.inf.opla.patterns.strategies.designpatternselection.impl.CustomDesignPatternSelection;
 import jmetal4.experiments.ExperimentCommomConfigs;
 import jmetal4.util.Configuration;
 import jmetal4.util.JMException;
-
-import java.util.HashMap;
 
 public class MutationFactory {
 
@@ -42,7 +42,7 @@ public class MutationFactory {
      * @throws JMException
      * @params configs
      */
-    public static Mutation getMutationOperator(String name, HashMap<String, Object> parameters, ExperimentCommomConfigs configs) throws JMException {
+    public static Mutation getMutationOperator(String name, Map<String, Object> parameters, ExperimentCommomConfigs configs) throws JMException {
         if (isOnlyDesignPattern(configs)) {
             return new DesignPatternMutationOperator(parameters, configs.getDesignPatternStrategy(), new CustomDesignPatternSelection(configs.getPatterns()));
         } else if (isDesignPatternAndPlaFeatureMutation(configs)) {

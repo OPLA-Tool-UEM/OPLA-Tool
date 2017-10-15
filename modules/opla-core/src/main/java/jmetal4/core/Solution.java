@@ -588,7 +588,6 @@ public class Solution implements Serializable {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-
         return bits;
     } // getNumberOfBits
 } // Solution

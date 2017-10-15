@@ -21,10 +21,10 @@
 
 package jmetal4.operators.selection;
 
+import java.util.Map;
+
 import jmetal4.util.Configuration;
 import jmetal4.util.JMException;
-
-import java.util.HashMap;
 
 /**
  * Class implementing a factory of selection operators
@@ -38,7 +38,7 @@ public class SelectionFactory {
      * @return the operator
      * @throws JMException
      */
-    public static Selection getSelectionOperator(String name, HashMap parameters) throws JMException {
+    public static Selection getSelectionOperator(String name, Map<String, Object> parameters) throws JMException {
         if (name.equalsIgnoreCase("BinaryTournament2"))
             return new BinaryTournament2(parameters);
         else if (name.equalsIgnoreCase("BinaryTournament"))

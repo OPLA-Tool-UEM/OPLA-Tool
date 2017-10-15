@@ -19,9 +19,10 @@ import java.util.Set;
  * @author edipofederle <edipofederle@gmail.com>
  */
 public class Package extends Element {
+	
+	private static final Logger LOGGER = Logger.getLogger(Package.class);
 
     private static final long serialVersionUID = -3080328928563871488L;
-    static Logger LOGGER = LogManager.getLogger(Package.class.getName());
     public Set<Package> nestedPackages = new HashSet<Package>();
     private Set<Class> classes = new HashSet<Class>();
     private Set<Interface> interfaces = new HashSet<Interface>();

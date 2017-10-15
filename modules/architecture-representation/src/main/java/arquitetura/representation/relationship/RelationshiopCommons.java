@@ -1,10 +1,10 @@
 package arquitetura.representation.relationship;
 
-import arquitetura.representation.Element;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import arquitetura.representation.Element;
 
 public class RelationshiopCommons {
 

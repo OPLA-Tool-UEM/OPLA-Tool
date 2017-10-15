@@ -22,8 +22,7 @@ public class MetricsPersistence {
     }
 
     public void saveInfoAll(List<InfoResult> infoResults) {
-        InfosResultPersistence infosPersistence = new InfosResultPersistence(
-                this.allMetricsPersistenceDependencies.getConnection());
+        InfosResultPersistence infosPersistence = new InfosResultPersistence( this.allMetricsPersistenceDependencies.getConnection());
         try {
             for (InfoResult info : infoResults)
                 infosPersistence.persistInfoDatas(info);

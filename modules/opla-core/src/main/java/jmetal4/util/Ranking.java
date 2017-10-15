@@ -30,6 +30,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 /**
  * This class implements some facilities for ranking solutions.
  * Given a <code>SolutionSet</code> object, their solutions are ranked
@@ -40,6 +42,8 @@ import java.util.List;
  * belonging to subset 0, and so on.
  */
 public class Ranking {
+	
+	private static final Logger LOGGER = Logger.getLogger(Ranking.class);
 
     /**
      * stores a <code>Comparator</code> for dominance checking
@@ -80,6 +84,7 @@ public class Ranking {
         int flagDominate;
 
         // Initialize the fronts
+        LOGGER.info("Initialize the fronts");
         for (int i = 0; i < front.length; i++)
             front[i] = new LinkedList<Integer>();
 
@@ -111,6 +116,7 @@ public class Ranking {
         }
 
         //Obtain the rest of fronts
+        LOGGER.info("Obtain the rest of fronts");
         int i = 0;
         Iterator<Integer> it1, it2; // Iterators
         while (front[i].size() != 0) {
@@ -130,6 +136,7 @@ public class Ranking {
         }
         //<-
 
+        LOGGER.info("ranking_");
         ranking_ = new SolutionSet[i];
         //0,1,2,....,i-1 are front, then i fronts
         for (int j = 0; j < i; j++) {

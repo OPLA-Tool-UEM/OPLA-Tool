@@ -21,9 +21,9 @@
 
 package jmetal4.operators.mutation;
 
-import jmetal4.core.Operator;
+import java.util.Map;
 
-import java.util.HashMap;
+import jmetal4.core.Operator;
 
 /**
  * This class represents the super class of all the mutations operators
@@ -32,7 +32,7 @@ public abstract class Mutation extends Operator {
 
     private static final long serialVersionUID = -4307112630484321270L;
 
-    public Mutation(HashMap<String, Object> parameters) {
+    public Mutation(Map<String, Object> parameters) {
         super(parameters);
     }
 } // Mutation

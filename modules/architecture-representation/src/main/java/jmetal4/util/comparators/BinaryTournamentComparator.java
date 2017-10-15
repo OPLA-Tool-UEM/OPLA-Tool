@@ -21,14 +21,17 @@
 
 package jmetal4.util.comparators;
 
-import jmetal4.core.Solution;
-
 import java.util.Comparator;
+
+import org.apache.log4j.Logger;
+
+import jmetal4.core.Solution;
 
 /**
  * This class implements a <code>Comparator</code> for <code>Solution</code>
  */
 public class BinaryTournamentComparator implements Comparator {
+	private static final Logger LOGGER = Logger.getLogger(BinaryTournamentComparator.class);
 
     /**
      * stores a dominance comparator
@@ -47,14 +50,17 @@ public class BinaryTournamentComparator implements Comparator {
      */
     public int compare(Object o1, Object o2) {
         int flag = dominance_.compare(o1, o2);
+        LOGGER.info("Flag: " + flag);
         if (flag != 0) {
             return flag;
         }
 
+        LOGGER.info("Getting crowding distance");
         double crowding1, crowding2;
         crowding1 = ((Solution) o1).getCrowdingDistance();
         crowding2 = ((Solution) o2).getCrowdingDistance();
 
+        LOGGER.info("Getting crowding distance");
         if (crowding1 > crowding2) {
             return -1;
         } else if (crowding2 > crowding1) {

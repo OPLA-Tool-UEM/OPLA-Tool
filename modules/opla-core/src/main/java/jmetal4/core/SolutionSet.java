@@ -32,10 +32,14 @@ import results.FunResults;
 import java.io.*;
 import java.util.*;
 
+import org.apache.log4j.Logger;
+
 /**
  * Class representing a SolutionSet (a set of solutions)
  */
 public class SolutionSet implements Serializable {
+	
+	private static final Logger LOGGER = Logger.getLogger(SolutionSet.class);
 
     /**
      *
@@ -97,6 +101,7 @@ public class SolutionSet implements Serializable {
      */
     public Solution get(int i) {
         if (i >= solutionsList_.size()) {
+        	LOGGER.warn("Index out of Bound " + i);
             throw new IndexOutOfBoundsException("Index out of Bound " + i);
         }
         return solutionsList_.get(i);
@@ -481,6 +486,7 @@ public class SolutionSet implements Serializable {
      * @return A matrix containing the objectives
      */
     public double[][] writeObjectivesToMatrix() {
+    	LOGGER.info("writeObjectivesToMatrix()");
         if (this.size() == 0) {
             return null;
         }

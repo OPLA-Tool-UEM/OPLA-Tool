@@ -1,9 +1,9 @@
 package jmetal4.operators.mutation;
 
+import java.util.Map;
+
 import br.ufpr.inf.opla.patterns.operator.impl.DesignPatternMutationOperator;
 import jmetal4.util.PseudoRandom;
-
-import java.util.HashMap;
 
 public class DesignPatternAndPLAMutation extends Mutation {
 
@@ -14,7 +14,7 @@ public class DesignPatternAndPLAMutation extends Mutation {
     private DesignPatternMutationOperator dpm;
     private PLAFeatureMutation pf;
 
-    public DesignPatternAndPLAMutation(HashMap<String, Object> parameter, DesignPatternMutationOperator dpm, PLAFeatureMutation pf) {
+    public DesignPatternAndPLAMutation(Map<String, Object> parameter, DesignPatternMutationOperator dpm, PLAFeatureMutation pf) {
         super(parameter);
         this.dpm = dpm;
         this.pf = pf;
