@@ -1,17 +1,20 @@
 package br.ufpr.dinf.gres.persistence.dao;
 
-import br.ufpr.dinf.gres.opla.entity.Experiment;
-import br.ufpr.dinf.gres.persistence.util.GenericDAO;
+import java.util.List;
 
 import javax.persistence.TypedQuery;
-import java.util.List;
+
+import br.ufpr.dinf.gres.opla.entity.Experiment;
+import br.ufpr.dinf.gres.persistence.util.GenericDAOImpl;
 
 /**
  * @author Fernando
  */
-public class ExperimentDAO extends GenericDAO<Experiment> {
+public class ExperimentDAO extends GenericDAOImpl<Experiment> {
 
-    public ExperimentDAO() {
+	private static final long serialVersionUID = 1L;
+
+	public ExperimentDAO() {
         super(Experiment.class);
     }
 

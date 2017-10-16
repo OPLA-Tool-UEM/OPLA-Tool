@@ -1,22 +1,34 @@
-package br.ufpr.dinf.gres.opla.entity;
+package br.ufpr.dinf.gres.opla.entity.metric;
+
+import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
-import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Objects;
+import br.ufpr.dinf.gres.opla.entity.Execution;
+import br.ufpr.dinf.gres.opla.entity.Experiment;
 
 @Entity
 @Table(name = "EleganceMetrics")
-public class EleganceMetric implements Serializable {
+public class EleganceMetric implements GenericMetric {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "nac")
     private String nac;
@@ -28,7 +40,8 @@ public class EleganceMetric implements Serializable {
     private String ec;
 
     @ManyToOne
-    @JoinColumn(name = "execution_id", nullable = false)
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "execution_id")
     private Execution execution;
 
     @Column(name = "elegance")
@@ -44,11 +57,12 @@ public class EleganceMetric implements Serializable {
     @Column(name = "id_solution")
     private String idSolution;
 
-    public Integer getId() {
+    @Override
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

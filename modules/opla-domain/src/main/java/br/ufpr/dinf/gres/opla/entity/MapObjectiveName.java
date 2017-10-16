@@ -5,75 +5,96 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
 @Table(name = "map_objectives_names")
 public class MapObjectiveName implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+	@Id
+	@Column(name = "id", nullable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(name = "names")
-    private String names;
+	@Column(name = "names")
+	private String names;
 
-    @ManyToOne
-    @JoinColumn(name = "experiment_id", nullable = false)
-    private Experiment experiment;
+	@ManyToOne
+	@JoinColumn(name = "experiment_id", nullable = false)
+	private Experiment experiment;
 
-    public Integer getId() {
-        return id;
-    }
+	@Transient
+	private BigDecimal value;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	protected MapObjectiveName() {
+		// Empty
+	}
 
-    public String getNames() {
-        return names;
-    }
+	public MapObjectiveName(BigDecimal value, String name) {
+		this.value = value;
+		this.names = name.toUpperCase();
+	}
 
-    public void setNames(String names) {
-        this.names = names;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public Experiment getExperiment() {
-        return experiment;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setExperiment(Experiment experiment) {
-        this.experiment = experiment;
-    }
+	public String getNames() {
+		return names;
+	}
 
-    @Override
-    public boolean equals(final Object other) {
-        if (this == other) {
-            return true;
-        }
-        if (other == null) {
-            return false;
-        }
-        if (!getClass().equals(other.getClass())) {
-            return false;
-        }
-        MapObjectiveName castOther = (MapObjectiveName) other;
-        return Objects.equals(id, castOther.id) && Objects.equals(names, castOther.names)
-                && Objects.equals(experiment, castOther.experiment);
-    }
+	public void setNames(String names) {
+		this.names = names;
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, names, experiment);
-    }
+	public Experiment getExperiment() {
+		return experiment;
+	}
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE).append("id", id).append("names", names)
-                .append("experiment", experiment).toString();
-    }
+	public void setExperiment(Experiment experiment) {
+		this.experiment = experiment;
+	}
+
+	public BigDecimal getValue() {
+		return value;
+	}
+
+	public void setValue(BigDecimal value) {
+		this.value = value;
+	}
+
+	@Override
+	public boolean equals(final Object other) {
+		if (this == other) {
+			return true;
+		}
+		if (other == null) {
+			return false;
+		}
+		if (!getClass().equals(other.getClass())) {
+			return false;
+		}
+		MapObjectiveName castOther = (MapObjectiveName) other;
+		return Objects.equals(id, castOther.id) && Objects.equals(names, castOther.names)
+				&& Objects.equals(experiment, castOther.experiment);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, names, experiment);
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE).append("id", id).append("names", names)
+				.append("experiment", experiment).toString();
+	}
 
 }

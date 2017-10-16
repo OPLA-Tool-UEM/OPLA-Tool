@@ -1,54 +1,61 @@
 package br.ufpr.dinf.gres.opla.view.model;
 
-import javax.swing.*;
-import javax.swing.event.ListDataListener;
-import java.util.Arrays;
 import java.util.List;
+
+import javax.swing.ComboBoxModel;
+import javax.swing.event.ListDataListener;
 
 /**
  * @param <T>
  * @author Fernando
  */
 @SuppressWarnings("rawtypes")
-public class ComboModelBase<T> implements ComboBoxModel {
+public abstract class ComboModelBase<T> implements ComboBoxModel {
 
-    private List<T> list;
+	protected List<T> list;
 
-    private T selected;
+	private T selected;
 
-    public ComboModelBase(T[] type) {
-        if (type != null) {
-            this.list = Arrays.asList(type);
-        }
-    }
+	public ComboModelBase(List<T> values) {
+		cleanList();
+		if (values != null) {
+			this.list = values;
+		}
+	}
 
-    @Override
-    public T getSelectedItem() {
-        return selected;
-    }
+	private void cleanList() {
+		if (list != null) {
+			list.clear();
+		}
+	}
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public void setSelectedItem(Object anItem) {
-        selected = (T) anItem;
-    }
+	@Override
+	public T getSelectedItem() {
+		return selected;
+	}
 
-    @Override
-    public int getSize() {
-        return list.size();
-    }
+	@Override
+	@SuppressWarnings("unchecked")
+	public void setSelectedItem(Object anItem) {
+		this.selected = (T) anItem;
+	}
 
-    @Override
-    public T getElementAt(int index) {
-        return list.get(index);
-    }
+	@Override
+	public int getSize() {
+		return list.size();
+	}
 
-    @Override
-    public void addListDataListener(ListDataListener l) {
-    }
+	@Override
+	public T getElementAt(int index) {
+		return list.get(index);
+	}
 
-    @Override
-    public void removeListDataListener(ListDataListener l) {
-    }
+	@Override
+	public void addListDataListener(ListDataListener l) {
+	}
+
+	@Override
+	public void removeListDataListener(ListDataListener l) {
+	}
 
 }

@@ -1,58 +1,30 @@
 package br.ufpr.dinf.gres.persistence.util;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 /**
- * Generic implementation for DAO Pattern
+ * 
+ * @author Fernando
  *
  * @param <T>
- * @author Fernando
  */
-public abstract class GenericDAO<T extends Serializable> {
+public interface GenericDAO<T> extends Serializable {
 
-    private final EntityManager emf = PersistenceManager.getEntityManager();
+	public T findById(Long id);
 
-    private final Class<T> clazz;
+	public List<T> findAll();
 
-    public GenericDAO(Class<T> clazz) {
-        this.clazz = clazz;
-    }
+	public void save(T clazz);
 
-    public T getById(Integer id) {
-        return emf.find(clazz, id);
-    }
+	public void udpate(T clazz);
 
-    public List<T> getAll() {
-        TypedQuery<T> query = emf.createQuery(" FROM " + clazz.getSimpleName(), clazz);
-        return query.getResultList();
-    }
+	public void excluir(T clazz);
 
-    public void save(T clazz) {
-        emf.getTransaction().begin();
-        emf.persist(clazz);
-        emf.getTransaction().commit();
-    }
+	public void excluir(Long id);
 
-    public void udpate(T clazz) {
-        emf.getTransaction().begin();
-        emf.merge(clazz);
-        emf.getTransaction().commit();
-    }
+	public EntityManager getEntityManager();
 
-    public void excluir(T clazz) {
-        emf.getTransaction().begin();
-        emf.remove(clazz);
-        emf.getTransaction().commit();
-    }
-
-    public void excluir(Integer id) {
-        excluir(getById(id));
-    }
-
-    public EntityManager getEntityManager() {
-        return emf;
-    }
 }

@@ -9,55 +9,61 @@ import java.util.List;
  */
 public abstract class TableModelBase<T> extends AbstractTableModel {
 
-    protected List<T> lista;
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * Number of Columns for table
-     *
-     * @return
-     */
-    @Override
-    public abstract int getColumnCount();
+	protected List<T> lista;
 
-    /**
-     * Name of Columns
-     *
-     * @param column
-     * @return
-     */
-    @Override
-    public abstract String getColumnName(int column);
+	/**
+	 * Number of Columns for table
+	 *
+	 * @return
+	 */
+	@Override
+	public abstract int getColumnCount();
 
-    /**
-     * Value of Column
-     *
-     * @param rowIndex
-     * @param columnIndex
-     * @return
-     */
-    @Override
-    public abstract Object getValueAt(int rowIndex, int columnIndex);
+	/**
+	 * Name of Columns
+	 *
+	 * @param column
+	 * @return
+	 */
+	@Override
+	public abstract String getColumnName(int column);
 
-    @Override
-    public int getRowCount() {
-        if (lista == null) {
-            return 0;
-        }
-        return lista.size();
-    }
+	/**
+	 * Value of Column
+	 *
+	 * @param rowIndex
+	 * @param columnIndex
+	 * @return
+	 */
+	@Override
+	public abstract Object getValueAt(int rowIndex, int columnIndex);
 
-    @Override
-    public boolean isCellEditable(int row, int col) {
-        return false;
-    }
+	@Override
+	public int getRowCount() {
+		if (lista == null) {
+			return 0;
+		}
+		return lista.size();
+	}
 
-    @Override
-    public Class getColumnClass(int c) {
-        return getValueAt(0, c).getClass();
-    }
+	@Override
+	public boolean isCellEditable(int row, int col) {
+		return false;
+	}
 
-    public void setLista(List<T> lista) {
-        this.lista = lista;
-    }
+	@Override
+	public Class<?> getColumnClass(int c) {
+		return getValueAt(0, c).getClass();
+	}
+
+	public void setLista(List<T> lista) {
+		this.lista = lista;
+	}
+
+	public T getValue(int index) {
+		return this.lista.get(index);
+	}
 
 }
