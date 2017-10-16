@@ -5,23 +5,45 @@
  */
 package br.ufpr.inf.opla.patterns.indicadores;
 
+import br.ufpr.inf.opla.patterns.solution.ArchitectureSolution;
 import jmetal4.core.SolutionSet;
 import jmetal4.qualityIndicator.util.MetricsUtil;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.*;
+import java.util.List;
 
 /**
  * @author giovaniguizzo
  */
 public class Hypervolume {
 
+    //legado
     public static void clearFile(String path) {
-        File file = new File(path);
-        if (file.exists()) {
-            file.delete();
+        try {
+            clearFile(Paths.get(path));
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
         }
+    }
+
+    public static void clearFile(Path path) throws IOException {
+        Files.deleteIfExists(path);
+    }
+
+    public static void printFormatedHypervolumeFile(List<ArchitectureSolution> allSolutions, Path path) throws IOException {
+        Files.createDirectories(path.getParent());
+        if (!Files.exists(path, LinkOption.NOFOLLOW_LINKS)) {
+            Files.createFile(path);
+        }
+
+        for (ArchitectureSolution architectureSolution : allSolutions) {
+            Files.write(path, (architectureSolution.toString() + "\n").getBytes(), StandardOpenOption.APPEND);
+        }
+        Files.write(path, "\n".getBytes(), StandardOpenOption.APPEND);
     }
 
     public static void printFormatedHypervolumeFile(SolutionSet allSolutions, String path, boolean append) throws IOException {

@@ -3,7 +3,6 @@ package br.ufpr.inf.opla.patterns.main;
 import arquitetura.io.ReaderConfig;
 import arquitetura.representation.Architecture;
 import br.ufpr.inf.opla.patterns.indicadores.Hypervolume;
-import br.ufpr.inf.opla.patterns.operator.impl.jmetal5.PLACrossover;
 import br.ufpr.inf.opla.patterns.operator.impl.jmetal5.PLAFeatureMutation;
 import br.ufpr.inf.opla.patterns.problem.multiobjective.OPLAProblem;
 import br.ufpr.inf.opla.patterns.solution.ArchitectureSolution;
@@ -11,21 +10,19 @@ import org.uma.jmetal.algorithm.multiobjective.nsgaiii.NSGAIII;
 import org.uma.jmetal.algorithm.multiobjective.nsgaiii.NSGAIIIBuilder;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
+import org.uma.jmetal.operator.impl.crossover.NullCrossover;
 import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
 import org.uma.jmetal.util.SolutionListUtils;
 
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -35,116 +32,46 @@ import java.util.stream.IntStream;
 @SuppressWarnings("Duplicates")
 public class NSGAIII_OPLA {
 
-    private static int populationSize_;
-    private static int maxEvaluations_;
-    private static double mutationProbability_;
-    private static double crossoverProbability_;
+    private static Map<Integer, Long> executionTime = new ConcurrentSkipListMap<>();
 
-    private static Map<Integer, List<ArchitectureSolution>> allSolutions = new ConcurrentHashMap<>();
+    private static Callable<List<ArchitectureSolution>> buildNSGAIIIWrapperCallable(NSGAIIIBuilder<ArchitectureSolution> builder, int run) {
+        return () -> {
+            NSGAIII<ArchitectureSolution> nsgaiii = builder.build();
+            System.out.println("\tIniciando execução #" + run + "... Popsize: " + nsgaiii.getMaxPopulationSize());
+            long init = System.currentTimeMillis();
+            nsgaiii.run();
+            long end = System.currentTimeMillis();
+            assert end > init;
+            executionTime.put(run, end - init);
+            System.out.println("\tRun #" + run + " finalizada.");
+            //remover dominadas
+            return nsgaiii.getResult();
+        };
+    }
 
     public static void main(String... args) throws ClassNotFoundException, IOException {
-        //versao com args próprios
+        String plaName = "AGM";
+        Path plaPath = Paths.get("D:", "pedro", "OpenSource", "PLAs", plaName, plaName + ".uml");
+        double mutationProbability = 0.9;
+        int runsNumber = 32;
+        int numIterations = 300;
 
-        Path PLAPath = Paths.get("D:", "pedro", "OpenSource", "PLAs", "banking", "banking.uml");
+        String fitnessFilename = "FITNESS.txt";
+        String runtimesFilename = "TEMPOEXEC.txt";
 
-        String[] myArgs = {
-                /*population size*/"30",
-                /*max evaluations*/"1000",
-                /*Mutation probability*/"0.9",
-                /*PLA path*/PLAPath.toString(),
-                /*Context*/"teste1",
-                /*Mutation operator*/"PLAMutation",
-                /*print variables?*/"true"
+        //2: DC e COE
+        //3: COE, ACLASS e DC
+        //5: COE, ACLASS, DC, LCC, TAM
+        String[] objectives = {
+                "coe", "dc"
         };
+        String context = "nsgaiii-" + objectives.length + "obj";
 
-        runNSGAII_OPLA(myArgs);
-    }
-
-    private static Runnable buildNSGAIIIWrapperRunnable(NSGAIIIBuilder<ArchitectureSolution> builder, int run) {
-        return () -> {
-            System.out.println("\tInicializando run #" + run);
-            long init = System.currentTimeMillis();
-            NSGAIII<ArchitectureSolution> nsgaiii = builder.build();
-            nsgaiii.run();
-            //remover dominadas
-            allSolutions.put(run, nsgaiii.getResult());
-            System.out.println("\tFim da run #" + run + " em " + ((System.currentTimeMillis() - init)) / 1000.0 + " segundos");
-        };
-    }
-
-
-    //--  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --
-    private static void runNSGAII_OPLA(String[] args) throws IOException, ClassNotFoundException {
-        if (args.length < 7) {
-            System.out.println("You need to inform the following parameters:");
-            System.out.println("\t1 - Population Size (Integer);"
-                    + "\n\t2 - Max Evaluations (Integer);"
-                    + "\n\t3 - Mutation Probability (Double);"
-                    + "\n\t4 - PLA path;"
-                    + "\n\t5 - Context;"
-                    + "\n\t6 - Mutation Operator class simple name;"
-                    + "\n\t7 - If you want to write the variables (Boolean).");
-            System.exit(0);
-        }
-
-        int runsNumber = 16; //30;
-        if (args[0] == null || args[0].trim().equals("")) {
-            System.out.println("Missing population size argument.");
-            System.exit(1);
-        }
-        try {
-            populationSize_ = Integer.valueOf(args[0]); //100;
-        } catch (NumberFormatException ex) {
-            System.out.println("Population size argument not integer.");
-            System.exit(1);
-        }
-        if (args[1] == null || args[1].trim().equals("")) {
-            System.out.println("Missing max evaluations argument.");
-            System.exit(1);
-        }
-        try {
-            maxEvaluations_ = Integer.valueOf(args[1]); //300 geraçõeshttp://loggr.net/
-        } catch (NumberFormatException ex) {
-            System.out.println("Max evaluations argument not integer.");
-            System.exit(1);
-        }
-        crossoverProbability_ = 0.5;
-        if (args[2] == null || args[2].trim().equals("")) {
-            System.out.println("Missing mutation probability argument.");
-            System.exit(1);
-        }
-        try {
-            mutationProbability_ = Double.valueOf(args[2]);
-        } catch (NumberFormatException ex) {
-            System.out.println("Mutation probability argument not double.");
-            System.exit(1);
-        }
-
-        if (args[3] == null || args[3].trim().equals("")) {
-            System.out.println("Missing PLA Path argument.");
-            System.exit(1);
-        }
-        String pla = args[3];
-
-        if (args[4] == null || args[4].trim().equals("")) {
-            System.out.println("Missing context argument.");
-            System.exit(1);
-        }
-        String context = args[4];
-
-        if (args[5] == null || args[5].trim().equals("")) {
-            System.out.println("Missing mutation operator argument.");
-            System.exit(1);
-        }
-
-        if (args[6] == null || args[6].trim().equals("")) {
-            System.out.println("Missing print variables argument.");
-            System.exit(1);
-        }
+        CrossoverOperator<ArchitectureSolution> crossoverOperator = new NullCrossover<>();
+        MutationOperator<ArchitectureSolution> mutationOperator = new PLAFeatureMutation(mutationProbability);
+        BinaryTournamentSelection<ArchitectureSolution> selectionOperator = new BinaryTournamentSelection<>();
 
         String fileSep = FileSystems.getDefault().getSeparator();
-
-        String plaName = getPlaName(pla);
 
         Path rootDir = Paths.get("experiment", plaName, context);
         Path manipulationDir = rootDir.resolve("manipulation");
@@ -156,103 +83,99 @@ public class NSGAIII_OPLA {
         ReaderConfig.setDirTarget(manipulationDir.toString() + fileSep);
         ReaderConfig.setDirExportTarget(outputDir.toString() + fileSep);
 
-        String plaDirectory = Paths.get(pla).getParent().toString() + fileSep;
+        Path plaDirectory = plaPath.getParent();
+        Path smartyProfilePath = plaPath.resolveSibling("smarty.profile.uml");
+        Path concernProfilePath = plaPath.resolveSibling("concerns.profile.uml");
+        Path relationshipProfilePath = plaPath.resolveSibling("relationships.profile.uml");
+        Path patternProfilePath = plaPath.resolveSibling("patterns.profile.uml");
 
-        ReaderConfig.setPathToTemplateModelsDirectory(plaDirectory);
-        ReaderConfig.setPathToProfileSMarty(plaDirectory + "smarty.profile.uml");
-        ReaderConfig.setPathToProfileConcerns(plaDirectory + "concerns.profile.uml");
-        ReaderConfig.setPathProfileRelationship(plaDirectory + "relationships.profile.uml");
-        ReaderConfig.setPathToProfilePatterns(plaDirectory + "patterns.profile.uml");
+        ReaderConfig.setPathToTemplateModelsDirectory(plaDirectory.toString());
+        ReaderConfig.setPathToProfileSMarty(smartyProfilePath.toString());
+        ReaderConfig.setPathToProfileConcerns(concernProfilePath.toString());
+        ReaderConfig.setPathProfileRelationship(relationshipProfilePath.toString());
+        ReaderConfig.setPathToProfilePatterns(patternProfilePath.toString());
 
-        String[] objectives = {"coe", "aclass", "featureDriven"};
-        OPLAProblem oplaProblem = new OPLAProblem(pla, objectives);
-
-        CrossoverOperator<ArchitectureSolution> crossoverOperator = new PLACrossover(crossoverProbability_);
-        MutationOperator<ArchitectureSolution> mutationOperator = new PLAFeatureMutation(mutationProbability_);
-        BinaryTournamentSelection<ArchitectureSolution> selectionOperator = new BinaryTournamentSelection<>();
-
+        OPLAProblem oplaProblem = new OPLAProblem(plaPath.toString(), objectives);
 
         NSGAIIIBuilder<ArchitectureSolution> nsgaiiiBuilder = new NSGAIIIBuilder<>(oplaProblem).setCrossoverOperator(crossoverOperator)
-                .setMutationOperator(mutationOperator).setMaxIterations(30).setSelectionOperator(selectionOperator);
+                .setMutationOperator(mutationOperator).setSelectionOperator(selectionOperator).setMaxIterations(numIterations);
+
+        Path fitnessFile = rootDir.resolve(fitnessFilename);
+        Hypervolume.clearFile(fitnessFile);
+
+        Path exectimeFile = rootDir.resolve(runtimesFilename);
+        Hypervolume.clearFile(exectimeFile);
 
 
-        System.out.println("\n================ NSGAIII ================");
-        System.out.println("Context: " + context);
-        System.out.println("PLA: " + pla);
-        System.out.println("Params:");
-        System.out.println("\tCross -> " + crossoverProbability_);
-        System.out.println("\tMuta -> " + mutationProbability_);
-        System.out.println("\tRuns -> " + runsNumber);
-        System.out.println("\tThreads -> " + Runtime.getRuntime().availableProcessors());
-
-        ArchitectureSolution base = oplaProblem.createSolution();
-        oplaProblem.evaluate(base);
-        int k = base.getNumberOfObjectives();
-        String obs = IntStream.range(0, k).mapToObj(j -> "" + base.getObjective(j)).collect(Collectors.joining(","));
-        System.out.println("[" + obs + "]");
-
-
-        Hypervolume.clearFile(rootDir.toString() + fileSep + "HYPERVOLUME.txt");
-
-        System.out.println("Execução paralela do NSGAIII");
-
-/*
-        System.out.print("dummy run pra quebrar quaisquer biases de cache...");
-        long init = System.currentTimeMillis();
-        buildNSGAIIIWrapperRunnable(nsgaiiiBuilder, -1).run();
-        System.out.println(" tempo: " + (System.currentTimeMillis() - init) / 1000.0 + " segundos.");
-*/
-
-        int n = Runtime.getRuntime().availableProcessors();
-        long initTotal = System.currentTimeMillis();
-
-        ExecutorService executorService = Executors.newFixedThreadPool(n - 1);
-
-        for (int r = 0; r < runsNumber; r++) {
-            executorService.execute(buildNSGAIIIWrapperRunnable(nsgaiiiBuilder, r));
+        System.out.println("============ NSGAIII ============");
+        System.out.println("Avaliando projeto " + plaName);
+        System.out.println("Path: " + plaPath.toString());
+        System.out.println("Valores do experimento: ");
+        System.out.println("\tNúmero Objetivos: " + objectives.length);
+        System.out.println("\tObjetivos: " + Arrays.stream(objectives).collect(Collectors.joining(", ")));
+        System.out.println("\tProb mutação: " + mutationProbability);
+        System.out.println("\tNúmero de iterações: " + numIterations);
+        System.out.println("\tAvaliação dos objetivos do projeto base:");
+        {
+            ArchitectureSolution base = oplaProblem.createSolution();
+            oplaProblem.evaluate(base);
+            int k = base.getNumberOfObjectives();
+            String baseObjVals = IntStream.range(0, k).mapToObj(j -> "" + base.getObjective(j)).collect(Collectors.joining(", "));
+            System.out.println("\t[" + baseObjVals + "]");
         }
-        executorService.shutdown();
+        System.out.println("Arquivo com os Fitness: " + fitnessFile.toAbsolutePath());
+        System.out.println("Arquivo com tempo de execucao: " + exectimeFile.toAbsolutePath());
+
+        System.out.println();
+        System.out.println("System info: ");
+
+        int processors = Runtime.getRuntime().availableProcessors();
+        System.out.println("Processadores: " + processors);
+
+        System.out.println("Executando " + runsNumber + " rodadas.");
+
+        ExecutorService executorService = Executors.newFixedThreadPool(processors);
+
+        List<Callable<List<ArchitectureSolution>>> callables = IntStream.range(0, runsNumber)
+                .mapToObj(r -> buildNSGAIIIWrapperCallable(nsgaiiiBuilder, r)).collect(Collectors.toList());
+
         try {
-            executorService.awaitTermination(1, TimeUnit.DAYS);
-        } catch (InterruptedException e) {
+            System.out.println("Inicio: " + LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
+            List<Future<List<ArchitectureSolution>>> futureResults = executorService.invokeAll(callables);
+            System.out.println("Fim das execuções: " + LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
+
+            Files.createFile(exectimeFile);
+            Files.write(exectimeFile, "TEMPO DE EXECUÇÃO DE CADA RUN\r\n".getBytes(), StandardOpenOption.APPEND);
+            for (Map.Entry<Integer, Long> entry : executionTime.entrySet()) {
+                int run = entry.getKey();
+                long time = entry.getValue();
+
+                Files.write(exectimeFile, ("Exec " + run + " => " + time + "ms\r\n").getBytes(), StandardOpenOption.APPEND);
+            }
+            Files.write(exectimeFile, "\r\n".getBytes(), StandardOpenOption.APPEND);
+
+            List<ArchitectureSolution> allSolutions = new ArrayList<>();
+            for (Future<List<ArchitectureSolution>> future : futureResults) {
+                allSolutions.addAll(future.get());
+            }
+
+            allSolutions = SolutionListUtils.getNondominatedSolutions(allSolutions);
+            System.out.println("Total de soluções não-dominadas: " + allSolutions.size());
+            Hypervolume.printFormatedHypervolumeFile(allSolutions, fitnessFile);
+
+            System.out.println("Salvando soluções...");
+            int index = 0;
+            for (ArchitectureSolution architectureSolution : allSolutions) {
+                Architecture arch = architectureSolution.getArchitecture();
+                arch.save(arch, "ARCH_", "_" + index++);
+                System.out.println("\t Solução " + (index - 1) + "salva.");
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        long endTotal = System.currentTimeMillis();
 
-        System.out.println("Tempo total: " + (endTotal - initTotal) / 1000.0 + " segundos.");
-
-        List<ArchitectureSolution> finalSolutions = allSolutions.values().stream().flatMap(List::stream).distinct().collect(Collectors.toList());
-        System.out.println("Número de soluções distintas: " + finalSolutions.size());
-
-        //remover solucoes dominadas
-        List<ArchitectureSolution> finalfinalSolution = SolutionListUtils.getNondominatedSolutions(finalSolutions);
-
-        System.out.println("Tamanho da Melhor Subfrente: " + finalfinalSolution.size());
-
-        finalfinalSolution.forEach(architectureSolution -> {
-            int i = architectureSolution.getNumberOfObjectives();
-            String objs = IntStream.range(0, i).mapToObj(j -> "" + architectureSolution.getObjective(j)).collect(Collectors.joining(","));
-            System.out.println("[" + objs + "]");
-        });
-
-        System.out.println("Salvando 10 soluções aleatorias em [" + ReaderConfig.getDirExportTarget() + "]...");
-        AtomicInteger index = new AtomicInteger(0);
-        SolutionListUtils.selectNRandomDifferentSolutions(Math.min(10, finalfinalSolution.size()), finalfinalSolution)
-                .forEach(architectureSolution -> {
-                    Architecture arch = architectureSolution.getArchitecture();
-                    int i = index.getAndIncrement();
-                    arch.save(arch, "VAR_ALL_", "-" + i);
-                    System.out.println("\tSolução " + i + " salva.");
-                });
-
+        executorService.shutdown();
 
     }
 
-    private static String getPlaName(String plaPath) {
-        /*int beginIndex = pla.lastIndexOf(FileSystems.getDefault().getSeparator()) + 1;
-        int endIndex = pla.length() - 4;*/
-
-        String filename = Paths.get(plaPath).getFileName().toString();
-        return filename.substring(0, filename.length() - 4); //remover '.uml'
-    }
 }

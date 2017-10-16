@@ -2,10 +2,8 @@ package arquitetura.touml;
 
 import arquitetura.exceptions.*;
 import arquitetura.helpers.XmiHelper;
-import arquitetura.io.CopyFile;
 import arquitetura.io.ReaderConfig;
 import arquitetura.io.SaveAndMove;
-import com.google.common.io.Files;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
@@ -19,8 +17,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 /**
  * @author edipofederle<edipofederle@gmail.com>
@@ -51,60 +51,40 @@ public class DocumentManager extends XmiHelper {
             createResourcesDirectoryIfNotExist();
 
             if (ReaderConfig.hasSmartyProfile()) {
-                String pathSmarty = ReaderConfig.getPathToProfileSMarty();
-                final File sourceFileSmarty = new File(pathSmarty);
-                final File destFileSmarty = new File(
-                        ReaderConfig.getDirExportTarget() + "/resources/smarty.profile.uml");
-                Files.copy(sourceFileSmarty, destFileSmarty);
+                Path pathSmarty = Paths.get(ReaderConfig.getPathToProfileSMarty());
+                Path destSmarty = Paths.get(ReaderConfig.getDirExportTarget(), "resources", "smarty.profile.uml");
+
+                Files.copy(pathSmarty, destSmarty, StandardCopyOption.REPLACE_EXISTING);
             } else {
                 // Caso perfil não esteja setado remove do arquivo de tempalte
                 XmiHelper.removeNode(docUml, "profileApplication", "_2RlssY9OEeO5xq3Ur4qgFw"); // id
-                // setado
-                // no
-                // arquivo
-                // de
-                // template
             }
 
             if (ReaderConfig.hasConcernsProfile()) {
-                String pathConcern = ReaderConfig.getPathToProfileConcerns();
-                final File sourceFileConcern = new File(pathConcern);
-                final File destFileConcern = new File(
-                        ReaderConfig.getDirExportTarget() + "/resources/concerns.profile.uml");
-                Files.copy(sourceFileConcern, destFileConcern);
+                Path pathConcern = Paths.get(ReaderConfig.getPathToProfileConcerns());
+                Path destConcern = Paths.get(ReaderConfig.getDirExportTarget(), "resources", "concerns.profile.uml");
+
+                Files.copy(pathConcern, destConcern, StandardCopyOption.REPLACE_EXISTING);
             } else {
                 // Caso perfil não esteja setado remove do arquivo de tempalte
                 XmiHelper.removeNode(docUml, "profileApplication", "_2Q2s4I9OEeO5xq3Ur4qgFw"); // id
-                // setado
-                // no
-                // arquivo
-                // de
-                // template
             }
 
             if (ReaderConfig.hasRelationsShipProfile()) {
-                String pathToProfileRelationships = ReaderConfig.getPathToProfileRelationships();
-                final File sourceFileRelationships = new File(pathToProfileRelationships);
-                final File destFileRelationship = new File(
-                        ReaderConfig.getDirExportTarget() + "/resources/relationships.profile.uml"); // id
-                // setado
-                // no arquivo
-                // de
-                // template
-                Files.copy(sourceFileRelationships, destFileRelationship);
+                Path pathToProfileRelationships = Paths.get(ReaderConfig.getPathToProfileRelationships());
+                Path destRelationships = Paths.get(ReaderConfig.getDirExportTarget(), "resources", "relationships.profile.uml");
+
+                Files.copy(pathToProfileRelationships, destRelationships, StandardCopyOption.REPLACE_EXISTING);
             } else {
                 // Caso perfil não esteja setado remove do arquivo de tempalte
                 XmiHelper.removeNode(docUml, "profileApplication", "_2RXDMI9OEeO5xq3Ur4qgFw");
             }
 
             if (ReaderConfig.hasPatternsProfile()) {
-                final File destFileRelationship = new File(
-                        ReaderConfig.getDirExportTarget() + "/resources/patterns.profile.uml"); // id
-                // setado
-                // no
-                // arquivo de
-                // template
-                Files.copy(new File(ReaderConfig.getPathToProfilePatterns()), destFileRelationship);
+                Path pathProfilePattern = Paths.get(ReaderConfig.getPathToProfilePatterns());
+                Path destProfPattern = Paths.get(ReaderConfig.getDirExportTarget(), "resources", "patterns.profile.uml");
+
+                Files.copy(pathProfilePattern, destProfPattern, StandardCopyOption.REPLACE_EXISTING);
             } else {
                 // Caso perfil não esteja setado remove do arquivo de tempalte
                 XmiHelper.removeNode(docUml, "profileApplication", "_cyBBIJJmEeOENZsdUoZvrw");
@@ -167,33 +147,27 @@ public class DocumentManager extends XmiHelper {
 
         // Verifica se o diretorio configurado em directoryToSaveModels existe.
         // caso nao exista, o cria.
-        File temp = new File(ReaderConfig.getDirTarget());
-        if (!temp.exists())
-            temp.mkdirs();
-
-        String notationCopy = ReaderConfig.getDirTarget() + BASE_DOCUMENT + ".notation";
-        String umlCopy = ReaderConfig.getDirTarget() + BASE_DOCUMENT + ".uml";
-        String diCopy = ReaderConfig.getDirTarget() + BASE_DOCUMENT + ".di";
-
-        URL n = null;
-        URL u = null;
-        URL d = null;
+        Path targetDir = Paths.get(ReaderConfig.getDirTarget());
         try {
-            URL baseUrl = new URL("file:" + ReaderConfig.getPathToTemplateModelsDirectory());
-            if (baseUrl != null) {
-                // Arquivos vazios usados para geração da nova arquitetura
-                n = new URL(baseUrl, modelName + ".notation");
-                u = new URL(baseUrl, modelName + ".uml");
-                d = new URL(baseUrl, modelName + ".di");
-            }
-        } catch (MalformedURLException e) {
-            LOGGER.error("makeACopy(String modelName) - Could not find template files directory: "
-                    + ReaderConfig.getPathToTemplateModelsDirectory());
+            Files.createDirectories(targetDir);
+
+            Path notationPath = targetDir.resolve(BASE_DOCUMENT + ".notation");
+            Path umlPath = targetDir.resolve(BASE_DOCUMENT + ".uml");
+            Path diPath = targetDir.resolve(BASE_DOCUMENT + ".di");
+
+            Path templateModelsDir = Paths.get(ReaderConfig.getPathToTemplateModelsDirectory());
+            Path n = templateModelsDir.resolve(modelName + ".notation");
+            Path u = templateModelsDir.resolve(modelName + ".uml");
+            Path d = templateModelsDir.resolve(modelName + ".di");
+
+            Files.copy(n, notationPath, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(u, umlPath, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(d, diPath, StandardCopyOption.REPLACE_EXISTING);
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        CopyFile.copyFile(new File(n.getPath()), new File(notationCopy));
-        CopyFile.copyFile(new File(u.getPath()), new File(umlCopy));
-        CopyFile.copyFile(new File(d.getPath()), new File(diCopy));
 
         LOGGER.info("makeACopy(String modelName) - Exit");
 

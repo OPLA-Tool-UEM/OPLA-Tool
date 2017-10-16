@@ -47,7 +47,29 @@ public class NSGAIII<S extends Solution<?>> extends AbstractGeneticAlgorithm<S, 
 
         /// NSGAIII
         numberOfDivisions = new Vector<>(1);
-        numberOfDivisions.add(12); // Default value for 3D problems
+
+        //edicao para testar multiplos objetivos diferentes
+        //esta implementação está incompleta para N objetivos
+        switch (getProblem().getNumberOfObjectives()) {
+            case 1:
+                numberOfDivisions.add(100);
+                break;
+            case 2:
+                numberOfDivisions.add(28);
+                break;
+            case 3:
+                numberOfDivisions.add(12);
+                break;
+            case 4:
+                numberOfDivisions.add(9);
+                break;
+            case 5:
+                numberOfDivisions.add(6);
+                break;
+            default:
+                numberOfDivisions.add(getProblem().getNumberOfObjectives());
+                break;
+        }
 
         (new ReferencePoint<S>()).generateReferencePoints(referencePoints, getProblem().getNumberOfObjectives(), numberOfDivisions);
 

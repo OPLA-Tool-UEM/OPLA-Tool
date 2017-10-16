@@ -125,10 +125,10 @@ public class SolutionListUtils {
         List<Solution<?>> normalizedSolutionSet = new ArrayList<>(solutionList.size());
 
         int numberOfObjectives = solutionList.get(0).getNumberOfObjectives();
-        for (int i = 0; i < solutionList.size(); i++) {
-            Solution<?> solution = solutionList.get(i).copy();
+        for (Solution<?> aSolutionList : solutionList) {
+            Solution<?> solution = aSolutionList.copy();
             for (int j = 0; j < numberOfObjectives; j++) {
-                double normalizedValue = (solutionList.get(i).getObjective(j) - minimumValue.get(j)) /
+                double normalizedValue = (aSolutionList.getObjective(j) - minimumValue.get(j)) /
                         (maximumValue.get(j) - minimumValue.get(j));
                 solution.setObjective(j, normalizedValue);
             }
@@ -171,7 +171,7 @@ public class SolutionListUtils {
         int i = 0;
 
         while (!result && (i < solutionSet.size())) {
-            if (dominance.compare(solution, solutionSet.get(i)) == 1) {
+            if (dominance.compare(solution, solutionSet.get(i)) > 0) {
                 result = true;
             }
             i++;
@@ -190,7 +190,7 @@ public class SolutionListUtils {
     public static <S> List<S> selectNRandomDifferentSolutions(
             int numberOfSolutionsToBeReturned, List<S> solutionList) {
         JMetalRandom random = JMetalRandom.getInstance();
-        return selectNRandomDifferentSolutions(numberOfSolutionsToBeReturned, solutionList, (low, up) -> random.nextInt(low, up));
+        return selectNRandomDifferentSolutions(numberOfSolutionsToBeReturned, solutionList, random::nextInt);
     }
 
     /**

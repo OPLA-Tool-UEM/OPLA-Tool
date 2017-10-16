@@ -57,4 +57,12 @@ public class ArchitectureSolution extends AbstractGenericSolution<Architecture, 
         return new ArchitectureSolution(this.problem, this.architecture_);
     }
 
+    @Override
+    public String toString() {
+        StringBuilder aux = new StringBuilder();
+        for (int i = 0; i < this.getNumberOfObjectives(); i++) {
+            aux.append(this.getObjective(i)).append(" ");
+        }
+        return aux.toString();
+    }
 }

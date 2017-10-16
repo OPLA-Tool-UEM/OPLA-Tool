@@ -15,6 +15,9 @@ public class ParameterMethod implements Serializable {
     private String type;
     private String direction;
 
+    public ParameterMethod() {
+    }
+
     /**
      * @param name      - Name
      * @param type      - Tipo (ex: String)
