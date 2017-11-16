@@ -98,6 +98,10 @@ public class OPLAProblem extends AbstractGenericProblem<ArchitectureSolution> im
                 case "ec":
                     result = evaluation.evaluateEC(arch);
                     break;
+
+                case "lcc":
+                    result = evaluation.evaluateLCC(arch);
+                    break;
                 default:
                     result = 0.0;
                     break;
