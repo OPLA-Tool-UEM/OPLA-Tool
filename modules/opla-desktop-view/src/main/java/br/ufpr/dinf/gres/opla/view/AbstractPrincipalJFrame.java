@@ -25,7 +25,7 @@ import br.ufpr.dinf.gres.opla.view.util.UserHome;
 public abstract class AbstractPrincipalJFrame extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 1L;
-    
+
     protected ManagerApplicationConfig config;
     private org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(Principal.class);
 
@@ -63,7 +63,7 @@ public abstract class AbstractPrincipalJFrame extends javax.swing.JFrame {
 
         LOGGER.info("JSlider in " + panel.getName() + " enable = " + isDisabled);
     }
-    
+
     protected void cleanAllSelectedComboBox(JPanel panel) {
         Arrays.asList(panel.getComponents()).stream()
                 .filter(component -> component instanceof JComboBox<?>)
@@ -74,16 +74,16 @@ public abstract class AbstractPrincipalJFrame extends javax.swing.JFrame {
     }
 
     protected void configureProfile(JTextField jTexField, Path path, String profileName) throws IOException, URISyntaxException {
-    	Path target = Paths.get(UserHome.getOplaUserHome() + Constants.PROFILES_DIR + Constants.FILE_SEPARATOR + profileName);
+        Path target = Paths.get(UserHome.getOplaUserHome() + Constants.PROFILES_DIR + Constants.FILE_SEPARATOR + profileName);
         if (!Files.exists(target)) {
-        	URI uri = ClassLoader.getSystemResource(Constants.PROFILES_DIR).toURI();
-			Path pathProfile = Paths.get(uri).resolve(profileName);
-			arquitetura.io.FileUtils.copy(pathProfile, target);
-        	jTexField.setText(target.toString());
-        	LOGGER.info("new profile = " + profileName + " has configured");
+            URI uri = ClassLoader.getSystemResource(Constants.PROFILES_DIR).toURI();
+            Path pathProfile = Paths.get(uri).resolve(profileName);
+            arquitetura.io.FileUtils.copy(pathProfile, target);
+            jTexField.setText(target.toString());
+            LOGGER.info("new profile = " + profileName + " has configured");
         } else {
-        	LOGGER.info(profileName + " is configured");
-        	jTexField.setText(path.toString());
+            LOGGER.info(profileName + " is configured");
+            jTexField.setText(path.toString());
         }
     }
 

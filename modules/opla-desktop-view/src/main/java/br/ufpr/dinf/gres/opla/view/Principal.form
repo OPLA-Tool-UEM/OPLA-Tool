@@ -297,6 +297,9 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Browser"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btBrowserSmartProfileActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JTextField" name="tfFeatureProfile">
                       <Properties>
@@ -307,6 +310,9 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Browser"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btBrowserFeatureProfileActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel3">
                       <Properties>
@@ -322,6 +328,9 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Browser"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btBrowserPatternProfileActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JTextField" name="tfRelationshipProfile">
                       <Properties>
@@ -332,6 +341,9 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Browser"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btBrowserRelationshipProfileActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel5">
                       <Properties>
@@ -396,6 +408,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Select a Directory"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btTemplateDirectoryActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel2">
                   <Properties>
@@ -438,7 +453,7 @@
                               <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btManipulationDirectory" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="13" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -458,6 +473,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Select a Directory"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btManipulationDirectoryActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -465,6 +483,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Visualize your application config file"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btViewApplicationConfigActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -912,6 +933,9 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Crossover"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ckCrossoverActionPerformed"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -1071,16 +1095,25 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Confirme"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btConfirmeActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="btClean">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Clean"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btCleanActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="btSelectPath">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Select  a Path"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btSelectPathActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -1142,6 +1175,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Select a Directory"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btSelectOutputDirectoryActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -1159,6 +1195,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="RUN"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btRunActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

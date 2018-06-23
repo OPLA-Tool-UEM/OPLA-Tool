@@ -51,6 +51,10 @@ public class ManagerApplicationConfig {
 		}
 	}
 
+        public ApplicationYamlConfig getApplicationYaml() {
+            return applicationYaml;
+        }
+
 	private void copyYamlFile(Path pahtApplicationYaml) throws IOException {
 		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(LOCAL_APPLICATION_YAML);
 		applicationYaml = this.yaml.loadAs(inputStream, ApplicationYamlConfig.class);
@@ -123,7 +127,6 @@ public class ManagerApplicationConfig {
 			throw ex;
 		}
 	}
-	
 
 	/**
 	 * Retorna os profile que estão em uso ou seja, não "" nem null.

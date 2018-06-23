@@ -42,7 +42,9 @@ public class StartUpView extends javax.swing.JFrame {
         }
     }
 
-	// <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // @formatter:off
+    // <editor-fold defaultstate="collapsed" desc="Generated
+	// Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
 		loadProgressBar = new javax.swing.JProgressBar();
@@ -81,30 +83,32 @@ public class StartUpView extends javax.swing.JFrame {
 	private javax.swing.JProgressBar loadProgressBar;
 	// End of variables declaration//GEN-END:variables
 
+    // @formatter:on
     private void configureApplicationFile() {
-       ApplicationFile.getInstance();
+        ApplicationFile.getInstance();
     }
-    
+
     /**
      * Cria diretório raiz da ferramentas
      */
     private void createPathOplaTool() {
-    	UserHome.createDefaultOplaPathIfDontExists();
+        UserHome.createDefaultOplaPathIfDontExists();
     }
 
-    private void setPathDatabase()  {
+    private void setPathDatabase() {
         database.Database.setPathToDB(UserHome.getPathToDb());
     }
 
-	/**
-	 * Somente faz uma copia do banco de dados vazio para a pasta da oplatool no
-	 * diretorio do usuario se o mesmo nao existir.
-	 *
-	 * @throws Exception
-	 */
-	private void configureDb() throws Exception {
-		Utils.createDataBaseIfNotExists();
-	}
+    /**
+     * Somente faz uma copia do banco de dados vazio para a pasta da oplatool no
+     * diretorio do usuario se o mesmo nao existir.
+     *
+     * @throws Exception
+     */
+    private void configureDb() throws Exception {
+        Utils.createDataBaseIfNotExists();
+    }
+
     private void carregarPrincipal() throws Exception {
         Principal principal = new Principal();
         principal.configureView();
