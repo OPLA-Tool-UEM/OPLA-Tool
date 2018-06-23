@@ -1,8 +1,9 @@
 package br.ufpr.dinf.gres.opla.view.util;
 
-import arquitetura.io.FileUtils;
-
+import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import arquitetura.io.FileUtils;
 
 /**
  * @author elf
@@ -18,8 +19,8 @@ public class UserHome {
         return Constants.USER_HOME + Constants.FILE_SEPARATOR + "oplatool" + Constants.FILE_SEPARATOR;
     }
 
-    public static String getConfigurationFilePath() {
-        return getOplaUserHome() + "application.yaml";
+    public static Path getApplicationYamlConfig() {
+        return Paths.get(getOplaUserHome()).resolve("application.yaml");
     }
 
     public static String getGuiSettingsFilePath() {
@@ -31,23 +32,27 @@ public class UserHome {
     }
 
     public static void createProfilesPath() {
-        Utils.createPath(getOplaUserHome() + "profiles/");
+        Utils.createPath(getOplaUserHome() + "profiles" + Constants.FILE_SEPARATOR);
     }
 
     public static void createTemplatePath() {
-        Utils.createPath(getOplaUserHome() + "templates/");
+        Utils.createPath(getOplaUserHome() + "templates" + Constants.FILE_SEPARATOR);
     }
 
     public static void createOutputPath() {
-        Utils.createPath(getOplaUserHome() + "output/");
+        Utils.createPath(getOplaUserHome() + "output" + Constants.FILE_SEPARATOR);
     }
 
     public static void createTempPath() {
-        Utils.createPath(getOplaUserHome() + "temp/");
+        Utils.createPath(getOplaUserHome() + "temp" + Constants.FILE_SEPARATOR);
     }
 
     public static String getPathToDb() {
         return getOplaUserHome() + "db" + Constants.FILE_SEPARATOR + "oplatool.db";
+    }
+    
+    public static String getPathToTemplates() {
+    	return getOplaUserHome() + "templates" + Constants.FILE_SEPARATOR;
     }
 
     public static String getPathToConfigFile() {

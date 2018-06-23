@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * @author edipofederle<edipofederle@gmail.com>
@@ -39,18 +40,19 @@ public class FileUtils {
             Files.copy(source, target);
             LOGGER.info("Copia concluída com sucesso");
         } catch (IOException e) {
-            LOGGER.info("Não foi possível criar o diretório home", e);
+            LOGGER.info("Não foi possível copiar o arquivo: ", e);
         }
     }
 
     public static void copy(String fileName, Path target) {
         try {
-            InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
+            Path source = Paths.get(fileName);
+            		
             LOGGER.info("Copiando de: " + fileName + " para " + target);
-            Files.copy(inputStream, target);
+            Files.copy(source, target);
             LOGGER.info("Copia concluída com sucesso");
         } catch (IOException e) {
-            LOGGER.info("Não foi possível criar o diretório home", e);
+            LOGGER.info("Não foi possível copiar o arquivo", e);
         }
     }
 

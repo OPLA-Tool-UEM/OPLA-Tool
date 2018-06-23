@@ -12,6 +12,8 @@ public class Constants {
 
     public static final String APPLICATION_YAML_NAME = "application.yaml";
     public static final String CONFIG_PATH = "config";
+    public static final String LOCAL_YAML_PATH = Constants.CONFIG_PATH + Constants.FILE_SEPARATOR + Constants.APPLICATION_YAML_NAME;
+    
 
     public static final String PATH_EMPTY_DB = "emptyDB";
     public static final String EMPTY_DB_NAME = "oplatool.db";

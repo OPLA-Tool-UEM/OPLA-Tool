@@ -3,6 +3,7 @@ package arquitetura.io;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+@Deprecated
 public class DirTarget {
 
     private String directoryToSaveModels;

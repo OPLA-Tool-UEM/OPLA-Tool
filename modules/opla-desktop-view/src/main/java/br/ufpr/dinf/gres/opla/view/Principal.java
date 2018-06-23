@@ -2,6 +2,8 @@ package br.ufpr.dinf.gres.opla.view;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,7 +13,7 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.DefaultCaret;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import arquitetura.io.FileUtils;
 import br.ufpr.dinf.gres.loglog.LogLog;
@@ -46,8 +48,11 @@ import br.ufpr.dinf.gres.persistence.util.GenericMetricDAO;
 public class Principal extends AbstractPrincipalJFrame {
 
 	private static final long serialVersionUID = 1L;
-	private static final LogLog VIEW_LOGGER = Logger.getLogger();
+
 	private final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(Principal.class);
+
+	private static final LogLog VIEW_LOGGER = Logger.getLogger();
+	
 	private final ExperimentTableModel tmExperiments = new ExperimentTableModel();
 	private final ExperimentTableModel tmExecExperiments = new ExperimentTableModel();
 	private final ExecutionTableModel tmExecution = new ExecutionTableModel();
@@ -97,7 +102,6 @@ public class Principal extends AbstractPrincipalJFrame {
 		configureLocaleToSaveModels();
 		configureLocaleToExportModels();
 		copyBinHypervolume();
-		configureDb();
 	}
 
 	private void configPaths() {
@@ -135,9 +139,9 @@ public class Principal extends AbstractPrincipalJFrame {
 		checkAll(panelCkProfiles, true);
 	}
 
-	private void configureSmartyProfile() throws IOException {
+	private void configureSmartyProfile() throws IOException, URISyntaxException {
 		try {
-			configureProfile(tfSmartProfile, config.getConfig().getPathToProfile(), Constants.PROFILE_SMART_NAME);
+			configureProfile(tfSmartProfile, config.getConfig().getPathToProfileSmarty(), Constants.PROFILE_SMART_NAME);
 			config.updatePathToProfileSmarty(tfSmartProfile.getText());
 		} catch (IOException ex) {
 			LOGGER.error("Smart Profile Config error: ", ex);
@@ -145,7 +149,7 @@ public class Principal extends AbstractPrincipalJFrame {
 		}
 	}
 
-	private void configureConcernsProfile() throws IOException {
+	private void configureConcernsProfile() throws IOException, URISyntaxException {
 		try {
 			configureProfile(tfFeatureProfile, config.getConfig().getPathToProfileConcern(),
 					Constants.PROFILE_CONCERNS_NAME);
@@ -156,7 +160,7 @@ public class Principal extends AbstractPrincipalJFrame {
 		}
 	}
 
-	private void configurePatternsProfile() throws IOException {
+	private void configurePatternsProfile() throws IOException, URISyntaxException {
 		try {
 			configureProfile(tfPatternProfile, config.getConfig().getPathToProfilePatterns(),
 					Constants.PROFILE_PATTERN_NAME);
@@ -167,7 +171,7 @@ public class Principal extends AbstractPrincipalJFrame {
 		}
 	}
 
-	private void configureRelationshipsProfile() throws IOException {
+	private void configureRelationshipsProfile() throws IOException, URISyntaxException {
 		try {
 			configureProfile(tfRelationshipProfile, config.getConfig().getPathToProfileRelationships(),
 					Constants.PROFILE_RELATIONSHIP_NAME);
@@ -178,27 +182,27 @@ public class Principal extends AbstractPrincipalJFrame {
 		}
 	}
 
-	private void configureTemplates() throws IOException {
-		if (StringUtils.isNotBlank(config.getConfig().getPathToTemplateModelsDirectory())) {
+	private void configureTemplates() throws IOException, URISyntaxException {
+		long count = Files.list(Paths.get(UserHome.getPathToTemplates())).count();
+		if (count > 0) {
 			LOGGER.info("Templates Path is configured");
-			tfTemplateDiretory.setText(config.getConfig().getPathToTemplateModelsDirectory());
+			tfTemplateDiretory.setText(config.getConfig().getPathToTemplateModelsDirectory().toString());
 		} else {
 			try {
-				String templatesBasePath = Constants.TEMPLATES_DIR + Constants.FILE_SEPARATOR;
-				String simplesUmlPath = templatesBasePath + Constants.SIMPLES_UML_NAME;
-				String simplesDiPath = templatesBasePath + Constants.SIMPLES_DI_NAME;
-				String simplesNotationPath = templatesBasePath + Constants.SIMPLES_NOTATION_NAME;
+				URI uriTemplatesDir = ClassLoader.getSystemResource(Constants.TEMPLATES_DIR).toURI();
+				String simplesUmlPath = Constants.SIMPLES_UML_NAME;
+				String simplesDiPath = Constants.SIMPLES_DI_NAME;
+				String simplesNotationPath = Constants.SIMPLES_NOTATION_NAME;
 
-				Path externalPathSimplesUml = Paths.get(UserHome.getOplaUserHome() + simplesUmlPath);
-				Path externalPathSimplesDi = Paths.get(UserHome.getOplaUserHome() + simplesDiPath);
-				Path externalPathSimplesNotation = Paths.get(UserHome.getOplaUserHome() + simplesNotationPath);
+				Path externalPathSimplesUml = Paths.get(UserHome.getPathToTemplates()+ simplesUmlPath);
+				Path externalPathSimplesDi = Paths.get(UserHome.getPathToTemplates() + simplesDiPath);
+				Path externalPathSimplesNotation = Paths.get(UserHome.getPathToTemplates() + simplesNotationPath);
 
-				FileUtils.copy(simplesUmlPath, externalPathSimplesUml);
-				FileUtils.copy(simplesDiPath, externalPathSimplesDi);
-				FileUtils.copy(simplesNotationPath, externalPathSimplesNotation);
+				FileUtils.copy(Paths.get(uriTemplatesDir).resolve(simplesUmlPath), externalPathSimplesUml);
+				FileUtils.copy(Paths.get(uriTemplatesDir).resolve(simplesDiPath), externalPathSimplesDi);
+				FileUtils.copy(Paths.get(uriTemplatesDir).resolve(simplesNotationPath), externalPathSimplesNotation);
 
-				String template = UserHome.getOplaUserHome() + templatesBasePath;
-				tfTemplateDiretory.setText(template);
+				tfTemplateDiretory.setText(UserHome.getPathToTemplates());
 				config.updatePathToTemplateFiles(tfTemplateDiretory.getText());
 			} catch (IOException ex) {
 				LOGGER.error("Template directory Config error: ", ex);
@@ -208,14 +212,15 @@ public class Principal extends AbstractPrincipalJFrame {
 	}
 
 	private void configureLocaleToSaveModels() throws IOException {
-		if (StringUtils.isNotBlank(config.getConfig().getDirectoryToSaveModels())) {
+		if (StringUtils.isNotBlank(config.getConfig().getDirectoryToSaveModels().toString())) {
 			LOGGER.info("Manipulation Directory is configured");
-			tfManipulationDirectory.setText(config.getConfig().getDirectoryToSaveModels());
+			tfManipulationDirectory.setText(config.getConfig().getDirectoryToSaveModels().toString());
+			config.updatePathToSaveModels(tfManipulationDirectory.getText());
 		} else {
 			try {
-				String path = UserHome.getOplaUserHome() + Constants.TEMP_DIR + Constants.FILE_SEPARATOR;
-				tfManipulationDirectory.setText(path);
-				config.updatePathToSaveModels(path);
+				String pathTempDir = UserHome.getOplaUserHome() + Constants.TEMP_DIR + Constants.FILE_SEPARATOR;
+				tfManipulationDirectory.setText(pathTempDir);
+				config.updatePathToSaveModels(tfManipulationDirectory.getText());
 			} catch (IOException ex) {
 				LOGGER.error("Manipulation directory Config error: ", ex);
 				throw ex;
@@ -224,15 +229,15 @@ public class Principal extends AbstractPrincipalJFrame {
 	}
 
 	private void configureLocaleToExportModels() throws IOException {
-		if (StringUtils.isNotBlank(config.getConfig().getDirectoryToExportModels())) {
+		if (StringUtils.isNotBlank(config.getConfig().getDirectoryToExportModels().toString())) {
 			LOGGER.info("Output Directory is configured");
-			tfOutputDirectory.setText(config.getConfig().getDirectoryToExportModels());
+			tfOutputDirectory.setText(config.getConfig().getDirectoryToExportModels().toString());
+			config.updatePathToExportModels(tfOutputDirectory.getText());
 		} else {
 			try {
 				String path = UserHome.getOplaUserHome() + Constants.OUTPUT_DIR + Constants.FILE_SEPARATOR;
 				tfOutputDirectory.setText(path);
-				tfOutputDirectory.updateUI();
-				config.updatePathToExportModels(path);
+				config.updatePathToExportModels(tfOutputDirectory.getText());
 			} catch (IOException ex) {
 				LOGGER.error("Output directory Config error: ", ex);
 				throw ex;
@@ -256,15 +261,6 @@ public class Principal extends AbstractPrincipalJFrame {
 		}
 	}
 
-	/**
-	 * Somente faz uma copia do banco de dados vazio para a pasta da oplatool no
-	 * diretorio do usuario se o mesmo nao existir.
-	 *
-	 * @throws Exception
-	 */
-	private void configureDb() throws Exception {
-		Utils.createDataBaseIfNotExists();
-	}
 
 	// <editor-fold defaultstate="collapsed" desc="Generated
 	// Code">//GEN-BEGIN:initComponents

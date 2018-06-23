@@ -252,6 +252,7 @@ public class StartUp extends javax.swing.JFrame {
      * Creates new form main
      */
     public StartUp() throws Exception {
+    	initComponents();
 
         DefaultCaret caret = (DefaultCaret) textLogsArea.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
@@ -266,7 +267,6 @@ public class StartUp extends javax.swing.JFrame {
         guiservices.copyFileGuiSettings();
         GuiUtils.fontSize(GuiFile.getInstance().getFontSize());
 
-        initComponents();
 
         configureDb();
         initAlgorithmsCombo();

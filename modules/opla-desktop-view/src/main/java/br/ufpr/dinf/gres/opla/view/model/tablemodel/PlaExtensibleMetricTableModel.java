@@ -1,6 +1,6 @@
 package br.ufpr.dinf.gres.opla.view.model.tablemodel;
 
-import metrics.PLAExtensibility;
+import br.ufpr.dinf.gres.opla.entity.metric.PLAExtensibilityMetric;
 
 /**
  * 
@@ -24,7 +24,7 @@ public class PlaExtensibleMetricTableModel extends AbstractMetricTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		PLAExtensibility obj = (PLAExtensibility) lista.get(rowIndex);
+		PLAExtensibilityMetric obj = (PLAExtensibilityMetric) lista.get(rowIndex);
 
 		switch (columnIndex) {
 		case 0:

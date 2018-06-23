@@ -1,11 +1,13 @@
 package br.ufpr.dinf.gres.opla.view;
 
-import arquitetura.io.ReaderConfig;
-import br.ufpr.dinf.gres.opla.view.util.AlertUtil;
-import br.ufpr.dinf.gres.opla.view.util.UserHome;
+import javax.swing.UIManager;
+
 import org.apache.log4j.Logger;
 
-import javax.swing.*;
+import br.ufpr.dinf.gres.opla.config.ApplicationFile;
+import br.ufpr.dinf.gres.opla.view.util.AlertUtil;
+import br.ufpr.dinf.gres.opla.view.util.UserHome;
+import br.ufpr.dinf.gres.opla.view.util.Utils;
 
 /**
  * @author Fernando
@@ -27,8 +29,10 @@ public class StartUpView extends javax.swing.JFrame {
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
             StartUpView view = new StartUpView();
+            view.createPathOplaTool();
             view.configureApplicationFile();
             view.setPathDatabase();
+            view.configureDb();
             view.carregarPrincipal();
             view.setVisible(false);
         } catch (Exception ex) {
@@ -78,13 +82,29 @@ public class StartUpView extends javax.swing.JFrame {
 	// End of variables declaration//GEN-END:variables
 
     private void configureApplicationFile() {
-        ReaderConfig.load();
+       ApplicationFile.getInstance();
+    }
+    
+    /**
+     * Cria diretório raiz da ferramentas
+     */
+    private void createPathOplaTool() {
+    	UserHome.createDefaultOplaPathIfDontExists();
     }
 
-    private void setPathDatabase() {
+    private void setPathDatabase()  {
         database.Database.setPathToDB(UserHome.getPathToDb());
     }
 
+	/**
+	 * Somente faz uma copia do banco de dados vazio para a pasta da oplatool no
+	 * diretorio do usuario se o mesmo nao existir.
+	 *
+	 * @throws Exception
+	 */
+	private void configureDb() throws Exception {
+		Utils.createDataBaseIfNotExists();
+	}
     private void carregarPrincipal() throws Exception {
         Principal principal = new Principal();
         principal.configureView();

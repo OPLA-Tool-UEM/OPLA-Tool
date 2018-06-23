@@ -15,6 +15,7 @@ import java.nio.file.Paths;
  *
  * @author edipofederle<edipofederle@gmail.com>
  */
+@Deprecated
 public class ReaderConfig {
 
     private static final Logger LOGGER = Logger.getLogger(ReaderConfig.class);

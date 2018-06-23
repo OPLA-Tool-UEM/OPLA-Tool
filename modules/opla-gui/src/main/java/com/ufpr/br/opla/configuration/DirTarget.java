@@ -1,5 +1,6 @@
 package com.ufpr.br.opla.configuration;
 
+@Deprecated
 public class DirTarget {
 
     private String directoryToSaveModels;
